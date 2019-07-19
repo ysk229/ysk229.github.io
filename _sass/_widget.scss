@@ -1,0 +1,117 @@
+.m_widget{
+    @extend .z-depth-1;
+    background: $white;
+    margin-bottom: $gap;
+    // .header,.content{
+    //     padding: 0 $gap;
+    // }
+    .header{
+        &:before{
+            content: '#';
+            margin-left: -10px;
+            margin-right: 10px;
+            color: $secondary-color;
+        }
+        font-size: 1.2rem;
+        line-height: 2rem;
+        padding: 8px $gap;
+
+    }
+    .content{
+        border-top: 1px solid rgba($black,10%/100.0%); 
+        padding: $gap/2 0;
+    }
+     ul.entry > li > a{
+        padding: 0 $gap;
+        line-height:$item-height;
+        height: $item-height; 
+        display: flex;
+        justify-content: space-between;
+        align-content: center; 
+        .name{
+            flex:auto;
+            @extend .txt-ellipsis;
+            color: darken($grey-color,10%);
+        }
+        .badget{
+            flex:none;
+            color: $grey-color;
+        }
+        &:hover{
+            background:rgba(black,8%/100.0%);
+        }
+    }
+}
+.m_widget.about{
+    .waves-effect,img{
+        width: 100%;
+        display: block;
+    }
+    @media(max-width: $on-phone){
+        display:none;
+    }
+    .content{
+        padding:0;
+        .desc, .job {
+            position: relative;
+            padding: $gap;
+            background:$qoute-background-color;
+            @include enable-trans(.15s);
+            line-height: 1.2em;
+            font-style: italic;
+            &:empty{
+                padding:0;
+                height: 0;
+            }
+        }
+        .social {
+            position: relative;
+            padding: $gap;
+            background:$qoute-background-color;
+            @include enable-trans(.15s);
+            line-height: 1.2em;
+            &:empty{
+                padding:0;
+                height: 0;
+            }
+            padding-top: 0;
+            padding-bottom: 0;
+            dt {
+                font-weight: bold;
+                float: left;
+                clear: left;
+                width: 30%;
+                text-align: right;
+                &:after {
+                    content: ":";
+                }
+            }
+            dd {
+                margin: 0 0 0 35%;
+                padding: 0 0 0.5em 0;
+            }
+        }
+    }
+}
+.m_widget.tagcloud{
+    .content{
+        padding: 10px 20px;
+        a{
+            display:inline-block;
+            @include enable-trans(.1s);
+            line-height: 1.6em;
+            &:hover{
+                color: $accent-color !important; //to cover inline style.
+                text-decoration: underline
+            }
+        }
+    }
+}
+
+.m_widget.ad {
+    .noads {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        line-height: 2rem;
+    }
+}

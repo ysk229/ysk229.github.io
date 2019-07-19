@@ -1,0 +1,10 @@
+<div class="m_widget tagcloud">
+    <div class="header">Tags</div>
+    <div class='content'>
+        <div class="tags">
+            {% for tag in site.tags %}
+            <a href="#{{ tag | first }}">{{ tag | first }}<span>{{ tag | last | size }}</span></a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+
+{% for  name in site.widgets %}
+{% assign file = "" |  append:"_widget/" | append: name | append:".html" %}
+{% include {{ file }} %}
+{% endfor %} 
