@@ -15,7 +15,6 @@
   {% endif %}
 
 <section class="post-list">
-  {{ paginator.posts | size  }}
   {%- for _article in paginator.posts -%}
   <div class='post-wrapper'>
     {%- include post.html post=_article -%}

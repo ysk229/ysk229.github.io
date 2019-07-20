@@ -55,7 +55,7 @@ paginate_path: "page/:num"
 
 # Gitalk
 gitalk:
-  enable: true    #是否开启Gitalk评论
+  enable: false    #是否开启Gitalk评论
   clientID: f2c84e7629bb1446c1a4                            #生成的clientID
   clientSecret: ca6d6139d1e1b8c43f8b2e19492ddcac8b322d0d    #生成的clientSecret
   repo: qiubaiying.github.io    #仓库名称
@@ -89,7 +89,15 @@ local_search:
 # Alias: {% extlink text url "title" %}
 exturl: false
 
+# Table Of Contents in the Sidebar
+toc:
+  enable: true
 
+  # Automatically add list number to toc.
+  number: true
+
+  # If true, all words will placed on next lines if header width longer then sidebar width.
+  wrap: false
 # ---------------------------------------------------------------
 # Menu Settings
 # ---------------------------------------------------------------
@@ -110,5 +118,6 @@ menu:
 
 # widgets
 widgets:
+  - time
   - categories
   - tagcloud

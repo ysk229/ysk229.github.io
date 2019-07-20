@@ -9,8 +9,8 @@
 
   transition: all .24s ease-out;
   // prevent toc is too heigh.
-  overflow: auto;
-  max-height: unquote("calc(100% - #{$header-height} - 2 * #{$gap})");
+  overflow: hidden;
+  //max-height: unquote("calc(100% - #{$header-height} - 2 * #{$gap})");
 
   @media(max-width: $on-phone){
     display: none;

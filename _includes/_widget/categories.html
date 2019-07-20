@@ -3,7 +3,7 @@
 <div class='content'> 
     <ul class="entry"> 
         {% for category in site.categories  | sort:"name" %}
-        <li><a class="flat-box" href="<%= url_for(item.path) %>"><div class='name'> {{ category | first }}</div><div class='badget'>{{ category | last | size }}</div></a></li>
+        <li><a class="flat-box" href="categories/{{ category | first }}"><div class='name'> {{ category | first }}</div><div class='badget'>{{ category | last | size }}</div></a></li>
         {% endfor %}
     </ul> 
 </div>
