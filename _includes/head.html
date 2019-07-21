@@ -22,4 +22,19 @@
     {% for style in page.styles %}<link rel="stylesheet" type="text/css" href="{{ '/assets/css/' | append: style | prepend: site.baseurl | prepend: site.url}}" />
     {%endfor%}
 
+    {% for css in layout.css %}
+    {% if css contains "//" %}
+    <link rel="stylesheet" href="{{css}}">
+    {% else %}
+    <link rel="stylesheet" href="{{site.baseurl}}/assets/css/{{css}}">
+    {% endif %}
+    {% endfor %}
+    {% for css in page.css %}
+    {% if css contains "//" %}
+    <link rel="stylesheet" href="{{css}}">
+    {% else %}
+    <link rel="stylesheet" href="{{site.baseurl}}/assets/css/{{css}}">
+    {% endif %}
+    {% endfor %}
+    
 </head>

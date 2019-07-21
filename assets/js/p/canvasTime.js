@@ -144,7 +144,7 @@ if(canvas.getContext){
     var H = 100,W = 700;
     canvas.height = H;
     canvas.width = W;  
-    cxt.fillStyle = '#f00';
+    cxt.fillStyle = '#fff';
     cxt.fillRect(10,10,50,50);        
 
     //存储时间数据
@@ -166,7 +166,10 @@ if(canvas.getContext){
                 if(digit[num][i][j] == 1){
                     cxt.beginPath();
                     cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
-                    cxt.closePath();
+                    cxt.closePath();       
+                         cxt.fillStyle = "#3367d6";
+
+
                     cxt.fill();
                 }
             }

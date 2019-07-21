@@ -2,16 +2,11 @@
 ---
 
 {%- include head.html -%}
-<body id="ircmaxell-blog">  
+<body class="blog">  
     {%- include header.html -%}
   <div class="l_body">
     <div class='container clearfix'>
-      <div class='l_main'>
-          {{ content }}
-      </div>
-      <aside class='l_side'>
-          {%- include side.html -%}
-      </aside>
+      {{ content }}
     </div>
   </div>
   {%- include footer.html -%}
