@@ -107,7 +107,7 @@ toc:
 # ---------------------------------------------------------------
 # Menu Settings
 # ---------------------------------------------------------------
-
+exclude: [vendor]
 # When running the site in a subdirectory (e.g. domain.tld/blog), remove the leading slash (/archives -> archives)
 menu:
   - name: 首页
