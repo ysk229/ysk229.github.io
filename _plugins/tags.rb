@@ -16,6 +16,12 @@ module Jekyll
             
             tag_title_prefix = site.config['tag_title_prefix'] || 'Tag: '
             self.data['title'] = "#{tag_title_prefix}#{tag}"
+ 
+        
+            tag_path = site.config['paginate_tag_basepath'] || '/tags/:name/'
+            tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+ 
+            self.data['pathinfo'] = tag_path.sub(/(\/)+$/,'')
           end
         end
         

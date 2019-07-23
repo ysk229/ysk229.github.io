@@ -17,6 +17,11 @@ module Jekyll
           category_title_prefix = site.config['category_title_prefix'] || 'Category: '
           self.data['title'] = "#{category_title_prefix}#{category}"
           self.data['category'] = category
+
+          category_path = site.config['paginate_category_basepath'] || '/categories/:name/'
+          category_path = category_path.sub(':name', Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+          self.data['pathinfo'] = category_path.sub(/(\/)+$/,'')
+          
         end
       end
        
@@ -71,7 +76,7 @@ module Jekyll
 
             # Create new page, based on category layout
             newpage = CategoryPage.new(site, site.source, category)
-            newpage.pager = pager
+            newpage.pager = pager 
             newpage.dir = Pager.paginate_path_category(site, current_num_page, category_path)
             # print newpage.dir
             site.pages << newpage
@@ -107,6 +112,7 @@ module Jekyll
           return category_path if num_page <= 1
           format = category_path.sub(/(\/)+$/,'') + paginate_path
           format = format.sub(':num', num_page.to_s)
+        
           ensure_leading_slash(format)
         end
       end
