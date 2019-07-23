@@ -51,9 +51,10 @@ plugins:
 ##分页设置
 
 paginate: 5
-paginate_path: "archive/page/:num"
+paginate_path: "page/:num"
 paginate_category_basepath: '/search/categories/:name/'
 paginate_category_layout: 'index.html'
+
 
 # Gitalk
 gitalk:
