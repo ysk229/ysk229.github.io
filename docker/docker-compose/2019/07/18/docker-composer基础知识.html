@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="0.docker-composer安装">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<body class="blog"><header class="l_header">
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href="/">
+				图解我的私房菜
+			</a>
+			
+			<div class='menu'>
+				<ul class='h-list'>
+					
+					<li >
+							<a class='flat-box nav-home' href='/'>
+								
+								首页
+							</a>
+					</li>
+					
+					<li >
+							<a class='flat-box nav-archives' href='/archives/'>
+								
+								时光机
+							</a>
+					</li>
+					
+				</ul>
+				<div class='underline'></div>
+			</div>
+			
+
+			
+
+			
+			<div class="m_search">
+				<form name="searchform" class="form u-search-form">
+					<input type="text" class="input u-search-input" placeholder="Search" />
+					<span class="icon icon-search"></span>
+				</form>
+			</div>
+			
+			<ul class='switcher h-list'>
+				
+				<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a>
+				</li>
+				
+				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo" class="flat-box" href='javascript:void(0)'>
+				Word of Forks
+			</a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
+				</li>
+				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+		
+		
+			<a href="/" class="nav-home nav">
+				首页
+			</a>
+			
+			
+			
+		
+		
+			<a href="/archives/" class="nav-archives nav">
+				时光机
+			</a>
+			
+			
+			
+	</nav>
+</aside><div class="l_body">
+    <div class='container clearfix'>
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="0.docker-composer安装">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<div class='l_main'>
+    <article id="post-<docker-composer基础知识"
+  class="post white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<section class='meta'>
+	<h2 class="title"><a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+    	玩转docker-composer基础篇
+    </a>
+  </h2>
+	<time>
+		2019-07-18
+	</time>
+ 
+	</section>  
+		<section class="toc-wrapper">
+      <div class="nav">
+        <span>Table Of Contents</span>
+	  </div>
+	   <div class="js-toc"  ></div>
+	   
+	</section> 
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<h2 id="0docker-composer安装">0.docker-composer安装</h2>
+
+<p>从github上下载docker-compose二进制文件安装</p>
+
+<pre><code class="language-shell">##下载最新版的docker-compose文件
+curl -L https://github.com/docker/compose/releases/download/1.16.1/d
+ocker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+##添加可执行权限
+chmod +x /usr/local/bin/docker-compose
+
+##测试安装结果
+docker-compose --version
+</code></pre>
+
+<h2 id="1基本概念">1.基本概念</h2>
+
+<ul>
+  <li>使用Docker Compose不再需要使用shell脚本来启动容器</li>
+  <li>Compose 通过一个配置文件来管理多个Docker容器，在配置文件中，所有的容器通过services来定义，然后使用docker-compose脚本来启动，停止和重启应用，和应用中的服务以及所有依赖服务的容器</li>
+  <li>Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理</li>
+  <li>服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。</li>
+  <li>项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。</li>
+</ul>
+
+<h2 id="2基本命令的使用技巧">2.基本命令的使用技巧</h2>
+
+<p>docker-compose  –help 参数 可以查看调用的参数的格式</p>
+
+<pre><code class="language-shell">##容器相关操作的命令
+
+docker-compose --help
+</code></pre>
+
+<pre><code class="language-shell">Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f &lt;arg&gt;...] [options] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --no-ansi                   Do not print ANSI control characters
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert deploy
+                              keys in v3 files to their non-Swarm equivalent
+
+Commands:
+  build              Build or rebuild services
+  bundle             Generate a Docker bundle from the Compose file
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove containers, networks, images, and volumes
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show the Docker-Compose version information
+
+
+</code></pre>
+
+<h2 id="3-docker-composer-常用的命令">3. docker-composer 常用的命令</h2>
+
+<ul>
+  <li>ps：列出所有运行容器</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose ps
+</code></pre>
+
+<ul>
+  <li>logs：查看服务日志输出</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose logs eureka
+</code></pre>
+
+<ul>
+  <li>build：构建或者重新构建服务</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose build .
+
+##或者
+docker-compose build -f xx.yml
+
+</code></pre>
+
+<ul>
+  <li>rm：删除指定服务的容器</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose rm eureka
+</code></pre>
+
+<ul>
+  <li>start：启动指定服务已存在的容器</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose stop eureka
+</code></pre>
+
+<ul>
+  <li>stop：停止已经处于运行状态的容器，但不删除它</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose stop eureka
+</code></pre>
+
+<ul>
+  <li>restart:重启项目中的服务</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose restart eureka
+</code></pre>
+
+<ul>
+  <li>up：构建、启动容器</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose up -d
+</code></pre>
+
+<ul>
+  <li>down：停用移除所有容器以及网络相关</li>
+</ul>
+
+<pre><code class="language-shell">docker-compose down
+</code></pre>
+
+<h2 id="4docker-composeyml-属性">4.docker-compose.yml 属性</h2>
+
+<ul>
+  <li>version：指定 docker-compose.yml 文件的写法格式</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+</code></pre>
+
+<ul>
+  <li>services：多个容器集合</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    java:
+    go:
+</code></pre>
+
+<ul>
+  <li>build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+    go:
+    build:
+        context: ./go
+</code></pre>
+
+<ul>
+  <li>command：覆盖容器启动后默认执行的命令</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+</code></pre>
+
+<ul>
+  <li>environment：环境变量配置，可以用数组或字典两种方式</li>
+</ul>
+
+<pre><code class="language-yml">environment:
+    RACK_ENV: development
+    SHOW: 'ture'
+-------------------------
+environment:
+    - RACK_ENV=development
+    - SHOW=ture
+</code></pre>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>expose：暴露端口，只将端口暴露给连接的服务，而不暴露给主机</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>image：指定服务所使用的镜像</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    nginx:
+        image: nginx
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>network_mode：设置网络模式</li>
+</ul>
+
+<pre><code class="language-yml">network_mode: "bridge"
+network_mode: "host"
+network_mode: "none"
+network_mode: "service:[service name]"
+network_mode: "container:[container name/id]"
+</code></pre>
+
+<pre><code class="language-yml">version: '3'
+networks:
+  os_bridge:
+    driver: bridge
+services:
+    nginx:
+        image: nginx
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+        networks:
+        - os_bridge
+
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>ports：对外暴露的端口定义，和 expose 对应</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+        ports:
+            - "59501:9501"
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>volumes：卷挂载路径</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+        ports:
+            - "59501:9501"
+        volumes:
+            - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+            - ./php-fpm/mod:/usr/local/etc/php/conf.d/mod/
+            - ./php-fpm/conf.d:/usr/local/etc/php-fpm.d/cfg.d/
+
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<ul>
+  <li>links：将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况</li>
+</ul>
+
+<pre><code class="language-yml">version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - "3000"
+            - "8000"
+        ports:
+            - "59501:9501"
+        volumes:
+            - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+            - ./php-fpm/mod:/usr/local/etc/php/conf.d/mod/
+            - ./php-fpm/conf.d:/usr/local/etc/php-fpm.d/cfg.d/
+        links:
+            - mongo:db ##mongo是其他容器的服务名,php-fpm服务用db访问到mongo的容器的服务
+            - redis
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+</code></pre>
+
+<h2 id="5出现的问题">5.出现的问题</h2>
+
+<p>Q:当docker-compose.yml配置发生变化时，如何去更新容器?
+A:可使用 docker-compose up 命令更新配置</p>
+
+<p>Q:为什么yml配置总是报错呢？
+A:yml配置是有格式的，YAML中允许表示三种格式，分别是常量值，对象和数组。格式如下：</p>
+
+<pre><code class="language-yml">#即表示url属性值；
+url: http://www.wolfcode.cn 
+#即表示server.host属性的值；
+server:
+    host: http://www.wolfcode.cn 
+#数组，即表示server为[a,b,c]
+server:
+    - 120.168.117.21
+    - 120.168.117.22
+    - 120.168.117.23
+#常量
+pi: 3.14   #定义一个数值3.14
+hasChild: true  #定义一个boolean值
+name: '你好YAML'   #定义一个字符串
+</code></pre>
+
+<p>基本格式要求</p>
+
+<p>1，YAML大小写敏感；</p>
+
+<p>2，使用缩进代表层级关系；</p>
+
+<p>3，缩进只能使用空格，不能使用TAB，不要求空格个数，只需要相同层级左对齐（一般2个或4个空格）</p>
+
+<h2 id="6参考文章">6.参考文章</h2>
+
+<p><a href="https://docs.docker.com/">docker官方</a></p>
+
+<p><a href="https://docs.docker.com/compose/">docker-composer官方</a></p>
+
+<p><a href="https://docs.docker.com/compose/compose-file/">docker-composer文件配置参数</a></p>
+
+  	</div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html"
+						 rel="prev" title="玩转docker基础篇" >
+						 玩转docker基础篇
+					</a></span>
+		</div></section>
+	 <!--Gitalk评论start  -->
+ 
+ <!-- Gitalk end -->
+
+ 
+</article>
+<script>
+	window.subData = {
+		title: '玩转docker-composer基础篇',
+		tools: true
+	}
+</script>
+
+</div>
+<aside class='l_side'>
+
+
+<section class='m_widget time'>
+    <div class='header'>当前时间</div>
+    <div class='content'>
+        <canvas id="canvas" style="width:100%;padding: 20px;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+    </div>
+</section>
+
+
+<section class='m_widget categories'>
+<div class='header'>Categories</div>
+<div class='content'> 
+    <ul class="entry"> 
+        
+        <li><a class="flat-box" href="/search/categories/Security"><div class='name'> Security</div><div class='badget'>6</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Testing"><div class='name'> Testing</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Meta"><div class='name'> Meta</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Rant"><div class='name'> Rant</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Programming"><div class='name'> Programming</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Slides"><div class='name'> Slides</div><div class='badget'>4</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/PHP"><div class='name'> PHP</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Process"><div class='name'> Process</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/update"><div class='name'> update</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/sdfdsfd"><div class='name'> sdfdsfd</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker"><div class='name'> docker</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker-compose"><div class='name'> docker-compose</div><div class='badget'>2</div></a></li>
+        
+    </ul> 
+</div>
+</section>
+
+
+<div class="m_widget tagcloud">
+    <div class="header">Tags</div>
+    <div class='content'>
+        <div class="tags">
+            
+            <a href="/search/tags/PHP">PHP<span>16</span></a>
+            
+            <a href="/search/tags/Security">Security<span>5</span></a>
+            
+            <a href="/search/tags/Web Application Security Series">Web Application Security Series<span>2</span></a>
+            
+            <a href="/search/tags/Best Practice">Best Practice<span>3</span></a>
+            
+            <a href="/search/tags/CryptLib">CryptLib<span>1</span></a>
+            
+            <a href="/search/tags/Unit Testing">Unit Testing<span>1</span></a>
+            
+            <a href="/search/tags/XSS">XSS<span>1</span></a>
+            
+            <a href="/search/tags/Language Agnostic">Language Agnostic<span>4</span></a>
+            
+            <a href="/search/tags/Programming">Programming<span>5</span></a>
+            
+            <a href="/search/tags/Rant">Rant<span>4</span></a>
+            
+            <a href="/search/tags/Learning">Learning<span>5</span></a>
+            
+            <a href="/search/tags/Open Source">Open Source<span>1</span></a>
+            
+            <a href="/search/tags/Open Standards">Open Standards<span>1</span></a>
+            
+            <a href="/search/tags/Design Patterns">Design Patterns<span>1</span></a>
+            
+            <a href="/search/tags/Generators">Generators<span>1</span></a>
+            
+            <a href="/search/tags/Object Oriented Programming">Object Oriented Programming<span>5</span></a>
+            
+            <a href="/search/tags/PHP-Internals">PHP-Internals<span>4</span></a>
+            
+            <a href="/search/tags/Procedural Programming">Procedural Programming<span>1</span></a>
+            
+            <a href="/search/tags/Conference">Conference<span>4</span></a>
+            
+            <a href="/search/tags/Presentation">Presentation<span>4</span></a>
+            
+            <a href="/search/tags/Community">Community<span>3</span></a>
+            
+            <a href="/search/tags/Cryptography">Cryptography<span>2</span></a>
+            
+            <a href="/search/tags/Education">Education<span>2</span></a>
+            
+            <a href="/search/tags/Philosophy">Philosophy<span>2</span></a>
+            
+            <a href="/search/tags/Work">Work<span>1</span></a>
+            
+            <a href="/search/tags/Password-Hashing">Password-Hashing<span>1</span></a>
+            
+            <a href="/search/tags/Change">Change<span>1</span></a>
+            
+            <a href="/search/tags/Inconsistencies">Inconsistencies<span>1</span></a>
+            
+            <a href="/search/tags/Agile">Agile<span>1</span></a>
+            
+            <a href="/search/tags/Scrum">Scrum<span>1</span></a>
+            
+            <a href="/search/tags/Performance">Performance<span>1</span></a>
+            
+            <a href="/search/tags/Thoughts">Thoughts<span>1</span></a>
+            
+            <a href="/search/tags/Trust">Trust<span>1</span></a>
+            
+            <a href="/search/tags/jekyll">jekyll<span>2</span></a>
+            
+            <a href="/search/tags/update">update<span>2</span></a>
+            
+            <a href="/search/tags/docker">docker<span>2</span></a>
+            
+            <a href="/search/tags/docker-compose">docker-compose<span>2</span></a>
+            
+        </div>
+    </div>
+</div>
+ </aside>
+
+    </div>
+  </div><footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  
+  </div>
+  
+  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2019-07-18 00:00:00 +0000</div>
+
+</footer>
+
+<script src="/assets/js/jquery-1.12.4.min.js"></script> 
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/topbar.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+    $(function() {
+        function resetToDefaults() {
+          topbar.config({
+            autoRun      : true,
+            barThickness : 3,
+            barColors    : {
+              '0'      : 'rgba(26,  188, 156, .9)',
+              '.25'    : 'rgba(52,  152, 219, .9)',
+              '.50'    : 'rgba(241, 196, 15,  .9)',
+              '.75'    : 'rgba(230, 126, 34,  .9)',
+              '1.0'    : 'rgba(211, 84,  0,   .9)'
+            },
+            shadowBlur   : 10,
+            shadowColor  : 'rgba(0,   0,   0,   .6)'
+          })
+        }
+        // Page load
+        resetToDefaults()
+        topbar.show()
+        setTimeout(function() {
+          // $('.l_body').fadeIn('slow')
+          topbar.hide()
+        }, 1500) 
+
+ 
+    })
+  </script>
+  <script src="/assets/js/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/p/jquery.nicescroll.min.js"></script>
+
+<script src="/assets/js/p/tocbot/tocbot.min.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/tocbot/tocbot.css">
+
+<script src="/assets/js/p/backtop/backtop.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/backtop/back-top.css">
+
+<script src="/assets/js/p/canvasTime.js"></script>
+<script src="/assets/js/search.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

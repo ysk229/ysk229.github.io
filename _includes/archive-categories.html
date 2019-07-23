@@ -1,9 +1,0 @@
-{%- if post.categories-%} 
-
-{% for cat in post.categories %}
-
-<div class='cats'>
-    <a href="/search/categories/{{ cat }}">{{ cat }}</a>
-</div>
-{% endfor %}
-{%- endif -%}

@@ -7,14 +7,14 @@
 
   <title>图解我的私房菜</title>
   <meta name="description"
-    content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    content="While working on testing out my new Cryptography library (appropriately called PHP-CryptLib), I ran into a rather interesting problem.  How do you unit test ...">
   <meta name="HandheldFriendly" content="True" />
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/unit-testing-when-you-have-file-system">
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
     <link rel="stylesheet" href="/assets/css/prism.css">
@@ -118,14 +118,14 @@
 
   <title>图解我的私房菜</title>
   <meta name="description"
-    content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    content="While working on testing out my new Cryptography library (appropriately called PHP-CryptLib), I ran into a rather interesting problem.  How do you unit test ...">
   <meta name="HandheldFriendly" content="True" />
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/unit-testing-when-you-have-file-system">
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
     <link rel="stylesheet" href="/assets/css/prism.css">
@@ -138,236 +138,126 @@
     
 </head>
 <div class='l_main'>
+    <article id="post-<unit-testing-when-you-have-file-system"
+  class="post white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<section class='meta'>
+	<h2 class="title"><a href="/unit-testing-when-you-have-file-system">
+    	Unit Testing When You Have File-System Interaction
+    </a>
+  </h2>
+	<time>
+		2011-03-29
+	</time>
+ 
+	</section>  
+		<section class="toc-wrapper">
+      <div class="nav">
+        <span>Table Of Contents</span>
+	  </div>
+	   <div class="js-toc"  ></div>
+	   
+	</section> 
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>While working on testing out my new Cryptography library (appropriately called <a href="https://github.com/ircmaxell/PHP-CryptLib">PHP-CryptLib</a>), I ran into a rather interesting problem.  How do you unit test a method that interacts with the file-system?  Traditionally, this problem has been solved by either not testing the method or creating temporary directory structures, testing, and then deleting the temporary directories.  There has to be a better way.  And as it turns out there is!</p>
+
+<!--more-->
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>So, one of the classes in CryptLib (<a href="https://github.com/ircmaxell/PHP-CryptLib/blob/e8251c3c52a99fd9fc330386494d91e337666ec2/lib/CryptLib/Core/AbstractFactory.php">Core\AbstractFactory</a>) has the following method:</p>
+
+<pre><code class="language-php">protected function loadFiles($directory, $namespace, $callback) {
+   foreach (new \DirectoryIterator($directory) as $file) {
+      $filename = $file-&gt;getBasename();
+      if ($file-&gt;isFile() &amp;&amp; preg_match('/\.php$/', $filename)) {
+         $name  = substr($filename, 0, -4);
+         $class = $namespace . $name;
+         call_user_func($callback, $name, $class);
+      }
+   }
+}
+</code></pre>
+
+<p>It should be fairly obvious what the method does.  It accepts a file-system path, a namespace prefix and a callback.  Then it iterates over all of the files in the directory, and if it’s a PHP file it will call the callback with the determined class name.  It’s a fairly basic method, and considering how much of a pain testing file-systems can be, it’s tempting to just not test the method.  But what would be the point of this post if we did that?</p>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p>Enter <a href="http://code.google.com/p/bovigo/wiki/vfsStream">vfsStream</a>.  It’s actually quite a ingenious little package.  Basically, it utilizes PHP’s stream wrapper functionality to create an on-demand virtual file-system.  The documentation is fairly light, but it should be pretty easy to figure out how to use it.  So, to solve our problem, we need to first install the package.  Installing is remarkably easy thanks to pear:</p>
+
+<pre><code class="language-php">$ pear channel-discover pear.php-tools.net
+$ pear install pat/vfsStream
+</code></pre>
+
+<p>Now that we have it installed, we can get down to writing the test.  Now, there are two things that we need to do.  First, we need to setup the virtual file-system.  After it’s setup, we can then use it to test.  So, to setup the vfs, we need to decide on a directory structure that we want to use.  Here’s the structure we want to create:</p>
+
+<pre><code class="language-php">CryptLibTest/Core/
+CryptLibTest/Core/badlocation.php
+CryptLibTest/Core/AbstractFactory/
+CryptLibTest/Core/AbstractFactory/test.php
+CryptLibTest/Core/AbstractFactory/Some234Foo234Bar98Name.php
+CryptLibTest/Core/AbstractFactory/Invalid.csv
+</code></pre>
+
+<p>Now that we have the structure, we need to convert it into a virtual file-system.  The way this works, is that we need to set up the structure item by item.  It’s fairly verbose, but it’s pretty clear.  So, here’s how we do it:</p>
+
+<pre><code class="language-php">// Create Folders
+$root = vfsStream::setup('CryptLibTest');
+$core = vfsStream::newDirectory('Core')-&gt;at($root);
+$af = vfsStream::newDirectory('AbstractFactory')-&gt;at($core);
+
+// Create Files
+vfsStream::newFile('test.php')-&gt;at($af);
+vfsStream::newFile('Some234Foo234Bar98Name.php')-&gt;at($af);
+vfsStream::newFile('Invalid.csv')-&gt;at($af);
+vfsStream::newFile('badlocation.php')-&gt;at($core);
+</code></pre>
+
+<p>It’s really that easy.  You just create each file and folder, one at a time, and point them to their parent.  So, now that we’re all setup, let’s actually create the test:</p>
+
+<pre><code class="language-php">public function testLoadFiles() {
+    $dir = vfsStream::url('CryptLibTest/Core/AbstractFactory');
+
+    $result = array();
+    $callback = function($name, $class) use (&amp;$result) {
+        $result[$name] = $class;
+    };
+    $factory = new Factory();
+    $factory-&gt;loadFiles($dir, 'foo\\', $callback);
     
+    $expect = array(
+       'test' =&gt; 'foo\\test', 
+       'Some234Foo234Bar98Name' =&gt; 'foo\\Some234Foo234Bar98Name'
+    );
+    $this-&gt;assertEquals($expect, $result);
+}
+</code></pre>
+
+<p>That’s it!  You can see the actual implemented test <a href="https://github.com/ircmaxell/PHP-CryptLib/blob/06a6aaa8ed3ccd7b8eeb51928045fd0c993084bc/test/Unit/Core/AbstractFactoryTest.php">over on GitHub</a>  After running the test, it passes!  Now, we’ve successfully unit tested our method.  And best of all, it’s a true unit test since there’s no dependency on anything external to the test!  Now there’s no excuse for not unit testing any method because it interacts with the file-system…</p>
+
+  	</div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/what-is-security-web-application"
+						 rel="prev" title="What Is Security - Web Application Security - Post 1" >
+						 What Is Security - Web Application Security - Post 1
+					</a></span>
+					<span class="art-item-right">next：<a href="/xss-web-application-security-post-2" rel="next"  title="XSS - Web Application Security - Post 2">
+						XSS - Web Application Security - Post 2
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+					
+		</div></section>
+	 <!--Gitalk评论start  -->
+ 
+ <!-- Gitalk end -->
 
  
-    
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-<section class="post-list"><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
-        玩转docker-composer基础篇
-      </a>
-    </h2><time>
-      2019-07-18
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/docker">docker</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/docker-compose">docker-compose</a>
-</div>
-</section>
-  <section class="article typo">
-    <h2 id="0docker-composer安装">0.docker-composer安装</h2>
-
-<div class="readmore">
-      <a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">docker</a>
-      
-      <a href=" /search/tags/">docker-compose</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
-        玩转docker基础篇
-      </a>
-    </h2><time>
-      2019-07-15
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/docker">docker</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/docker-compose">docker-compose</a>
-</div>
-</section>
-  <section class="article typo">
-    <h2 id="0docker">0.docker</h2>
-
-<div class="readmore">
-      <a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">docker</a>
-      
-      <a href=" /search/tags/">docker-compose</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html">
-        Welcome to Jekyll!
-      </a>
-    </h2><time>
-      2019-07-03
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/update">update</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/sdfdsfd">sdfdsfd</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
-
-<div class="readmore">
-      <a href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">jekyll</a>
-      
-      <a href=" /search/tags/">update</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/update/sdfdsfd/2019/06/21/B+.html">
-        B树
-      </a>
-    </h2><time>
-      2019-06-21
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/update">update</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/sdfdsfd">sdfdsfd</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>B树是为磁盘和其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低I/O操作数方面要更好一些。许多数据库系统使用B树或者B树的变种来存储信息。</p>
-
-<div class="readmore">
-      <a href="/update/sdfdsfd/2019/06/21/B+.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">jekyll</a>
-      
-      <a href=" /search/tags/">update</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/security/2017/01/12/trust.html">
-        Trust
-      </a>
-    </h2><time>
-      2017-01-12
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/Security">Security</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>Stop and take a moment to think about how much trust is required to live your everyday life. Every single aspect of your life is built up on layer after layer of trust, it’s nothing short of staggering. Different aspects of life will contain different levels of trust, with some being very guarded and some being very lax. We don’t often talk about this trust and we often make the blind assumption that trust is inherently a bad thing. That’s most definitely not the case. Let’s explore why.</p>
-
-<div class="readmore">
-      <a href="/security/2017/01/12/trust.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">PHP</a>
-      
-      <a href=" /search/tags/">Security</a>
-      
-      <a href=" /search/tags/">Thoughts</a>
-      
-      <a href=" /search/tags/">Trust</a>
-      
-    </div></section>
-</article></div></section>
- 
-
-<nav id="page-nav">
-  
-
-  
-  
-    <em>1</em>
-  
-
-  
-    <a href="/page/2">2</a>
-  
-
-  
-    <a href="/page/3">3</a>
-  
-
-  
-    <a href="/page/4">4</a>
-  
-
-  
-    <a href="/page/5">5</a>
-  
-
-
-
-  
-  <a class="next" rel="next" href="/page/2">
-    <span class="text">下一页</span>
-    <span class="icon icon-chevron-right"></span>
-  </a>
-  
-</nav>
-
+</article>
+<script>
+	window.subData = {
+		title: 'Unit Testing When You Have File-System Interaction',
+		tools: true
+	}
+</script>
 
 </div>
 <aside class='l_side'>
@@ -506,7 +396,7 @@
   
   </div>
   
-  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.</div>
+  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2011-03-29 00:00:00 +0000</div>
 
 </footer>
 

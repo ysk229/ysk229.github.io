@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="There has been a lot of talk about typing in PHP lately. There are a couple of popular proposals for how to clean up PHP’s APIs to be simpler. Most of them i...">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/whats-in-type">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<body class="blog"><header class="l_header">
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href="/">
+				图解我的私房菜
+			</a>
+			
+			<div class='menu'>
+				<ul class='h-list'>
+					
+					<li >
+							<a class='flat-box nav-home' href='/'>
+								
+								首页
+							</a>
+					</li>
+					
+					<li >
+							<a class='flat-box nav-archives' href='/archives/'>
+								
+								时光机
+							</a>
+					</li>
+					
+				</ul>
+				<div class='underline'></div>
+			</div>
+			
+
+			
+
+			
+			<div class="m_search">
+				<form name="searchform" class="form u-search-form">
+					<input type="text" class="input u-search-input" placeholder="Search" />
+					<span class="icon icon-search"></span>
+				</form>
+			</div>
+			
+			<ul class='switcher h-list'>
+				
+				<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a>
+				</li>
+				
+				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo" class="flat-box" href='javascript:void(0)'>
+				Word of Forks
+			</a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
+				</li>
+				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+		
+		
+			<a href="/" class="nav-home nav">
+				首页
+			</a>
+			
+			
+			
+		
+		
+			<a href="/archives/" class="nav-archives nav">
+				时光机
+			</a>
+			
+			
+			
+	</nav>
+</aside><div class="l_body">
+    <div class='container clearfix'>
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="There has been a lot of talk about typing in PHP lately. There are a couple of popular proposals for how to clean up PHP’s APIs to be simpler. Most of them i...">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/whats-in-type">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<div class='l_main'>
+    <article id="post-<whats-in-type"
+  class="post white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<section class='meta'>
+	<h2 class="title"><a href="/whats-in-type">
+    	What's In A Type
+    </a>
+  </h2>
+	<time>
+		2014-10-24
+	</time>
+ 
+	</section>  
+		<section class="toc-wrapper">
+      <div class="nav">
+        <span>Table Of Contents</span>
+	  </div>
+	   <div class="js-toc"  ></div>
+	   
+	</section> 
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>There has been a lot of talk about typing in PHP lately. There are a couple of popular proposals for how to clean up PHP’s APIs to be simpler. Most of them involve changing PHP’s type system at a very fundamental level. So I thought it would be a good idea to talk about that. What goes into a type?</p>
+
+<!--more-->
+<h2 id="type-systems-in-general">Type Systems In General</h2>
+
+<p>Type systems tend to have 4 main properties. Or really, two axises they can be judged by: Strength and Explicitness.</p>
+
+<p>Explicitness describes whether the types are resolvable at compile time. So an explicit type system either requires you to specify every type (commonly called “strict” typing) or it uses type inference to deduce the type. While different, both are explicitly typed. Without explicit typing, you have dynamic typing. This is where a compiler cannot know all type information at compile time. Some of the type information must come at runtime.</p>
+
+<p>Strength describes what happens when you try to mutate a type. Can you change a variables type easily? In Strong typed languages, once a variable is defined to be a particular type (via explicit or runtime typing), it can never change types. In a Weak typed language, variables can change their type in the course of the program.</p>
+
+<p>Looking at some popular languages:</p>
+
+<table><thead><tr><th>Language</th><th>Explicitness</th><th>Strength</th></tr></thead><tbody><tr><td>PHP</td><td>Static + Dynamic</td><td>Weak</td></tr><tr><td>Python</td><td>Dynamic</td><td>Strong</td></tr><tr><td>C</td><td>Static</td><td>Strong</td></tr><tr><td>Java</td><td>Static</td><td>Strong</td></tr><tr><td>JavaScript</td><td>Dynamic</td><td>Weak</td></tr><tr><td>Ruby</td><td>Dynamic</td><td>Weak</td></tr></tbody></table>
+
+<p>By definition, all Static languages are going to be Strongly typed. But there are even gradations within that. For example, in C, if you pass an integer to a function expecting a float, it’ll happily cast it for you (as long as it’s not a pointer). But in Java, that same functionality will be a compiler error.</p>
+
+<p>Notice that both JavaScript and PHP are both Dynamic and Weak. But also note that PHP is also Static. Static and Weak? I just said that was not possible by definition. This is curious.</p>
+
+<p>As it turns out, we get a few of the nice parts of Static typing, with none of the benefits. It’s still quite hard to statically analyze PHP.</p>
+
+<p>So, let’s talk about the tradeoffs involved with a type system.</p>
+
+<h2 id="the-tradeoffs">The Tradeoffs</h2>
+
+<p>The tradeoffs are rather interesting. On one hand, if a language is both Statically typed and Strong typed, it’s far easier to analyze without running the program. We call this type of analysis “static” analysis. Because it only looks at the code, not runtime information.</p>
+
+<p>So a Static+Strong language is easier to analyze. What does that buy us? Well, it lets us have compilers that check for a certain class of errors automatically. You can detect areas where you wanted a string, but were given an array. Or where you expected an integer, but were passed a string. Etc. It means that all type conversions will be specified explicitly.</p>
+
+<p>This doesn’t mean that there are no bugs. It just means there are no <em>type</em> bugs. That’s a very important distinction to make, for example:</p>
+
+<pre><code class="language-php">function foo(int length_in_feet) {...}
+int length_in_meters = 10;
+foo(length_in_meters);
+</code></pre>
+
+<p>From a type standpoint, that’s 100% valid code. And no static analyzer will ever tell you it’s wrong. But it’s quite obviously wrong.</p>
+
+<p>When we move from Static to Dynamic typing (while retaining Strong), an interesting thing happens. Once we know the type (via explicit cast, or other operation), we can rely on it. That means that compilation is a fair bit easier. Sure, we can’t statically analyze as well, but it’s easier on the programmer. And since you know that once the variable is created its type won’t change, it’s a bit easier to work with than weak languages.</p>
+
+<p>But do you lose anything with it? Well, yes. You lose flexibility. And you lose the property of forgiveness.</p>
+
+<p>With a statically typed language, if the types don’t match, it’s up to you to fix it. For small systems, this is easy to do. For large systems where the developer has intimate knowledge of the system, it’s pretty easy to do. But for a junior developer, it can be difficult. For a new programmer, it can be down right confusing.</p>
+
+<p>That’s not that big of a deal though when writing custom code yourself. The type safety can be hugely beneficial.</p>
+
+<p>But imagine you’re running WordPress in a <strong>purely</strong> statically typed language. You install a plugin, and all of a sudden you get a compiler error on a type mismatch. That could be a problem! But how to fix it? To someone just starting out programming? That’s unpossible…</p>
+
+<p>Well, it depends on the types involved.</p>
+
+<p>For some mismatches, it can be seen as an annoyance. “Expecting int, but found float”. Yay. Sure, it’s nice to be explicit, but that’s annoying. Why not just do the sane thing when it seems sane?</p>
+
+<p>And ultimately, that’s the basis for PHP’s type system. Try to do the sane thing, and error if you can’t.</p>
+
+<h2 id="phps-type-system">PHP’s Type System</h2>
+
+<p>PHP really has two semi-independent type systems. It has one for Objects, and one for everything else (yes, you can type hint on arrays and callables, but they are complex on their own).</p>
+
+<p>For objects, it follows a Strict+Weak model. Which is really weird, because the type checks only happen at function boundaries or with <code>instanceof</code>. For example:</p>
+
+<pre><code class="language-php">function foo(Bar $bar) {
+    $bar = 10;
+}
+</code></pre>
+
+<p>We strictly hinted on <code>Bar</code>, but then the variable changed types. That means when we analyze PHP, we need to keep in mind that the types can change on a line by line basis. So talking about the type of a variable is more talking about how the type propagates over time through a program.</p>
+
+<p>For everything else except objects, we have a fully weak system. Excluding the weird <code>resource</code> type, PHP will always <em>try</em> to do a sane conversion for you. Meaning:</p>
+
+<pre><code class="language-php">function foo($a) {
+    return $a + 1;
+}
+</code></pre>
+
+<p>When we call that function, we don’t know what the result will be. But we can say for sure that it will be a numeric type (float or integer). Now, the interesting thing is what happens when we pass in something that’s non-numeric. What if <code>$a</code> was a string? What if it was an array? What about a boolean?</p>
+
+<p>Well, PHP will use the context that you’re using the type in to determine what type it should be (re-read that line, this is important, and we’re going to come back to this again).</p>
+
+<p>So when we pass in a string, it’ll say “Hey, this is a numeric operation, so let’s try to convert to a numeric”. Then it’ll look at the string, and say “does this look like a number?”. If it does, then it converts it silently to that number, and proceeds. If not, it’ll raise a notice, and return the nearest sensible value (<code>0</code>).</p>
+
+<p>We call this type juggling. And PHP’s type system is rooted in it.</p>
+
+<p>In a lot of cases, it’s incredibly valuable. It makes an application more flexible, but really it makes it more forgiving. “You expected a float, but tried to pass an integer, no problem, we’ll make it work”.</p>
+
+<p>The devil is in the edge cases. And PHP is famous for them. But overall, as long as you stay in the sweet spot, it works really well.</p>
+
+<h2 id="context-is-everything">Context Is Everything</h2>
+
+<p>PHP’s entire scalar type system is built around context. When you pass a variable to <code>strlen()</code>, it doesn’t matter what the type is, you’re saying you want a string length.</p>
+
+<p>PHP’s entire type system is built around that fact. You need the context to determine what the type should be.</p>
+
+<h2 id="polymorphism">Polymorphism</h2>
+
+<p>Polymorphism is basically inverting the relationship of context. Rather than the calling code providing the context, it lets the type itself provide the context. So when you call <code>$foo-&gt;bar()</code>, you’re saying “I don’t care what <code>$foo</code> is, just do the <code>bar</code> concept on it”.</p>
+
+<p>With polymorphism, the functionality can change simply by changing the type. So the same method can do two different things on two different objects (<code>$duck-&gt;quack()</code> can either echo <code>"quack"</code> or do something far more nefarious, but to the calling code, it’s just a quack).</p>
+
+<p>This is incredibly powerful, because it inverts the normal context relationship. Rather than the call providing the context, it lets the called thing determine the context.</p>
+
+<p>So what happens when Polymorphism meets PHP’s weak type system?</p>
+
+<h2 id="chaos">Chaos</h2>
+
+<p>Imagine for a second that we had methods on scalar types. What would the following code do:</p>
+
+<pre><code class="language-php">$foo-&gt;length()
+</code></pre>
+
+<p>Does that take the string length? Does it take the array length? Does it give you something else entirely?</p>
+
+<p>On the surface, that seems like a moot point. That’s the point of polymorphism, after all.</p>
+
+<p>But what happens if you intended to get the string length. Then what happens if it’s an object that implements <code>__toString</code>? Do you expect the method call to fail? Or do you expect <code>__toString</code> to be called first?</p>
+
+<p>Ok, so that’s not a big deal. If you want a string length, you just make sure you have a string!</p>
+
+<pre><code class="language-php">$str = (string) $foo;
+$str-&gt;length();
+</code></pre>
+
+<p>Or even better, if we had strict scalar type declarations:</p>
+
+<pre><code class="language-php">function my_strlen(string $str) {
+    return $str-&gt;length();
+}
+</code></pre>
+
+<p>Boom! We have predictability. We have sanity! We know our code works on strings, so we know the length method works! Awesome!</p>
+
+<p>But how would you call that code? If you wanted safety, you’d almost <em>have</em> to just use a cast:</p>
+
+<pre><code class="language-php">my_strlen((string) $foo)
+</code></pre>
+
+<p>But now we’re back to the beginning. We have lost all the benefits of strong typing. It’s the same type juggling all over again, but this time we’re pushing the juggling requirement onto the caller of our code. Weird.</p>
+
+<p>The cast is the least safe alternative that we could do. At least the implicit context-based cast will raise errors (or notices really) if the cast doesn’t make sense (like passing <code>"apple"</code> to a function expecting an integer). The explicit cast means that you can be hiding far worse bugs…</p>
+
+<h2 id="enter-safe-casts">Enter Safe Casts</h2>
+
+<p>There’s currently a <a href="https://wiki.php.net/rfc/safe_cast">proposal to add Safe Casts</a> to PHP. This would basically be a series of functions which will convert if sane, or error. So it provides the same context that PHP needs under the hood, yet allows the programmer to determine that context at call time.</p>
+
+<pre><code class="language-php">my_strlen(to_string($foo));
+</code></pre>
+
+<p>That’s a lot better, since an unsafe value results in an error…</p>
+
+<p>If strict scalar type declarations (hints) are going to happen, a safe-cast mechanism would make it much safer.</p>
+
+<h2 id="my-assertion">My Assertion</h2>
+
+<p>I don’t think you can reasonably do scalar methods without scalar type declarations (type hinting). The context point is lost without it.</p>
+
+<p>I don’t think you can do scalar type declarations without a safe cast mechanism. Otherwise you’re just changing where the error is hidden.</p>
+
+<p>And you definitely can’t remove the context-dependent APIs (the existing procedural APIs) without fundamentally changing the entire type system. At which point it’s not PHP anymore.</p>
+
+<p>So the choice (for a scalar method API) boils down to: don’t do it, or provide two of every API (one procedural, one via methods).</p>
+
+<p>And that sounds pretty scary to me…</p>
+
+
+  	</div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/when-rocks-faulter"
+						 rel="prev" title="When Rocks Falter" >
+						 When Rocks Falter
+					</a></span>
+					<span class="art-item-right">next：<a href="/youre-doing-agile-wrong" rel="next"  title="You're Doing Agile Wrong">
+						You're Doing Agile Wrong
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+					
+		</div></section>
+	 <!--Gitalk评论start  -->
+ 
+ <!-- Gitalk end -->
+
+ 
+</article>
+<script>
+	window.subData = {
+		title: 'What's In A Type',
+		tools: true
+	}
+</script>
+
+</div>
+<aside class='l_side'>
+
+
+<section class='m_widget time'>
+    <div class='header'>当前时间</div>
+    <div class='content'>
+        <canvas id="canvas" style="width:100%;padding: 20px;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+    </div>
+</section>
+
+
+<section class='m_widget categories'>
+<div class='header'>Categories</div>
+<div class='content'> 
+    <ul class="entry"> 
+        
+        <li><a class="flat-box" href="/search/categories/Security"><div class='name'> Security</div><div class='badget'>6</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Testing"><div class='name'> Testing</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Meta"><div class='name'> Meta</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Rant"><div class='name'> Rant</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Programming"><div class='name'> Programming</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Slides"><div class='name'> Slides</div><div class='badget'>4</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/PHP"><div class='name'> PHP</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Process"><div class='name'> Process</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/update"><div class='name'> update</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/sdfdsfd"><div class='name'> sdfdsfd</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker"><div class='name'> docker</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker-compose"><div class='name'> docker-compose</div><div class='badget'>2</div></a></li>
+        
+    </ul> 
+</div>
+</section>
+
+
+<div class="m_widget tagcloud">
+    <div class="header">Tags</div>
+    <div class='content'>
+        <div class="tags">
+            
+            <a href="/search/tags/PHP">PHP<span>16</span></a>
+            
+            <a href="/search/tags/Security">Security<span>5</span></a>
+            
+            <a href="/search/tags/Web Application Security Series">Web Application Security Series<span>2</span></a>
+            
+            <a href="/search/tags/Best Practice">Best Practice<span>3</span></a>
+            
+            <a href="/search/tags/CryptLib">CryptLib<span>1</span></a>
+            
+            <a href="/search/tags/Unit Testing">Unit Testing<span>1</span></a>
+            
+            <a href="/search/tags/XSS">XSS<span>1</span></a>
+            
+            <a href="/search/tags/Language Agnostic">Language Agnostic<span>4</span></a>
+            
+            <a href="/search/tags/Programming">Programming<span>5</span></a>
+            
+            <a href="/search/tags/Rant">Rant<span>4</span></a>
+            
+            <a href="/search/tags/Learning">Learning<span>5</span></a>
+            
+            <a href="/search/tags/Open Source">Open Source<span>1</span></a>
+            
+            <a href="/search/tags/Open Standards">Open Standards<span>1</span></a>
+            
+            <a href="/search/tags/Design Patterns">Design Patterns<span>1</span></a>
+            
+            <a href="/search/tags/Generators">Generators<span>1</span></a>
+            
+            <a href="/search/tags/Object Oriented Programming">Object Oriented Programming<span>5</span></a>
+            
+            <a href="/search/tags/PHP-Internals">PHP-Internals<span>4</span></a>
+            
+            <a href="/search/tags/Procedural Programming">Procedural Programming<span>1</span></a>
+            
+            <a href="/search/tags/Conference">Conference<span>4</span></a>
+            
+            <a href="/search/tags/Presentation">Presentation<span>4</span></a>
+            
+            <a href="/search/tags/Community">Community<span>3</span></a>
+            
+            <a href="/search/tags/Cryptography">Cryptography<span>2</span></a>
+            
+            <a href="/search/tags/Education">Education<span>2</span></a>
+            
+            <a href="/search/tags/Philosophy">Philosophy<span>2</span></a>
+            
+            <a href="/search/tags/Work">Work<span>1</span></a>
+            
+            <a href="/search/tags/Password-Hashing">Password-Hashing<span>1</span></a>
+            
+            <a href="/search/tags/Change">Change<span>1</span></a>
+            
+            <a href="/search/tags/Inconsistencies">Inconsistencies<span>1</span></a>
+            
+            <a href="/search/tags/Agile">Agile<span>1</span></a>
+            
+            <a href="/search/tags/Scrum">Scrum<span>1</span></a>
+            
+            <a href="/search/tags/Performance">Performance<span>1</span></a>
+            
+            <a href="/search/tags/Thoughts">Thoughts<span>1</span></a>
+            
+            <a href="/search/tags/Trust">Trust<span>1</span></a>
+            
+            <a href="/search/tags/jekyll">jekyll<span>2</span></a>
+            
+            <a href="/search/tags/update">update<span>2</span></a>
+            
+            <a href="/search/tags/docker">docker<span>2</span></a>
+            
+            <a href="/search/tags/docker-compose">docker-compose<span>2</span></a>
+            
+        </div>
+    </div>
+</div>
+ </aside>
+
+    </div>
+  </div><footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  
+  </div>
+  
+  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2014-10-24 00:00:00 +0000</div>
+
+</footer>
+
+<script src="/assets/js/jquery-1.12.4.min.js"></script> 
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/topbar.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+    $(function() {
+        function resetToDefaults() {
+          topbar.config({
+            autoRun      : true,
+            barThickness : 3,
+            barColors    : {
+              '0'      : 'rgba(26,  188, 156, .9)',
+              '.25'    : 'rgba(52,  152, 219, .9)',
+              '.50'    : 'rgba(241, 196, 15,  .9)',
+              '.75'    : 'rgba(230, 126, 34,  .9)',
+              '1.0'    : 'rgba(211, 84,  0,   .9)'
+            },
+            shadowBlur   : 10,
+            shadowColor  : 'rgba(0,   0,   0,   .6)'
+          })
+        }
+        // Page load
+        resetToDefaults()
+        topbar.show()
+        setTimeout(function() {
+          // $('.l_body').fadeIn('slow')
+          topbar.hide()
+        }, 1500) 
+
+ 
+    })
+  </script>
+  <script src="/assets/js/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/p/jquery.nicescroll.min.js"></script>
+
+<script src="/assets/js/p/tocbot/tocbot.min.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/tocbot/tocbot.css">
+
+<script src="/assets/js/p/backtop/backtop.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/backtop/back-top.css">
+
+<script src="/assets/js/p/canvasTime.js"></script>
+<script src="/assets/js/search.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

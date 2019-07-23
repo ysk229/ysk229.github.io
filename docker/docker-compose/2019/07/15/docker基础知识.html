@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="0.docker">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<body class="blog"><header class="l_header">
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href="/">
+				图解我的私房菜
+			</a>
+			
+			<div class='menu'>
+				<ul class='h-list'>
+					
+					<li >
+							<a class='flat-box nav-home' href='/'>
+								
+								首页
+							</a>
+					</li>
+					
+					<li >
+							<a class='flat-box nav-archives' href='/archives/'>
+								
+								时光机
+							</a>
+					</li>
+					
+				</ul>
+				<div class='underline'></div>
+			</div>
+			
+
+			
+
+			
+			<div class="m_search">
+				<form name="searchform" class="form u-search-form">
+					<input type="text" class="input u-search-input" placeholder="Search" />
+					<span class="icon icon-search"></span>
+				</form>
+			</div>
+			
+			<ul class='switcher h-list'>
+				
+				<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a>
+				</li>
+				
+				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo" class="flat-box" href='javascript:void(0)'>
+				Word of Forks
+			</a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
+				</li>
+				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+		
+		
+			<a href="/" class="nav-home nav">
+				首页
+			</a>
+			
+			
+			
+		
+		
+			<a href="/archives/" class="nav-archives nav">
+				时光机
+			</a>
+			
+			
+			
+	</nav>
+</aside><div class="l_body">
+    <div class='container clearfix'>
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+
+  <title>图解我的私房菜</title>
+  <meta name="description"
+    content="0.docker">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="canonical" href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+  <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
+    href="/feed.xml">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+    
+    
+
+    
+    
+    
+</head>
+<div class='l_main'>
+    <article id="post-<docker基础知识"
+  class="post white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<section class='meta'>
+	<h2 class="title"><a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+    	玩转docker基础篇
+    </a>
+  </h2>
+	<time>
+		2019-07-15
+	</time>
+ 
+	</section>  
+		<section class="toc-wrapper">
+      <div class="nav">
+        <span>Table Of Contents</span>
+	  </div>
+	   <div class="js-toc"  ></div>
+	   
+	</section> 
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<h2 id="0docker">0.docker</h2>
+
+<p>Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。</p>
+
+<p>Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。</p>
+
+<ul>
+  <li>
+    <p>安装</p>
+
+    <p>官方网站上有各种环境下的 <a href="https://docs.docker.com/install/linux/docker-ce/centos/">安装指南</a></p>
+  </li>
+  <li>
+    <p>与传统虚拟机的区别</p>
+
+    <p><img src="img/专业图片区别.png" alt="专业图片区别" title="专业图片区别" /></p>
+
+    <p><img src="img/看得懂的图.png" alt="看得懂的图" title="看得懂的图" /></p>
+
+    <p><img src="img/docker与虚拟机差异.png" alt="docker与虚拟机差异" title="docker与虚拟机差异" /></p>
+  </li>
+</ul>
+
+<h2 id="1基本概念">1.基本概念</h2>
+
+<h3 id="10-集装箱对容器技术docker的启发">1.0 集装箱对容器技术(Docker)的启发</h3>
+
+<p><img src="img/logo.png" alt="docker logo" title="docker logo" /></p>
+
+<p><img src="img/docker与集装箱.png" alt="docker与集装箱" title="docker与集装箱" /></p>
+
+<h3 id="11-镜像">1.1 镜像</h3>
+
+<p>对于 Linux 而言，内核启动后，会挂载 root 文件系统为其提供用户空间支持。而 Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:18.04 就包含了完整的一套 Ubuntu 18.04 最小系统的 root 文件系统。</p>
+
+<p>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
+
+<h3 id="12容器">1.2容器</h3>
+
+<p>镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，容器是镜像运行时的实体
+容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间</p>
+
+<p>每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为 容器存储层。
+容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高</p>
+
+<p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
+
+<h3 id="13仓库">1.3仓库</h3>
+
+<p>一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。</p>
+
+<p>通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <仓库名>:<标签> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。</标签></仓库名></p>
+
+<p>以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 ubuntu:18.04 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 ubuntu:latest。</p>
+
+<p>仓库名经常以 两段式路径 形式出现，比如 jwilder/nginx-proxy，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。</p>
+
+<p>Docker Registry 公开服务</p>
+
+<p>私有 Docker Registry</p>
+
+<h2 id="2docker-核心模块">2.docker 核心模块</h2>
+
+<p><img src="img/docker核心模块.png" alt="docker核心模块" title="docker核心模块" /></p>
+
+<p>核心功能简答介绍:</p>
+
+<p>Docker是C/S模式</p>
+
+<p>images：docker镜像，是Docker run的原材料</p>
+
+<p>container: Docker运行的内容，是独立存在的</p>
+
+<p>data volumes: 通过数据挂载的方式，实现数据共享</p>
+
+<p>network：用户容器与外部、容器之间的通信，常用的方法有端口映射、link等</p>
+
+<h2 id="3docker-使用流程">3.docker 使用流程</h2>
+
+<p><img src="img/docker流程.png" alt="docker流程" title="docker流程" /></p>
+
+<h2 id="4基本命令的使用技巧">4.基本命令的使用技巧</h2>
+
+<p>docker 参数 –help 可以查看调用的参数的格式</p>
+
+<pre><code class="language-shell">##容器相关操作的命令
+
+docker container --help
+
+</code></pre>
+
+<pre><code class="language-shell">Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  inspect     Display detailed information on one or more containers
+  kill        Kill one or more running containers
+  logs        Fetch the logs of a container
+  ls          List containers
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  prune       Remove all stopped containers
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  run         Run a command in a new container
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+</code></pre>
+
+<h2 id="5-docker-常用的命令">5. docker 常用的命令</h2>
+
+<h3 id="51-镜像操作">5.1 镜像操作</h3>
+
+<ul>
+  <li>设置镜像[可选]</li>
+</ul>
+
+<pre><code class="language-shell">##配置大陆镜像
+
+vim /etc/docker/daemon.json
+
+##修改后如下：
+
+{
+    "registry-mirrors": ["https://registry.docker-cn.com"],
+    "live-restore": true
+}
+
+##修改后重启docker
+
+systemctl restart docker.service
+
+##向官方仓库search镜像
+
+docker search centos
+
+</code></pre>
+
+<p>设置效果如下图:</p>
+
+<p><img src="img/搜索.png" alt="docker 搜索" title="docker 搜索" /></p>
+
+<ul>
+  <li>下载镜像</li>
+</ul>
+
+<pre><code class="language-shell">docker pull  python:3
+</code></pre>
+
+<ul>
+  <li>查看镜像</li>
+</ul>
+
+<pre><code class="language-shell">docker images python:3
+</code></pre>
+
+<ul>
+  <li>保存正在运行的镜像</li>
+</ul>
+
+<pre><code class="language-shell">[root@localhost v]# docker run -it python:3 bash
+root@34539696b356:/# ls
+
+
+docker commit  -a "xxx"  -m "xxx" 34539696b356 my/test
+</code></pre>
+
+<ul>
+  <li>导出镜像</li>
+</ul>
+
+<pre><code class="language-shell">docker save -o m.tar.gz mysql:5.7.14
+</code></pre>
+
+<ul>
+  <li>导入镜像</li>
+</ul>
+
+<pre><code class="language-shell">docker load -i m.tar.gz
+
+##或者
+docker load &lt; m.tar.gz
+</code></pre>
+
+<ul>
+  <li>删除镜像</li>
+</ul>
+
+<pre><code class="language-shell">docker rmi -f 0f2d67697e38【镜像的ID】
+</code></pre>
+
+<h3 id="52-容器的操作">5.2 容器的操作</h3>
+
+<ul>
+  <li>运行容器</li>
+</ul>
+
+<pre><code class="language-shell">docker container run -it -p27019:27017 --name ngo  mongo:3.4.14
+
+##后台运行
+docker container run -it -d -p27019:27017 --name ngo  mongo:3.4.14
+</code></pre>
+
+<ul>
+  <li>查看容器</li>
+</ul>
+
+<pre><code class="language-shell">docker container inspect  ad2ec10fa879【容器的ID】
+</code></pre>
+
+<ul>
+  <li>进入容器</li>
+</ul>
+
+<pre><code class="language-shell">docker container exec -it  0f2d67697e38【容器的ID】 bash
+</code></pre>
+
+<ul>
+  <li>删除容器</li>
+</ul>
+
+<pre><code class="language-shell">##普通删除容器
+docker container rm  0f2d67697e38【容器的ID】
+
+##强制删除容器
+docker container rm -f 0f2d67697e38【容器的ID】
+</code></pre>
+
+<ul>
+  <li>导出容器</li>
+</ul>
+
+<pre><code class="language-shell">##命令格式
+ docker container export container_id | gzip &gt; image_name.tar.gz
+
+##运行5c7472359a7b容器的ID
+docker container export 5c7472359a7b |gzip &gt;t.tar.gz
+
+</code></pre>
+
+<ul>
+  <li>导入容器</li>
+</ul>
+
+<pre><code class="language-shell">zcat t.tar.gz |  docker container import - image_name
+
+##查看镜像是否导入成功
+docker images 0f2d67697e38【镜像的ID】
+</code></pre>
+
+<h2 id="6关注点">6.关注点</h2>
+
+<ul>
+  <li>常用参数</li>
+</ul>
+
+<p>-it 常一起使用,以一个新的伪终端开启一个容易,使用后就能新开一个容器中的终端,相当于新开了一个虚拟机,接着在终端中的命令就是在容器中执行命令</p>
+
+<p>–rm 删除容器</p>
+
+<p>-f 强制操作</p>
+
+<ul>
+  <li>端口</li>
+</ul>
+
+<p>端口开放通过启动参数 -p 来指定。
+-p 宿主机端口:容器端口。
+一般来说，为了方便管理，会设置宿主机端口和容器端口保持一致.
+比如web端口：-p 80:80</p>
+
+<ul>
+  <li>挂载</li>
+</ul>
+
+<p>数据卷通过启动参数 -v 来指定
+-v后面的映射关系是”宿主机文件/目录:容器里对应的文件/目录”，其中，宿主机上的文件/目录是要提前存在的，容器里对应的文件/目录会自动创建。</p>
+
+<ul>
+  <li>查看日志</li>
+</ul>
+
+<pre><code class="language-shell">docker logs ad2ec10fa879【容器的ID】
+</code></pre>
+
+<ul>
+  <li>容器于宿主拷贝文件</li>
+</ul>
+
+<pre><code class="language-shell">docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
+docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+# 本地文件上传到对应容器的目录
+docker cp local.sh 【容器的ID】:【容器的路径】
+</code></pre>
+
+<ul>
+  <li>容器之间是如何通信的</li>
+</ul>
+
+<p>–link 参数 底层是从过hosts文件来配置相对的IP</p>
+
+<pre><code class="language-shell">
+##开启mysql服务
+docker container run --name=mysql_server -d -P kongxx/mysql_server
+
+##连接mysql_server的容器1
+docker container run --name=mysql_client1 --link=mysql_server:db -t -i kongxx/mysql_client /usr/bin/mysql -h db -u root -pletmein
+
+##连接mysql_server的容器2
+docker container run --name=mysql_client2 --link=mysql_server:db -t -i kongxx/mysql_client /usr/bin/mysql -h db -u root -pletmein
+
+</code></pre>
+
+<p>–link=mysql_server:db 其实是在/etc/hosts文件配置
+mysql_server的IP db</p>
+
+<ul>
+  <li>查看容器的进程</li>
+</ul>
+
+<pre><code class="language-shell">docker ps [-a]
+</code></pre>
+
+<ul>
+  <li>限制内存</li>
+</ul>
+
+<p>限制容器可以使用的最大内存为 300M,并且 swap 空间使用不受限制的参数如下：</p>
+
+<p>-m 300M –memory-swap -1</p>
+
+<p>强调一下 –memory-swap 是必须要与 –memory 一起使用的。</p>
+
+<p>正常情况下， –memory-swap 的值包含容器可用内存和可用 swap。所以 –memory=”300m” –memory-swap=”1g” 的含义为：
+容器可以使用 300M 的物理内存，并且可以使用 700M(1G -330M) 的 swap。–memory-swap 居然是容器可以使用的物理内存和可以使用的 swap 之和！</p>
+
+<p>把 –memory-swap 设置为 0 和不设置是一样的，此时如果设置了 –memory，容器可以使用的 swap 大小为 –memory 值的两倍。</p>
+
+<ul>
+  <li>绑定CPU资源</li>
+</ul>
+
+<p>–cpus=2 表示容器最多可以使用主机上两个 CPU
+–cpuset-cpus=”1,3”一次指定多个 CPU
+–cpu-shares 选项用来设置 CPU 权重，它的默认值为 1024。我们可以把它设置为 2 表示很低的权重，但是设置为 0 表示使用默认值 1024</p>
+
+<ul>
+  <li>查看容器占用资源</li>
+</ul>
+
+<pre><code class="language-shell">docker stats
+
+##只返回当前的状态
+docker stats --no-stream
+
+##只输出指定的容器
+docker stats --no-stream ad2ec10fa879【容器ID】
+</code></pre>
+
+<h2 id="7出现的问题">7.出现的问题</h2>
+
+<p>Q:如何去掉每次sudo运行docker命令?
+A:需要添加组</p>
+
+<pre><code class="language-shell"># Add the docker group if it doesn't already exist.
+$ sudo groupadd docker
+#改完后需要重新登陆用户
+$ sudo gpasswd -a ${USER} docker
+</code></pre>
+
+<p>Q:为什么运行docker容器会失败呢？
+A:一般有两个方面去判断：</p>
+
+<p>1.docker容器没有实例进程启动。</p>
+
+<p>2.docker容器内存溢出的情况</p>
+
+<h2 id="8参考文章">8.参考文章</h2>
+
+<p><a href="https://docs.docker.com/">docker官方</a></p>
+
+<p><a href="https://hub.docker.com/">docker仓库官方</a></p>
+
+<p><a href="https://yeasy.gitbooks.io/docker_practice/introduction/why.html">Docker技术入门与实战</a></p>
+
+<p><a href="https://blog.csdn.net/gaoyingju/article/details/49616295">为什么容器技术将主宰世界</a></p>
+
+  	</div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html"
+						 rel="prev" title="Welcome to Jekyll!" >
+						 Welcome to Jekyll!
+					</a></span>
+					<span class="art-item-right">next：<a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="next"  title="玩转docker-composer基础篇">
+						玩转docker-composer基础篇
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+					
+		</div></section>
+	 <!--Gitalk评论start  -->
+ 
+ <!-- Gitalk end -->
+
+ 
+</article>
+<script>
+	window.subData = {
+		title: '玩转docker基础篇',
+		tools: true
+	}
+</script>
+
+</div>
+<aside class='l_side'>
+
+
+<section class='m_widget time'>
+    <div class='header'>当前时间</div>
+    <div class='content'>
+        <canvas id="canvas" style="width:100%;padding: 20px;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+    </div>
+</section>
+
+
+<section class='m_widget categories'>
+<div class='header'>Categories</div>
+<div class='content'> 
+    <ul class="entry"> 
+        
+        <li><a class="flat-box" href="/search/categories/Security"><div class='name'> Security</div><div class='badget'>6</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Testing"><div class='name'> Testing</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Meta"><div class='name'> Meta</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Rant"><div class='name'> Rant</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Programming"><div class='name'> Programming</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Slides"><div class='name'> Slides</div><div class='badget'>4</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/PHP"><div class='name'> PHP</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/Process"><div class='name'> Process</div><div class='badget'>1</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/update"><div class='name'> update</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/sdfdsfd"><div class='name'> sdfdsfd</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker"><div class='name'> docker</div><div class='badget'>2</div></a></li>
+        
+        <li><a class="flat-box" href="/search/categories/docker-compose"><div class='name'> docker-compose</div><div class='badget'>2</div></a></li>
+        
+    </ul> 
+</div>
+</section>
+
+
+<div class="m_widget tagcloud">
+    <div class="header">Tags</div>
+    <div class='content'>
+        <div class="tags">
+            
+            <a href="/search/tags/PHP">PHP<span>16</span></a>
+            
+            <a href="/search/tags/Security">Security<span>5</span></a>
+            
+            <a href="/search/tags/Web Application Security Series">Web Application Security Series<span>2</span></a>
+            
+            <a href="/search/tags/Best Practice">Best Practice<span>3</span></a>
+            
+            <a href="/search/tags/CryptLib">CryptLib<span>1</span></a>
+            
+            <a href="/search/tags/Unit Testing">Unit Testing<span>1</span></a>
+            
+            <a href="/search/tags/XSS">XSS<span>1</span></a>
+            
+            <a href="/search/tags/Language Agnostic">Language Agnostic<span>4</span></a>
+            
+            <a href="/search/tags/Programming">Programming<span>5</span></a>
+            
+            <a href="/search/tags/Rant">Rant<span>4</span></a>
+            
+            <a href="/search/tags/Learning">Learning<span>5</span></a>
+            
+            <a href="/search/tags/Open Source">Open Source<span>1</span></a>
+            
+            <a href="/search/tags/Open Standards">Open Standards<span>1</span></a>
+            
+            <a href="/search/tags/Design Patterns">Design Patterns<span>1</span></a>
+            
+            <a href="/search/tags/Generators">Generators<span>1</span></a>
+            
+            <a href="/search/tags/Object Oriented Programming">Object Oriented Programming<span>5</span></a>
+            
+            <a href="/search/tags/PHP-Internals">PHP-Internals<span>4</span></a>
+            
+            <a href="/search/tags/Procedural Programming">Procedural Programming<span>1</span></a>
+            
+            <a href="/search/tags/Conference">Conference<span>4</span></a>
+            
+            <a href="/search/tags/Presentation">Presentation<span>4</span></a>
+            
+            <a href="/search/tags/Community">Community<span>3</span></a>
+            
+            <a href="/search/tags/Cryptography">Cryptography<span>2</span></a>
+            
+            <a href="/search/tags/Education">Education<span>2</span></a>
+            
+            <a href="/search/tags/Philosophy">Philosophy<span>2</span></a>
+            
+            <a href="/search/tags/Work">Work<span>1</span></a>
+            
+            <a href="/search/tags/Password-Hashing">Password-Hashing<span>1</span></a>
+            
+            <a href="/search/tags/Change">Change<span>1</span></a>
+            
+            <a href="/search/tags/Inconsistencies">Inconsistencies<span>1</span></a>
+            
+            <a href="/search/tags/Agile">Agile<span>1</span></a>
+            
+            <a href="/search/tags/Scrum">Scrum<span>1</span></a>
+            
+            <a href="/search/tags/Performance">Performance<span>1</span></a>
+            
+            <a href="/search/tags/Thoughts">Thoughts<span>1</span></a>
+            
+            <a href="/search/tags/Trust">Trust<span>1</span></a>
+            
+            <a href="/search/tags/jekyll">jekyll<span>2</span></a>
+            
+            <a href="/search/tags/update">update<span>2</span></a>
+            
+            <a href="/search/tags/docker">docker<span>2</span></a>
+            
+            <a href="/search/tags/docker-compose">docker-compose<span>2</span></a>
+            
+        </div>
+    </div>
+</div>
+ </aside>
+
+    </div>
+  </div><footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  
+  </div>
+  
+  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2019-07-15 00:00:00 +0000</div>
+
+</footer>
+
+<script src="/assets/js/jquery-1.12.4.min.js"></script> 
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/topbar.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+    $(function() {
+        function resetToDefaults() {
+          topbar.config({
+            autoRun      : true,
+            barThickness : 3,
+            barColors    : {
+              '0'      : 'rgba(26,  188, 156, .9)',
+              '.25'    : 'rgba(52,  152, 219, .9)',
+              '.50'    : 'rgba(241, 196, 15,  .9)',
+              '.75'    : 'rgba(230, 126, 34,  .9)',
+              '1.0'    : 'rgba(211, 84,  0,   .9)'
+            },
+            shadowBlur   : 10,
+            shadowColor  : 'rgba(0,   0,   0,   .6)'
+          })
+        }
+        // Page load
+        resetToDefaults()
+        topbar.show()
+        setTimeout(function() {
+          // $('.l_body').fadeIn('slow')
+          topbar.hide()
+        }, 1500) 
+
+ 
+    })
+  </script>
+  <script src="/assets/js/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/p/jquery.nicescroll.min.js"></script>
+
+<script src="/assets/js/p/tocbot/tocbot.min.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/tocbot/tocbot.css">
+
+<script src="/assets/js/p/backtop/backtop.js"></script> 
+<link rel="stylesheet" href="/assets/js/p/backtop/back-top.css">
+
+<script src="/assets/js/p/canvasTime.js"></script>
+<script src="/assets/js/search.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

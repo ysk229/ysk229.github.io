@@ -7,14 +7,14 @@
 
   <title>图解我的私房菜</title>
   <meta name="description"
-    content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    content="There’s been a lot of traffic lately about what’s wrong with PHP, and counter posts about how good it is. I’ve even fallen into the fray in an earlier articl...">
   <meta name="HandheldFriendly" content="True" />
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/true-problem-with-php">
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
     <link rel="stylesheet" href="/assets/css/prism.css">
@@ -118,14 +118,14 @@
 
   <title>图解我的私房菜</title>
   <meta name="description"
-    content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    content="There’s been a lot of traffic lately about what’s wrong with PHP, and counter posts about how good it is. I’ve even fallen into the fray in an earlier articl...">
   <meta name="HandheldFriendly" content="True" />
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> 
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/true-problem-with-php">
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
     <link rel="stylesheet" href="/assets/css/prism.css">
@@ -138,236 +138,78 @@
     
 </head>
 <div class='l_main'>
-    
+    <article id="post-<true-problem-with-php"
+  class="post white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<section class='meta'>
+	<h2 class="title"><a href="/true-problem-with-php">
+    	The True Problem With PHP
+    </a>
+  </h2>
+	<time>
+		2012-07-06
+	</time>
+ 
+	</section>  
+		<section class="toc-wrapper">
+      <div class="nav">
+        <span>Table Of Contents</span>
+	  </div>
+	   <div class="js-toc"  ></div>
+	   
+	</section> 
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>There’s been a lot of traffic lately about what’s <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">wrong</a> with <a href="http://www.codinghorror.com/blog/2012/06/the-php-singularity.html">PHP</a>, and counter <a href="http://ilikekillnerds.com/2012/05/php-sucks-so-what/">posts</a> about how <a href="http://fabien.potencier.org/article/64/php-is-much-better-than-you-think">good</a> it is. I’ve even fallen into the fray in an <a href="http://blog.ircmaxell.com/2012/04/php-sucks-but-i-like-it.html">earlier article</a> trying to step up and defend the language. The problem with almost all of these posts is that they focus on the language itself and what’s wrong (or right) with it. This is not one of those posts.
+<!--more--></p>
+<h2 id="the-true-problem">The True Problem</h2>
+
+<p>The true problem with PHP lies in the community. Not the majority of the community mind you, but the fringes. The core of the PHP community is filled with a lot of really talented and smart developers doing some really amazing things. But on the fringes, there are a lot of people who are writing articles, tutorials, and posts designed to help beginners learn the language (and usually how to program). The problem with this is that the majority of those authors frankly don’t have a clue what they are talking about. </p>
+
+<p>The simple fact that a site like <a href="http://w3fools.com/">w3schools</a> still exists as a top result from a Google search is proof enough of that point. But if you watch the blog rolls often enough (or reddit), you’ll notice that bad advice is all over the place. I’ve <a href="http://blog.ircmaxell.com/2011/06/in-response-to-building-secured-web.html">responded</a> to <a href="http://blog.ircmaxell.com/2011/08/security-review-creating-secure-php.html">a few</a> of them myself. I saw another one <a href="http://www.developerdrive.com/2012/07/5-php-security-measures/">pop up today</a>, and decided that responding isn’t worth the effort. People will still write them, and people will still read them. And that’s a problem that we cannot ignore.</p>
+
+<h2 id="why-is-it-a-problem">Why Is It A Problem?</h2>
+
+<p>This is something I’ve struggled with. On one hand, they have a right to post what they want. Who am I to say that they are wrong. But on the other hand, ignorance tends to cascade. Someone justifies their position by saying “I read it somewhere”… Then they teach that to other people. Before long the misinformation is spread so far that it’s almost impossible for someone starting out to tell good advice from poor advice.</p>
+
+<p>Even if we just look at tutorials talking about accessing data from a database, we get loads of bad information. It ranges from <a href="http://www.developerdrive.com/2012/06/create-your-own-crud-app-with-php-mysql-part-2/">awkward</a> (really poor code structuring and bad practices) to <a href="http://www.siteground.com/tutorials/php-mysql/display_table_data.htm">wrong</a> (code that literally won’t run), and from to <a href="http://www.tutorialspoint.com/php/mysql_select_php.htm">bad</a> (recommending deprecated functionality like <code>mysql_\*</code>) to downright <a href="http://www.w3schools.com/php/php_mysql_insert.asp">dangerous</a> (code with major security vulnerabilities).</p>
+
+<h2 id="what-can-we-do-about-it">What Can We Do About It?</h2>
+
+<p>Part of the problem there is that there hasn’t been a good, authoritative tutorial repository for PHP. There are tons of good blogs or resources out there, but they are buried in the weeds among the bad ones. And even the best authors and sites get it wrong from time to time.</p>
+
+<p>I’m not really a huge fan of the idea that the php.net documentation should contain tutorials and non-language related content. I think the PHP docs are very good, but they are not really conducive to the style of tutorial that I think can really help. However, there is a format that the PHP community could adopt that would solve a lot of these problems. It’s the same format that WikiHow adopted: a Wiki…</p>
+
+<p>What I’m throwing out here is a simple idea: to start a core tutorial site as a wiki (perhaps tutorials.php.net). Leverage the community to provide content. Encourage people to post the tutorials to that site. Welcome any PHP related content. Let the community vet the posts, making corrections or pruning content. Over time, and with enough community support, it can become a valuable knowledge base of information.</p>
+
+<h2 id="what-do-you-think">What Do You Think?</h2>
+
+<p>Is the idea perfect? Absolutely not. Will it solve the problem? Definitely not. Can it help? Maybe, I don’t know. The point is that the first step to fixing the problem, is to admit that it’s a problem in the first place. I think it’s a big enough problem to warrant reaching out to the community to figure out how to solve it.</p>
+
+<p>What do you think? Do you agree it’s a problem? Do you have any ideas how we can combat the spread of bad information? Respond on twitter, in a comment or on your own blog!</p>
+
+  	</div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/why-i-dont-use-autocomplete"
+						 rel="prev" title="Why I Don’t Use Autocomplete" >
+						 Why I Don’t Use Autocomplete
+					</a></span>
+					<span class="art-item-right">next：<a href="/what-generators-can-do-for-you" rel="next"  title="What Generators Can Do For You">
+						What Generators Can Do For You
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+					
+		</div></section>
+	 <!--Gitalk评论start  -->
+ 
+ <!-- Gitalk end -->
 
  
-    
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-<section class="post-list"><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
-        玩转docker-composer基础篇
-      </a>
-    </h2><time>
-      2019-07-18
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/docker">docker</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/docker-compose">docker-compose</a>
-</div>
-</section>
-  <section class="article typo">
-    <h2 id="0docker-composer安装">0.docker-composer安装</h2>
-
-<div class="readmore">
-      <a href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">docker</a>
-      
-      <a href=" /search/tags/">docker-compose</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
-        玩转docker基础篇
-      </a>
-    </h2><time>
-      2019-07-15
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/docker">docker</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/docker-compose">docker-compose</a>
-</div>
-</section>
-  <section class="article typo">
-    <h2 id="0docker">0.docker</h2>
-
-<div class="readmore">
-      <a href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">docker</a>
-      
-      <a href=" /search/tags/">docker-compose</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html">
-        Welcome to Jekyll!
-      </a>
-    </h2><time>
-      2019-07-03
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/update">update</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/sdfdsfd">sdfdsfd</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
-
-<div class="readmore">
-      <a href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">jekyll</a>
-      
-      <a href=" /search/tags/">update</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/update/sdfdsfd/2019/06/21/B+.html">
-        B树
-      </a>
-    </h2><time>
-      2019-06-21
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/update">update</a>
-</div>
-
-
-<div class='cats'>
-    <a href="/search/categories/sdfdsfd">sdfdsfd</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>B树是为磁盘和其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低I/O操作数方面要更好一些。许多数据库系统使用B树或者B树的变种来存储信息。</p>
-
-<div class="readmore">
-      <a href="/update/sdfdsfd/2019/06/21/B+.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">jekyll</a>
-      
-      <a href=" /search/tags/">update</a>
-      
-    </div></section>
-</article></div><div class='post-wrapper'><article class="post reveal">
-  <section class="meta"><h2 class="title"><a href="/security/2017/01/12/trust.html">
-        Trust
-      </a>
-    </h2><time>
-      2017-01-12
-    </time>
-
-<div class='cats'>
-    <a href="/search/categories/Security">Security</a>
-</div>
-</section>
-  <section class="article typo">
-    <p>Stop and take a moment to think about how much trust is required to live your everyday life. Every single aspect of your life is built up on layer after layer of trust, it’s nothing short of staggering. Different aspects of life will contain different levels of trust, with some being very guarded and some being very lax. We don’t often talk about this trust and we often make the blind assumption that trust is inherently a bad thing. That’s most definitely not the case. Let’s explore why.</p>
-
-<div class="readmore">
-      <a href="/security/2017/01/12/trust.html">Read More</a>
-    </div><div class="full-width auto-padding tags">
-      
-      <a href=" /search/tags/">PHP</a>
-      
-      <a href=" /search/tags/">Security</a>
-      
-      <a href=" /search/tags/">Thoughts</a>
-      
-      <a href=" /search/tags/">Trust</a>
-      
-    </div></section>
-</article></div></section>
- 
-
-<nav id="page-nav">
-  
-
-  
-  
-    <em>1</em>
-  
-
-  
-    <a href="/page/2">2</a>
-  
-
-  
-    <a href="/page/3">3</a>
-  
-
-  
-    <a href="/page/4">4</a>
-  
-
-  
-    <a href="/page/5">5</a>
-  
-
-
-
-  
-  <a class="next" rel="next" href="/page/2">
-    <span class="text">下一页</span>
-    <span class="icon icon-chevron-right"></span>
-  </a>
-  
-</nav>
-
+</article>
+<script>
+	window.subData = {
+		title: 'The True Problem With PHP',
+		tools: true
+	}
+</script>
 
 </div>
 <aside class='l_side'>
@@ -506,7 +348,7 @@
   
   </div>
   
-  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.</div>
+  <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2012-07-06 00:00:00 +0000</div>
 
 </footer>
 
