@@ -49,12 +49,14 @@ plugins: [jekyll-paginate]
 
 paginate: 5
 paginate_path: "/page/:num"
+
+## Category.rb config
 paginate_category_basepath: '/search/categories/:name/'
 paginate_category_layout: 'index.html'
 
-# # Tags.rb config
-# paginate_tag_basepath: '/search/tags/:name/'
-# paginate_tag_layout: 'index.html'
+## Tags.rb config
+paginate_tag_basepath: '/search/tags/:name/'
+paginate_tag_layout: 'index.html'
 
 # Gitalk
 gitalk:

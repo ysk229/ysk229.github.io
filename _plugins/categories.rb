@@ -58,7 +58,7 @@ module Jekyll
           
           all_posts = site.site_payload['site']['categories'][category]
           category_path = site.config['paginate_category_basepath'] || '/categories/:name/'
-          category_path = category_path.sub(':name', Utils.slugify(category, :mode => 'ascii'))
+          category_path = category_path.sub(':name', Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
           
           # Count pages
           nb_pages = Pager.calculate_pages(all_posts, site.config['paginate'].to_i)
