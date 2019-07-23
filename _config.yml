@@ -31,9 +31,7 @@ kramdown:
    syntax_highlighter_opts:
       disable : true
 
-plugins:
-  - jekyll-feed
-  - jekyll-paginate
+plugins: [jekyll-paginate]
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
