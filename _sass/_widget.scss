@@ -2,6 +2,7 @@
     @extend .z-depth-1;
     background: $white;
     margin-bottom: $gap;
+    border-radius: $border_radius;
     // .header,.content{
     //     padding: 0 $gap;
     // }
@@ -33,12 +34,24 @@
             @extend .txt-ellipsis;
             color: darken($grey-color,10%);
         }
+        // .badget{
+        //     flex:none;
+        //     color: $grey-color;
+        // }
+        // &:hover{
+        //     background:rgba(black,8%/100.0%);
+        // }
         .badget{
             flex:none;
-            color: $grey-color;
+            font-size: $fontsize_small;
+            color: rgba(102,102,102,0.5);
         }
         &:hover{
-            background:rgba(black,8%/100.0%);
+            border-left: 4px solid $theme_bg_quote;
+            background: rgba(66,133,244,0.1);
+        }
+        &:active{
+            border-left: 8px solid $theme_bg_quote;
         }
     }
 }

@@ -31,7 +31,13 @@ kramdown:
    syntax_highlighter_opts:
       disable : true
 
-plugins: [jekyll-paginate]
+# Atom feed
+feed:
+  path: feed.xml
+plugins: 
+  - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -47,7 +53,7 @@ plugins: [jekyll-paginate]
 
 ##分页设置
 
-paginate: 5
+paginate: 15
 paginate_path: "/page/:num"
 
 ## Category.rb config

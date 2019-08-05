@@ -100,3 +100,49 @@ $article-title-size: 2rem;
   &:-ms-input-placeholder {@content; } // Internet Explorer 10+
   &::-webkit-input-placeholder  {@content; } // Safari and Chrome
 }
+// 主题色
+$theme_base_main: #EFEFEF;
+// 网页背景
+$theme_bg_main: $theme_base_main;
+$theme_base_tint: #4285F4;
+// 引用的颜色以及分类、归档的 hover 时颜色
+$theme_bg_quote: $theme_base_tint;
+
+$dark:  #666666;
+$theme_text_main: $dark;
+// end: 自定义主题色 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// start: 间距 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+$gap: 20px;
+// end: 间距 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+// start: 圆角 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// 0px: 极端，2px：硬朗，4px：常规，8px：圆润，16px：温柔
+$border_radius: 10px; // 圆角半径，可以根据心情随时调整风格
+$border_radius_left_line: 4px; // 左边的竖线的宽度
+$border_radius_code_block: 4px; // 代码块的圆角及其滚动条的宽度
+// end: 圆角 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+// start: 字号 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// base
+$fontsize_base:   16px;
+$fontsize_small:  $fontsize_base * 0.875;
+$fontsize_footnote:  $fontsize_base * 0.7;
+$lineheight_base: 1.7;
+
+// 阴影
+$boxshadow_base_1: 0 1px 2px 0px rgba(0, 0, 0, 0.1);
+$boxshadow_base_2: 0 2px 4px 0px rgba(0, 0, 0, 0.1);
+$boxshadow_base_4: 0 4px 8px 0px rgba(0, 0, 0, 0.1);
+$boxshadow_base_8: 0 8px 16px 0px rgba(0, 0, 0, 0.1);
+$boxshadow_base_16: 0 16px 32px 0px rgba(0, 0, 0, 0.1);
+// start: 阴影 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// 卡片正常状态的阴影
+$boxshadow_card_normal: $boxshadow_base_1, $boxshadow_base_2;
+// 卡片漂浮起来时的阴影
+$boxshadow_card_raised: $boxshadow_base_2, $boxshadow_base_4, $boxshadow_base_8, $boxshadow_base_16;
+// end: 阴影 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

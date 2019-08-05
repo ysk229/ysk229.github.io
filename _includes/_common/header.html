@@ -1,3 +1,4 @@
+
 <header class="l_header">
 	<div class='wrapper'>
 		<div class="nav-main container container--flex">
@@ -8,9 +9,10 @@
 			<div class='menu'>
 				<ul class='h-list'>
 					{% for value in site.menu %}
-					<li >
+					<li>
 						{%- if value.new_window -%}
-						<a href="{{ value.url | relative_url }}" class='flat-box nav-{{ value.slug }}  ' rel="noopener nofollow" target="_blank">
+						<a href="{{ value.url | relative_url }}" class='flat-box nav-{{ value.slug }}  '
+							rel="noopener nofollow" target="_blank">
 							{% else %}
 							<a class='flat-box nav-{{ value.slug }}' href='{{ value.url | relative_url }}'>
 								{% endif %}
@@ -49,10 +51,12 @@
 				Word of Forks
 			</a>
 			<ul class='switcher h-list'>
-				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class='s-comment'><a href='javascript:void(0)'><span
+							class="icon icon-chat_bubble_outline flat-box"></span></a></li>
 				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
 				</li>
-				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+				<li class='s-toc'><a href='javascript:void(0)'><span
+							class="icon icon-format_list_numbered flat-box"></span></a></li>
 			</ul>
 		</div>
 	</div>
@@ -62,7 +66,8 @@
 		{% for value in site.menu %}
 		{% if value.url and value.slug and value.name) %}
 		{% if value.new_window %}
-		<a href="{{ value.url | relative_url }}" class="nav-{{ value.slug }} nav" rel="noopener nofollow" target="_blank">
+		<a href="{{ value.url | relative_url }}" class="nav-{{ value.slug }} nav" rel="noopener nofollow"
+			target="_blank">
 			{% else %}
 			<a href="{{ value.url | relative_url }}" class="nav-{{ value.slug }} nav">
 				{{ value.name }}

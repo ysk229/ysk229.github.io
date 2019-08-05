@@ -24,9 +24,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-arrow_upward:before {
-  content: "\e5d8";
-}
 .icon-chat_bubble_outline:before {
   content: "\e0cb";
 }
@@ -36,11 +33,13 @@
 .icon-format_list_numbered:before {
   content: "\e242";
 }
-
 .icon-close:before {
   content: "\e5cd";
 }
-.icon-search:before {
+.icon-arrow_upward:before {
+  content: "\e5d8";
+}
+.icon-search2:before {
   content: "\e8b6";
 }
 .icon-chevron-down:before {
@@ -50,37 +49,37 @@
   content: "\e901";
 }
 .icon-chevron-right:before {
-  content: "\e902";
-}
-.icon-chevron-thin-down:before {
   content: "\e903";
 }
-.icon-chevron-thin-left:before {
+.icon-chevron-thin-down:before {
   content: "\e904";
 }
-.icon-chevron-thin-right:before {
+.icon-chevron-thin-left:before {
   content: "\e905";
 }
-.icon-chevron-thin-up:before {
+.icon-chevron-thin-right:before {
   content: "\e906";
 }
-.icon-chevron-up:before {
+.icon-chevron-thin-up:before {
   content: "\e907";
+}
+.icon-chevron-up:before {
+  content: "\e908";
+}
+.icon-menu:before {
+  content: "\e909";
+}
+.icon-vcard:before {
+  content: "\e90a";
+}
+.icon-rss:before {
+  content: "\e90b";
+}
+.icon-user:before {
+  content: "\e90c";
 }
 .icon-mail:before {
   content: "\e90d";
-}
-.icon-menu:before {
-  content: "\e908";
-}
-.icon-rss:before {
-  content: "\e90a";
-}
-.icon-user:before {
-  content: "\e90b";
-}
-.icon-vcard:before {
-  content: "\e909";
 }
 .icon-sina-weibo:before {
   content: "\e90e";
@@ -106,4 +105,9 @@
 .icon-twitter:before {
   content: "\e915";
 }
-
+.icon-tags2:before {
+  content: "\e902";
+}
+.icon-calendar:before {
+  content: "\e953";
+}

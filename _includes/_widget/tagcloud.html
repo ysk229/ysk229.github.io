@@ -2,6 +2,15 @@
     <div class="header">Tags</div>
     <div class='content'>
         <div class="tags">
+                {% assign min_font = 12 %}
+                {% assign max_font = 24 %}
+                {% assign amount = 200 %}
+                {% assign color = true %}
+                {% assign start_color = '#999' %}
+                {% assign end_color = '#555' %}
+                {% include _snippets/tagclouds.html %}
+                {{ tagcloud }}
+
             {% for tag in site.tags %}
             <a href="/search/tags/{{ tag | first  | slugify: 'ascii'}}">{{ tag | first }}<span>{{ tag | last | size }}</span></a>
             {% endfor %}

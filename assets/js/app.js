@@ -123,6 +123,12 @@ var customSearch;
 		Waves.attach('.waves-image');
 		Waves.init();
 	}
+	function setScrollReveal() {
+		const $reveal = $('.reveal');
+		if ($reveal.length === 0) return;
+		const sr = ScrollReveal({ distance: 0 });
+		sr.reveal('.reveal');
+	}
 	function setTocToggle() {
 		var $toc = $('.toc-wrapper');
 		if ($toc.length === 0) return;
@@ -170,6 +176,7 @@ var customSearch;
 		setHeaderMenuPhone();
 		setHeaderSearch();
 		// setWaves();
+		// setScrollReveal();
 		setTocToggle();
 		$('table').wrap('<div class="table-wrap"></div');
 

@@ -44,6 +44,8 @@
             .auto-padding {
                 padding-left: $gap;
                 padding-right: $gap;
+                border-bottom-left-radius: $border_radius;
+                border-bottom-right-radius: $border_radius;
             }
             img,
             .highlight {
@@ -71,6 +73,7 @@
         padding: 2 * $gap 1.5*$gap;
         //max-width: 768px;
         background: white;
+        border-radius: $border_radius;
         @extend .z-depth-1;
         .meta {
             margin-bottom: 2*$gap;
@@ -133,6 +136,13 @@
             line-height: 2rem;
             text-align: center;
         }
+        
+    &:hover {
+        box-shadow: $boxshadow_card_raised;
+      }
+      &:active {
+        box-shadow: $boxshadow_card_normal;
+      }
     }
     @media(max-width:$on-phone) {
         padding-right: 0;
