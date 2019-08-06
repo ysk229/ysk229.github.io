@@ -1,0 +1,2619 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-06T02:43:03+00:00</updated><id>/feed.xml</id><title type="html">图解我的私房菜</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">玩转docker-composer基础篇</title><link href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker-composer基础篇" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker-composer安装&quot;&gt;0.docker-composer安装&lt;/h2&gt;
+
+&lt;p&gt;从github上下载docker-compose二进制文件安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##下载最新版的docker-compose文件
+curl -L https://github.com/docker/compose/releases/download/1.16.1/d
+ocker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+##添加可执行权限
+chmod +x /usr/local/bin/docker-compose
+
+##测试安装结果
+docker-compose --version
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;1基本概念&quot;&gt;1.基本概念&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用Docker Compose不再需要使用shell脚本来启动容器&lt;/li&gt;
+  &lt;li&gt;Compose 通过一个配置文件来管理多个Docker容器，在配置文件中，所有的容器通过services来定义，然后使用docker-compose脚本来启动，停止和重启应用，和应用中的服务以及所有依赖服务的容器&lt;/li&gt;
+  &lt;li&gt;Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理&lt;/li&gt;
+  &lt;li&gt;服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。&lt;/li&gt;
+  &lt;li&gt;项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;2基本命令的使用技巧&quot;&gt;2.基本命令的使用技巧&lt;/h2&gt;
+
+&lt;p&gt;docker-compose  –help 参数 可以查看调用的参数的格式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##容器相关操作的命令
+
+docker-compose --help
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f &amp;lt;arg&amp;gt;...] [options] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --no-ansi                   Do not print ANSI control characters
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert deploy
+                              keys in v3 files to their non-Swarm equivalent
+
+Commands:
+  build              Build or rebuild services
+  bundle             Generate a Docker bundle from the Compose file
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove containers, networks, images, and volumes
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show the Docker-Compose version information
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;3-docker-composer-常用的命令&quot;&gt;3. docker-composer 常用的命令&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ps：列出所有运行容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose ps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;logs：查看服务日志输出&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose logs eureka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;build：构建或者重新构建服务&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose build .
+
+##或者
+docker-compose build -f xx.yml
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;rm：删除指定服务的容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose rm eureka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;start：启动指定服务已存在的容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose stop eureka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;stop：停止已经处于运行状态的容器，但不删除它&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose stop eureka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;restart:重启项目中的服务&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose restart eureka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;up：构建、启动容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose up -d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;down：停用移除所有容器以及网络相关&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker-compose down
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;4docker-composeyml-属性&quot;&gt;4.docker-compose.yml 属性&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;version：指定 docker-compose.yml 文件的写法格式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;services：多个容器集合&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    java:
+    go:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+    go:
+    build:
+        context: ./go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;command：覆盖容器启动后默认执行的命令&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;environment：环境变量配置，可以用数组或字典两种方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;environment:
+    RACK_ENV: development
+    SHOW: 'ture'
+-------------------------
+environment:
+    - RACK_ENV=development
+    - SHOW=ture
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;expose：暴露端口，只将端口暴露给连接的服务，而不暴露给主机&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;image：指定服务所使用的镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    nginx:
+        image: nginx
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;network_mode：设置网络模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;network_mode: &quot;bridge&quot;
+network_mode: &quot;host&quot;
+network_mode: &quot;none&quot;
+network_mode: &quot;service:[service name]&quot;
+network_mode: &quot;container:[container name/id]&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+networks:
+  os_bridge:
+    driver: bridge
+services:
+    nginx:
+        image: nginx
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+        networks:
+        - os_bridge
+
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ports：对外暴露的端口定义，和 expose 对应&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+        ports:
+            - &quot;59501:9501&quot;
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;volumes：卷挂载路径&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+        ports:
+            - &quot;59501:9501&quot;
+        volumes:
+            - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+            - ./php-fpm/mod:/usr/local/etc/php/conf.d/mod/
+            - ./php-fpm/conf.d:/usr/local/etc/php-fpm.d/cfg.d/
+
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;links：将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;version: '3'
+services:
+    php-fpm:
+    build:
+        context: ./php-fpm ##目录
+        dockerfile: Dockerfile ##配置文件
+        expose:
+            - &quot;3000&quot;
+            - &quot;8000&quot;
+        ports:
+            - &quot;59501:9501&quot;
+        volumes:
+            - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+            - ./php-fpm/mod:/usr/local/etc/php/conf.d/mod/
+            - ./php-fpm/conf.d:/usr/local/etc/php-fpm.d/cfg.d/
+        links:
+            - mongo:db ##mongo是其他容器的服务名,php-fpm服务用db访问到mongo的容器的服务
+            - redis
+    java:
+    build:
+        context: ./java
+        command:  [bundle,exec,thin,-p,3000]
+    go:
+    build:
+        context: ./go
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;5出现的问题&quot;&gt;5.出现的问题&lt;/h2&gt;
+
+&lt;p&gt;Q:当docker-compose.yml配置发生变化时，如何去更新容器?
+A:可使用 docker-compose up 命令更新配置&lt;/p&gt;
+
+&lt;p&gt;Q:为什么yml配置总是报错呢？
+A:yml配置是有格式的，YAML中允许表示三种格式，分别是常量值，对象和数组。格式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;#即表示url属性值；
+url: http://www.wolfcode.cn 
+#即表示server.host属性的值；
+server:
+    host: http://www.wolfcode.cn 
+#数组，即表示server为[a,b,c]
+server:
+    - 120.168.117.21
+    - 120.168.117.22
+    - 120.168.117.23
+#常量
+pi: 3.14   #定义一个数值3.14
+hasChild: true  #定义一个boolean值
+name: '你好YAML'   #定义一个字符串
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;基本格式要求&lt;/p&gt;
+
+&lt;p&gt;1，YAML大小写敏感；&lt;/p&gt;
+
+&lt;p&gt;2，使用缩进代表层级关系；&lt;/p&gt;
+
+&lt;p&gt;3，缩进只能使用空格，不能使用TAB，不要求空格个数，只需要相同层级左对齐（一般2个或4个空格）&lt;/p&gt;
+
+&lt;h2 id=&quot;6参考文章&quot;&gt;6.参考文章&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/&quot;&gt;docker官方&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker-composer官方&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/compose-file/&quot;&gt;docker-composer文件配置参数&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;docker&quot;, &quot;docker-compose&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker-composer安装</summary></entry><entry><title type="html">玩转docker基础篇</title><link href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker基础篇" /><published>2019-07-15T00:00:00+00:00</published><updated>2019-07-15T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker&quot;&gt;0.docker&lt;/h2&gt;
+
+&lt;p&gt;Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。&lt;/p&gt;
+
+&lt;p&gt;Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装&lt;/p&gt;
+
+    &lt;p&gt;官方网站上有各种环境下的 &lt;a href=&quot;https://docs.docker.com/install/linux/docker-ce/centos/&quot;&gt;安装指南&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;与传统虚拟机的区别&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;img/专业图片区别.png&quot; alt=&quot;专业图片区别&quot; title=&quot;专业图片区别&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;img/看得懂的图.png&quot; alt=&quot;看得懂的图&quot; title=&quot;看得懂的图&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;img/docker与虚拟机差异.png&quot; alt=&quot;docker与虚拟机差异&quot; title=&quot;docker与虚拟机差异&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;1基本概念&quot;&gt;1.基本概念&lt;/h2&gt;
+
+&lt;h3 id=&quot;10-集装箱对容器技术docker的启发&quot;&gt;1.0 集装箱对容器技术(Docker)的启发&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/logo.png&quot; alt=&quot;docker logo&quot; title=&quot;docker logo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/docker与集装箱.png&quot; alt=&quot;docker与集装箱&quot; title=&quot;docker与集装箱&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;11-镜像&quot;&gt;1.1 镜像&lt;/h3&gt;
+
+&lt;p&gt;对于 Linux 而言，内核启动后，会挂载 root 文件系统为其提供用户空间支持。而 Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:18.04 就包含了完整的一套 Ubuntu 18.04 最小系统的 root 文件系统。&lt;/p&gt;
+
+&lt;p&gt;镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。&lt;/p&gt;
+
+&lt;h3 id=&quot;12容器&quot;&gt;1.2容器&lt;/h3&gt;
+
+&lt;p&gt;镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，容器是镜像运行时的实体
+容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间&lt;/p&gt;
+
+&lt;p&gt;每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为 容器存储层。
+容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高&lt;/p&gt;
+
+&lt;p&gt;数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。&lt;/p&gt;
+
+&lt;h3 id=&quot;13仓库&quot;&gt;1.3仓库&lt;/h3&gt;
+
+&lt;p&gt;一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。&lt;/p&gt;
+
+&lt;p&gt;通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 &lt;仓库名&gt;:&lt;标签&gt; 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。&lt;/标签&gt;&lt;/仓库名&gt;&lt;/p&gt;
+
+&lt;p&gt;以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 ubuntu:18.04 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 ubuntu:latest。&lt;/p&gt;
+
+&lt;p&gt;仓库名经常以 两段式路径 形式出现，比如 jwilder/nginx-proxy，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。&lt;/p&gt;
+
+&lt;p&gt;Docker Registry 公开服务&lt;/p&gt;
+
+&lt;p&gt;私有 Docker Registry&lt;/p&gt;
+
+&lt;h2 id=&quot;2docker-核心模块&quot;&gt;2.docker 核心模块&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/docker核心模块.png&quot; alt=&quot;docker核心模块&quot; title=&quot;docker核心模块&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;核心功能简答介绍:&lt;/p&gt;
+
+&lt;p&gt;Docker是C/S模式&lt;/p&gt;
+
+&lt;p&gt;images：docker镜像，是Docker run的原材料&lt;/p&gt;
+
+&lt;p&gt;container: Docker运行的内容，是独立存在的&lt;/p&gt;
+
+&lt;p&gt;data volumes: 通过数据挂载的方式，实现数据共享&lt;/p&gt;
+
+&lt;p&gt;network：用户容器与外部、容器之间的通信，常用的方法有端口映射、link等&lt;/p&gt;
+
+&lt;h2 id=&quot;3docker-使用流程&quot;&gt;3.docker 使用流程&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/docker流程.png&quot; alt=&quot;docker流程&quot; title=&quot;docker流程&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4基本命令的使用技巧&quot;&gt;4.基本命令的使用技巧&lt;/h2&gt;
+
+&lt;p&gt;docker 参数 –help 可以查看调用的参数的格式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##容器相关操作的命令
+
+docker container --help
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  inspect     Display detailed information on one or more containers
+  kill        Kill one or more running containers
+  logs        Fetch the logs of a container
+  ls          List containers
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  prune       Remove all stopped containers
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  run         Run a command in a new container
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;5-docker-常用的命令&quot;&gt;5. docker 常用的命令&lt;/h2&gt;
+
+&lt;h3 id=&quot;51-镜像操作&quot;&gt;5.1 镜像操作&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;设置镜像[可选]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##配置大陆镜像
+
+vim /etc/docker/daemon.json
+
+##修改后如下：
+
+{
+    &quot;registry-mirrors&quot;: [&quot;https://registry.docker-cn.com&quot;],
+    &quot;live-restore&quot;: true
+}
+
+##修改后重启docker
+
+systemctl restart docker.service
+
+##向官方仓库search镜像
+
+docker search centos
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;设置效果如下图:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/搜索.png&quot; alt=&quot;docker 搜索&quot; title=&quot;docker 搜索&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;下载镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker pull  python:3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker images python:3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;保存正在运行的镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;[root@localhost v]# docker run -it python:3 bash
+root@34539696b356:/# ls
+
+
+docker commit  -a &quot;xxx&quot;  -m &quot;xxx&quot; 34539696b356 my/test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;导出镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker save -o m.tar.gz mysql:5.7.14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;导入镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker load -i m.tar.gz
+
+##或者
+docker load &amp;lt; m.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;删除镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker rmi -f 0f2d67697e38【镜像的ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;52-容器的操作&quot;&gt;5.2 容器的操作&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;运行容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker container run -it -p27019:27017 --name ngo  mongo:3.4.14
+
+##后台运行
+docker container run -it -d -p27019:27017 --name ngo  mongo:3.4.14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker container inspect  ad2ec10fa879【容器的ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;进入容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker container exec -it  0f2d67697e38【容器的ID】 bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;删除容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##普通删除容器
+docker container rm  0f2d67697e38【容器的ID】
+
+##强制删除容器
+docker container rm -f 0f2d67697e38【容器的ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;导出容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##命令格式
+ docker container export container_id | gzip &amp;gt; image_name.tar.gz
+
+##运行5c7472359a7b容器的ID
+docker container export 5c7472359a7b |gzip &amp;gt;t.tar.gz
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;导入容器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;zcat t.tar.gz |  docker container import - image_name
+
+##查看镜像是否导入成功
+docker images 0f2d67697e38【镜像的ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;6关注点&quot;&gt;6.关注点&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;常用参数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;-it 常一起使用,以一个新的伪终端开启一个容易,使用后就能新开一个容器中的终端,相当于新开了一个虚拟机,接着在终端中的命令就是在容器中执行命令&lt;/p&gt;
+
+&lt;p&gt;–rm 删除容器&lt;/p&gt;
+
+&lt;p&gt;-f 强制操作&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;端口&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;端口开放通过启动参数 -p 来指定。
+-p 宿主机端口:容器端口。
+一般来说，为了方便管理，会设置宿主机端口和容器端口保持一致.
+比如web端口：-p 80:80&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;挂载&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;数据卷通过启动参数 -v 来指定
+-v后面的映射关系是”宿主机文件/目录:容器里对应的文件/目录”，其中，宿主机上的文件/目录是要提前存在的，容器里对应的文件/目录会自动创建。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看日志&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker logs ad2ec10fa879【容器的ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;容器于宿主拷贝文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
+docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+# 本地文件上传到对应容器的目录
+docker cp local.sh 【容器的ID】:【容器的路径】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;容器之间是如何通信的&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;–link 参数 底层是从过hosts文件来配置相对的IP&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;
+##开启mysql服务
+docker container run --name=mysql_server -d -P kongxx/mysql_server
+
+##连接mysql_server的容器1
+docker container run --name=mysql_client1 --link=mysql_server:db -t -i kongxx/mysql_client /usr/bin/mysql -h db -u root -pletmein
+
+##连接mysql_server的容器2
+docker container run --name=mysql_client2 --link=mysql_server:db -t -i kongxx/mysql_client /usr/bin/mysql -h db -u root -pletmein
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;–link=mysql_server:db 其实是在/etc/hosts文件配置
+mysql_server的IP db&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看容器的进程&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker ps [-a]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;限制内存&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;限制容器可以使用的最大内存为 300M,并且 swap 空间使用不受限制的参数如下：&lt;/p&gt;
+
+&lt;p&gt;-m 300M –memory-swap -1&lt;/p&gt;
+
+&lt;p&gt;强调一下 –memory-swap 是必须要与 –memory 一起使用的。&lt;/p&gt;
+
+&lt;p&gt;正常情况下， –memory-swap 的值包含容器可用内存和可用 swap。所以 –memory=”300m” –memory-swap=”1g” 的含义为：
+容器可以使用 300M 的物理内存，并且可以使用 700M(1G -330M) 的 swap。–memory-swap 居然是容器可以使用的物理内存和可以使用的 swap 之和！&lt;/p&gt;
+
+&lt;p&gt;把 –memory-swap 设置为 0 和不设置是一样的，此时如果设置了 –memory，容器可以使用的 swap 大小为 –memory 值的两倍。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;绑定CPU资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;–cpus=2 表示容器最多可以使用主机上两个 CPU
+–cpuset-cpus=”1,3”一次指定多个 CPU
+–cpu-shares 选项用来设置 CPU 权重，它的默认值为 1024。我们可以把它设置为 2 表示很低的权重，但是设置为 0 表示使用默认值 1024&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看容器占用资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;docker stats
+
+##只返回当前的状态
+docker stats --no-stream
+
+##只输出指定的容器
+docker stats --no-stream ad2ec10fa879【容器ID】
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;7出现的问题&quot;&gt;7.出现的问题&lt;/h2&gt;
+
+&lt;p&gt;Q:如何去掉每次sudo运行docker命令?
+A:需要添加组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;# Add the docker group if it doesn't already exist.
+$ sudo groupadd docker
+#改完后需要重新登陆用户
+$ sudo gpasswd -a ${USER} docker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Q:为什么运行docker容器会失败呢？
+A:一般有两个方面去判断：&lt;/p&gt;
+
+&lt;p&gt;1.docker容器没有实例进程启动。&lt;/p&gt;
+
+&lt;p&gt;2.docker容器内存溢出的情况&lt;/p&gt;
+
+&lt;h2 id=&quot;8参考文章&quot;&gt;8.参考文章&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/&quot;&gt;docker官方&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://hub.docker.com/&quot;&gt;docker仓库官方&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://yeasy.gitbooks.io/docker_practice/introduction/why.html&quot;&gt;Docker技术入门与实战&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/gaoyingju/article/details/49616295&quot;&gt;为什么容器技术将主宰世界&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;docker&quot;, &quot;docker-compose&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2019-07-03T06:03:57+00:00</published><updated>2019-07-03T06:03:57+00:00</updated><id>/update/sdfdsfd/2019/07/03/welcome-to-jekyll</id><content type="html" xml:base="/update/sdfdsfd/2019/07/03/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">B树</title><link href="/update/sdfdsfd/2019/06/21/B+.html" rel="alternate" type="text/html" title="B树" /><published>2019-06-21T00:00:00+00:00</published><updated>2019-06-21T00:00:00+00:00</updated><id>/update/sdfdsfd/2019/06/21/B+</id><content type="html" xml:base="/update/sdfdsfd/2019/06/21/B+.html">&lt;p&gt;B树是为磁盘和其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低I/O操作数方面要更好一些。许多数据库系统使用B树或者B树的变种来存储信息。&lt;/p&gt;
+
+&lt;p&gt;B树与红黑树的不同之处在于B树的结点可以有很多孩子，从数个到树千个。也就是说，一个B树的“分支因子”可以相当大，尽管它通常依赖于所使用的磁盘单元的特性。B树类似于红黑树，就是每棵含有n个结点的B数高度为O(lgn)。然而，一棵B树的严格高度可能比一棵红黑树的高度要小许多，这是因为它的分支因子。&lt;/p&gt;
+
+&lt;h1 id=&quot;1-b树的定义&quot;&gt;1 B树的定义&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/937447974/Blog/master/Resources/2015112403.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如图所示就是一棵B树，一棵B树T是具有以下性质的有根树（根为T.root）:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;每个结点x有下面属性：
+    &lt;ol&gt;
+      &lt;li&gt;x.n当前存储在结点x中的关键字个数&lt;/li&gt;
+      &lt;li&gt;x.n个关键字本身x.key1，x.key2，…，x.keyn，以非降序存放，使得&lt;code&gt;x.key1 ≤ x.key2 ≤ ... ≤ x.keyn&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;x.leaf，一个布尔值，如果x是叶结点，则为true；如果x是内部结点，则为false&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;每个内部结点x还包含x.n+1个指向其孩子的指针x.c1，x.c2，…，x.cn+1。叶结点没有孩子，所以它们的Ci属性没有定义。&lt;/li&gt;
+  &lt;li&gt;关键字x.key1对存储在各子树中的关键字范围加以分割：如果ki为任意一个存储在x.ci为根的子树中的关键字，那么&lt;code&gt;k1 ≤ x.key1 ≤ k2 ≤ x.key2 ≤ ... ≤ x.keyn ≤ kn+1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;每个叶结点具有相同的深度，即树的高度h。&lt;/li&gt;
+  &lt;li&gt;每个结点所包含的关键字个数有上限和下限。用一个被称为B树的&lt;strong&gt;最小度数&lt;/strong&gt;的固定整数t &amp;gt; 1来表示这些界限：
+    &lt;ol&gt;
+      &lt;li&gt;除了根结点以外每个结点必须至少有t-1个关键字。因此，除了根结点以外的每个内部结点至少有t个孩子。如果树非空，根结点至少有一个关键字。&lt;/li&gt;
+      &lt;li&gt;每个结点至多包含2t-1个关键字。因此，一个内部结点至多可有结点恰好有2t-1个关键字时，称该结点是&lt;strong&gt;满的&lt;/strong&gt;。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;B树的高度&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果n&amp;gt;0,那么对任意一棵包含n个关键字、高度h、最小度数t&amp;gt;1的B树T有&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/937447974/Blog/master/Resources/2015112402.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;2-b树设计&quot;&gt;2 B树设计&lt;/h1&gt;
+
+&lt;h2 id=&quot;21-b树的结点yjbtreenode&quot;&gt;2.1 B树的结点YJBTreeNode&lt;/h2&gt;
+
+&lt;p&gt;根据B树对于结点的定义设计结点YJBTreeNode。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;//
+//  YJBTreeNode.swift
+//  BTree
+//
+//  CSDN:http://blog.csdn.net/y550918116j
+//  GitHub:https://github.com/937447974/Blog
+//
+//  Created by yangjun on 15/11/23.
+//  Copyright © 2015年 阳君. All rights reserved.
+//
+
+import Cocoa
+
+/// B树结点
+class YJBTreeNode: NSObject {
+
+    /// 度数,除根结点的其他结点最少t-1，最多2t-2个子结点
+    var t :Int
+    /// 树高
+    var h :Int = 1
+    /// 是否叶结点，true是，false不是
+    var leaf :Bool = true
+    /// 关键字
+    var key :[Int] = []
+    /// 子结点,子结点个数最少t，最多2t-1个子结点
+    var child :[YJBTreeNode] = []
+    
+    
+    // MARK: - 初始化
+    /// 初始化
+    ///
+    /// - parameter t : 度数,除根结点的其他结点最少t-1，最多2t-2个子结点
+    ///
+    /// - returns: void
+    init(t :Int) {
+        self.t = t
+    }
+    
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;22-b树yjbtree&quot;&gt;2.2 B树YJBTree&lt;/h2&gt;
+
+&lt;p&gt;根据对B树的定义，我们这里设计类YJBTree，并可以指定最小度数t&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;//
+//  YJBTree.swift
+//  BTree
+//
+//  CSDN:http://blog.csdn.net/y550918116j
+//  GitHub:https://github.com/937447974/Blog
+//
+//  Created by yangjun on 15/11/23.
+//  Copyright © 2015年 阳君. All rights reserved.
+//
+
+import Cocoa
+
+/// B树
+class YJBTree {
+
+    /// 根结点
+    private var root: YJBTreeNode
+    /// 度数,除根结点的其他结点最少t-1，最多2t-2个子结点，默认t最小为3
+    private let t: Int
+
+    // MARK: - 初始化B树
+    /// 初始化B树
+    ///
+    /// - parameter t : 度数,除根结点的其他结点最少t-1，
+    ///                 最多2t-2个子结点，默认t最小为3
+    /// - returns: void
+    init(t :Int) {
+        self.t = t &amp;lt; 3 ? 3 : t
+        root = YJBTreeNode(t: self.t)
+    }
+    
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;3-b树上的基本操作&quot;&gt;3 B树上的基本操作&lt;/h1&gt;
+
+&lt;h2 id=&quot;31-排序&quot;&gt;3.1 排序&lt;/h2&gt;
+
+&lt;p&gt;B树的数据和二叉搜索树相类似，我们可以使用中序遍历的方式实现，即左-中-右。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;// MARK: - 排序
+/// 排序输出
+///
+/// - returns: [Int]
+func sort() -&amp;gt; [Int] {
+    return self.sort(self.root)
+}
+    
+private func sort(node: YJBTreeNode) -&amp;gt; [Int] {
+    // 当前为叶子结点
+    if node.leaf {
+        return node.key
+    }
+    var list:[Int] = []
+    let count = node.key.count
+    for i in 0..&amp;lt;count {
+        list += self.sort(node.child[i])
+        list.append(node.key[i])
+    }
+    list += self.sort(node.child[count])
+    return list
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;32-搜索&quot;&gt;3.2 搜索&lt;/h2&gt;
+
+&lt;p&gt;在B数中搜索一个key时，需要注意的是key是在node.key中还是在node.child中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;// MARK: - 根据key搜索所在的树以及位置
+func search(key: Int) -&amp;gt;(node: YJBTreeNode, keyLocation: Int)? {
+    return self.search(self.root, key: key)
+}
+    
+private func search(node: YJBTreeNode, key :Int) -&amp;gt;(node: YJBTreeNode, keyLocation: Int)? {
+    var i:Int = 0
+    while (i &amp;lt; node.key.count &amp;amp;&amp;amp; key &amp;gt; node.key[i]) {
+        i++
+    }
+    if (i &amp;lt; node.key.count &amp;amp;&amp;amp; key == node.key[i]) {
+        return (node, i)
+    } else if node.leaf {
+        return nil
+    } else {
+        // 读磁盘node.child[i]对象
+        return self.search(node.child[i], key: key)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;33-插入key&quot;&gt;3.3 插入key&lt;/h2&gt;
+
+&lt;p&gt;在B数中插入一个key，其实质是在其叶子结点插入，然后叶子结点裂变生成一棵B树。&lt;/p&gt;
+
+&lt;p&gt;插入key的具体思想如下。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;根结点为叶子结点执行步骤2，为内部结点执行步骤3。&lt;/li&gt;
+  &lt;li&gt;插入叶子结点，直接插入，叶子满时，分裂并向上抛数。&lt;/li&gt;
+  &lt;li&gt;插入内部结点，向下传递找到要插入的叶子结点执行步骤2。&lt;/li&gt;
+  &lt;li&gt;回调时，遇到向上抛的数据后，重新排列结点。如果结点满，分裂结点继续向上抛。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;// MARK: - 插入
+/// 插入key
+///
+/// - parameter key : 要插入的key值
+///
+/// - returns: void
+func insert(key: Int) {
+    /**
+     插入三情况结点
+     1. 根结点为叶子结点执行步骤2，为内部结点执行步骤3。
+    2. 插入叶子结点，直接插入，叶子满时，分裂并向上抛数。
+    3. 插入内部结点，向下传递找到要插入的叶子结点执行步骤2。
+    4. 回调时，遇到向上抛的数据后，重新排列结点。如果结点满，分裂结点继续向上抛。
+     */
+    // 情况1:树高为1，直接添加叶子结点
+    if root.h == 1 {
+        root = self.insertLeaf(self.root, key: key)
+    } else {
+        if let root = self.insert(self.root, key: key) {
+            // 情况3,重定向根结点
+            self.root = root
+        }
+    }
+}
+    
+// MARK: node中插入数据key
+private func insert(node: YJBTreeNode, key :Int) -&amp;gt; YJBTreeNode? {
+    // 插入算法：每次插入都是插入叶子结点，分裂时，依次向上插入分裂
+    // 当前为叶子结点
+    if node.leaf {// 情况2:
+        let leaf = self.insertLeaf(node, key: key)
+        // 有向上分裂
+        if leaf.h == 2 {
+            return leaf
+        }
+        return nil
+    } else {// 情况3:
+        let index = self.insertIndex(node, key: key)
+        // 向下继续插入
+        if let child = self.insert(node.child[index], key: key) { // 遇到抛数
+            // 插入key
+            node.key.insert(child.key[0], atIndex: index)
+            // 替换并插入child
+            node.child[index] = child.child[1]
+            node.child.insert(child.child[0], atIndex: index)
+            // 如果结点满，分裂结点继续向上抛
+            if node.key.count &amp;gt;= 2 * t - 1{
+                return self.splitChild(node)
+            }
+        }
+        return nil
+    }
+}
+
+// MARK: 叶子结点插入数据
+private func insertLeaf(node: YJBTreeNode, key :Int) -&amp;gt; YJBTreeNode {
+    let index = self.insertIndex(node, key: key)
+    node.key.insert(key, atIndex: index)
+    // 判断是否需要分割
+    if node.key.count == 2 * t - 1{
+        return self.splitChild(node)
+    }
+    return node
+}
+    
+// MARK: 插入辅助方法，寻找要插入的位置
+private func insertIndex(node: YJBTreeNode, key :Int) -&amp;gt;Int {
+    // key的个数
+    let count = node.key.count
+    // 有数据
+    if count != 0 {
+        if key &amp;lt;= node.key[0] {// 最小
+            return 0
+        } else if node.key[count-1] &amp;lt;= key {// 最大
+            return count
+        }
+        // 中间
+        for i in 1 ..&amp;lt; node.key.count {
+            if (node.key[i-1] &amp;lt;= key &amp;amp;&amp;amp; key &amp;lt;= node.key[i]) {
+                return i;
+            }
+        }
+    }
+    return 0
+}
+
+// MARK: - 分裂结点成为一棵B树
+private func splitChild(node: YJBTreeNode) -&amp;gt; YJBTreeNode {
+    // 分割点
+    let split = node.key.count / 2
+    // 初始化
+    let r = YJBTreeNode(t: t)
+    r.leaf = false
+    let rLeft = YJBTreeNode(t: t)
+    let rRight = YJBTreeNode(t: t)
+    // 树高
+    r.h = node.h + 1
+    rLeft.h = node.h
+    rRight.h = node.h
+    // 整理r.key
+    r.key.append(node.key[split])
+    // 整理r.child
+    for i in 0..&amp;lt;split {
+        rLeft.key.append(node.key[i]) // 左孩子key
+    }
+    r.child.append(rLeft)
+    for i in split+1..&amp;lt;node.key.count {
+        rRight.key.append(node.key[i]) // 右孩子key
+    }
+    r.child.append(rRight)
+    // 整理child
+    if node.child.count &amp;gt;=  self.t {
+        // 有孩子代表是内部结点
+        rLeft.leaf = false
+        rRight.leaf = false
+        // 整理孩子结点的孩子结点
+        for i in 0...split {
+            rLeft.child.append(node.child[i])
+        }
+        for i in split+1..&amp;lt;node.child.count {
+            rRight.child.append(node.child[i])
+        }
+    }
+    // 返回的r为一棵B树
+    return r
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里使用了方法splitChild，该方法的作用就是key满足分裂条件时，分裂结点成为一个新的B树。&lt;/p&gt;
+
+&lt;h2 id=&quot;34-删除&quot;&gt;3.4 删除&lt;/h2&gt;
+
+&lt;p&gt;在B中删除key时，需要考虑删除的key是在叶子上，还是在树的内部。&lt;/p&gt;
+
+&lt;p&gt;删除的核心思想就是：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;找到key，合并其左右子结点成新的B树。&lt;/li&gt;
+  &lt;li&gt;判断B能否替代该key。能够替代，替换key、left、right；不能替换，替换left，删除key和right&lt;/li&gt;
+  &lt;li&gt;嵌套回调时，遇到key.count==t-2时，做合并当前child、对应的key和相邻的child；否则不执行任何操作。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;// MARK: - 删除key
+func delete(key: Int) {
+    if self.root.key.count == 0 { // 树为空时，直接返回
+        return
+    }
+    // 根据返回的结点判断是否需要降key操作
+    let newRoot = self.delete(self.root, key: key)
+    self.root = newRoot.key.count != 0 || newRoot.leaf ? newRoot : newRoot.child.first!
+}
+    
+private func delete(node: YJBTreeNode, key: Int) -&amp;gt; YJBTreeNode {
+    /**删除思路：
+    1. 找到key，合并其左右子结点成新的B树B
+    2. 判断B能否替代该key。能够替代，替换key、left、right；不能替换，替换left，删除key和right
+    3. 嵌套回调时，遇到key.count==t-2时，做合并当前child对应的key和相邻的child；否则不执行任何操作。
+    */
+    if node.leaf { // 叶子结点
+        for (index, value) in node.key.enumerate() {
+            if value == key { // 找到则删除
+                node.key.removeAtIndex(index)
+                break
+            }
+        }
+    } else { // 内部结点
+        // 嵌套向下
+        var index = -1
+        let count = node.key.count
+        // 寻找key或child
+        if key &amp;gt; node.key.last! { // 这里用到了快速跳跃，先判断是否跳过
+            index = count
+        } else {
+            for i in 0..&amp;lt;count {
+                if node.key[i] == key { // 找到key
+                    let bTree = self.mergeChild(node.child[i], right: node.child[i+1])
+                    // 先删除后插入
+                    self.replaceNode(node, index: i, bTree: bTree)
+                    break
+                } else if key &amp;lt; node.key[i] { // 找到child
+                    index = i
+                    break
+                }
+            }
+        }
+        // 嵌套返回
+        if index != -1 {
+            var bTree = self.delete(node.child[index], key: key)
+            if bTree.key.count == self.t-2 { // 降key操作
+                let keyIndex = index == count ? index-1 : index
+                bTree = self.mergeKeyChild(node.child[keyIndex], key: node.key[keyIndex], right: node.child[keyIndex+1])
+                self.replaceNode(node, index: keyIndex, bTree: bTree)
+            }
+        }
+    }
+    return node
+}
+    
+// MARK: B树替换结点中right、key、left
+private func replaceNode(var node: YJBTreeNode, index: Int, bTree:YJBTreeNode) {
+    if node.h == bTree.h { // 树高相同，替换key、left、right
+        node.key[index] = bTree.key[0]
+        node.child[index] = bTree.child[0]
+        node.child[index+1] = bTree.child[1]
+    } else { // 树高不同，替换left，删除key和right
+        node.key.removeAtIndex(index)
+        node.child[index] = bTree
+        node.child.removeAtIndex(index+1)
+    }
+    // 是否需要合并
+    if node.key.count &amp;gt;= 2 * t - 1{
+        node = self.splitChild(node)
+    }
+}
+    
+// MARK: 合并左孩子、key、右孩子
+private func mergeKeyChild(left: YJBTreeNode, key:Int, right: YJBTreeNode) -&amp;gt; YJBTreeNode {
+    // key
+    left.key.append(key)
+    left.key += right.key
+    // child
+    left.child += right.child
+    // 是否需要合并
+    if left.key.count &amp;gt;= 2 * t - 1{
+        return self.splitChild(left)
+    }
+    return left
+}
+    
+// MARK: 合并左右子结点
+private func mergeChild(left: YJBTreeNode, right: YJBTreeNode) -&amp;gt; YJBTreeNode {
+    if left.leaf { // 叶子结点
+        left.key += right.key
+    } else {
+        // 合并首位结点
+        let bTree = self.mergeChild(left.child.last!, right: right.child.first!)
+        // 去掉左child尾，右child首
+        left.child.removeLast()
+        right.child.removeAtIndex(0)
+        if bTree.h == left.h { // 树高不变时，连key、child
+            left.key.append(bTree.key[0])
+            left.child += bTree.child
+        } else { // 树高变时，新生成的树是当前结点的child
+            left.child.append(bTree)
+        }
+        // 连接right.child
+        left.key += right.key
+        left.child += right.child
+    }
+    // 是否需要合并
+    if left.key.count &amp;gt;= 2 * t - 1{
+        return self.splitChild(left)
+    }
+    return left
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;5-小结&quot;&gt;5 小结&lt;/h1&gt;
+
+&lt;p&gt;本篇博文讲解了B树的定义、查找、增加和删除等功能。B树是以一种自然的方式推广了二叉搜索树，可以保证在最坏情况下基本动态集合操作的时间复杂度为O(lgn)。
+ &lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;其他&quot;&gt;其他&lt;/h1&gt;
+
+&lt;h2 id=&quot;源代码&quot;&gt;源代码&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/937447974/Algorithms&quot;&gt;Algorithms&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/937447974/LearningMaterials&quot;&gt;算法导论&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;文档修改记录&quot;&gt;文档修改记录&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;时间&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2015-11-23&lt;/td&gt;
+      &lt;td&gt;完成B树的查找和增加结点的研发&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2015-11-24&lt;/td&gt;
+      &lt;td&gt;完成B树删除结点的研发，完成《B树》博文&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;版权所有&quot;&gt;版权所有&lt;/h2&gt;
+
+&lt;p&gt;CSDN：http://blog.csdn.net/y550918116j&lt;/p&gt;
+
+&lt;p&gt;GitHub：https://github.com/937447974/Blog&lt;/p&gt;</content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html">B树是为磁盘和其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低I/O操作数方面要更好一些。许多数据库系统使用B树或者B树的变种来存储信息。</summary></entry><entry><title type="html">Trust</title><link href="/security/2017/01/12/trust.html" rel="alternate" type="text/html" title="Trust" /><published>2017-01-12T00:00:00+00:00</published><updated>2017-01-12T00:00:00+00:00</updated><id>/security/2017/01/12/trust</id><content type="html" xml:base="/security/2017/01/12/trust.html">&lt;p&gt;Stop and take a moment to think about how much trust is required to live your everyday life. Every single aspect of your life is built up on layer after layer of trust, it’s nothing short of staggering. Different aspects of life will contain different levels of trust, with some being very guarded and some being very lax. We don’t often talk about this trust and we often make the blind assumption that trust is inherently a bad thing. That’s most definitely not the case. Let’s explore why.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;driving&quot;&gt;Driving&lt;/h2&gt;
+
+&lt;p&gt;Let’s look at the simple(ish) case of driving. There’s an extraordinary amount of trust required. When you’re behind the wheel, you’re not only trusting every single engineer who designed every component of your vehicle, but of every surrounding vehicle as well. You’re trusting the quality assurance processes of each manufacturer. You’re trusting the assembly line technician. You’re trusting the mechanics. The part manufacturers. Not to mention the surrounding infrastructure (who would want a road to collapse when they are driving on it).&lt;/p&gt;
+
+&lt;p&gt;You also need to trust the drivers around you. You trust that the person driving next to you on the highway isn’t going to randomly jerk the wheel into you and cause an accident. You trust that they aren’t drunk or otherwise impaired. That they are also driving in the shared best interest of safety.&lt;/p&gt;
+
+&lt;p&gt;Yet we all know that blind trust in any of those items is bad. Driving schools teach “Defensive Driving” techniques, to prepare you if someone does drive poorly around you. You take your car to mechanics to be inspected so you can verify that the parts that the engineer said were going to last, are going to be safe and last.&lt;/p&gt;
+
+&lt;p&gt;Each and every one of these “Trusts” are leaky, meaning that we all know of instances that each and every one of them have failed (remember the Ford Pinto?). Yet it’s far more useful to us to trust than not to, even though we all know that trust isn’t perfect.&lt;/p&gt;
+
+&lt;p&gt;As a society, we’ve built mechanisms to balance the benefits of reducing the necessary trust against the costs that the measures take to implement.&lt;/p&gt;
+
+&lt;h2 id=&quot;an-aviation-lesson&quot;&gt;An Aviation Lesson&lt;/h2&gt;
+
+&lt;p&gt;Compare driving a car to flying a plane. The regulations are far stiffer for the pilot in pretty much all cases. You probably know that it’s &lt;strong&gt;far&lt;/strong&gt; harder to get a pilot’s license than a driver’s license. A basic pilot’s license takes 40-80 hours of training plus a comprehensive exam, plus 6 hours of training every 2 years. And there are many more licenses beyond that.&lt;/p&gt;
+
+&lt;p&gt;What you may not know though is that airplanes have mandatory maintenance schedules that require inspections and service as few as every 25 hours of operation. Compare that to automobiles which typically get serviced once per year if the owner is diligent; FAR less in many cases. The stakes are simply far lower with a car.&lt;/p&gt;
+
+&lt;p&gt;Another great example is in the case of air traffic control. Airspace (in the USA at least) is divided into 7 “classes”, with 3 of them being “controlled” (you’re not allowed to enter without talking to someone first).&lt;/p&gt;
+
+&lt;p&gt;Away from metropolitan areas, you can fly in uncontrolled airspace without talking on a radio. You’re flying all by yourself using “Visual Flight Rules” (you need to see where you’re going). You trust that other pilots are looking for you, are following rules as well as established conventions. In areas with more traffic, the rules increase.&lt;/p&gt;
+
+&lt;p&gt;As with any rule increase, the overhead and therefore costs increase dramatically. Instead of being able to take a quick 10 minute flight to a neighboring airport, you now need to file a flight plan and put yourself at the mercy of a controller. What could have taken 20 minutes including planning now takes over an hour. This added cost increases safety and reliability dramatically.&lt;/p&gt;
+
+&lt;h2 id=&quot;trust-is-always-required&quot;&gt;Trust Is Always Required&lt;/h2&gt;
+
+&lt;p&gt;No matter what situation you’re in, there will &lt;em&gt;always&lt;/em&gt; be some amount of required trust. Take AWS for example. You’re trusting that Amazon really doesn’t have the keys to the server they built for you. You’re trusting that they are going to give you the uptime they promise (or in Amazon’s case, that they imply). You’re trusting that the machine is what they say it is. You’re trusting them for a whole lot more than that in reality, but there’s always trust required.&lt;/p&gt;
+
+&lt;p&gt;But as with driving, blind trust is also not always the best. So we can install measures to verify that trust and ensure that nothing too bad happens without us at least knowing about it.&lt;/p&gt;
+
+&lt;p&gt;Tools like Tripwire are perfect examples of this concept. You need to give &lt;em&gt;someone&lt;/em&gt; access to your production machines (or access to the machines that have access, or access to the machines that have access to the machines that have access, etc). How do you ensure that they are doing what they say they are, not modifying files directly in prod? A tool such as tripwire that helps verify that the trust wasn’t broken.&lt;/p&gt;
+
+&lt;p&gt;Could you prevent the possibility in the first place? Not in the generic case. Someone effectively needs access to the root key (either directly, or through another machine). You can lock your engineers down or you can give them total freedom. Or, you could do the smart thing and give them enough freedom so they can do their jobs effectively, and implement “verification” systems to detect breach of trust (even for “honorable” reasons).&lt;/p&gt;
+
+&lt;p&gt;This is what many companies do. Trust, but verify.&lt;/p&gt;
+
+&lt;h2 id=&quot;perfectly-secure-applications-are-unusable&quot;&gt;Perfectly Secure Applications Are Unusable&lt;/h2&gt;
+
+&lt;p&gt;Security is always a trade-off against usability. The only  way to make a perfectly secure system is to not make the system in the first place. The trick isn’t making the system perfectly secure, the trick is balancing the security requirements with the costs (monetary, time and usability) to implement those requirements.&lt;/p&gt;
+
+&lt;p&gt;It’s important to note that I’m not talking about security requirements that are about diligence in construction, such as SQL Injection, XSS, etc. Those costs are literally nothing compared to the wrong way, if you do it right from the beginning. So the investment in education and training on those types of attacks is vital and should never be traded away. There’s no reason to go out to sea in a boat full of holes in the hull.&lt;/p&gt;
+
+&lt;p&gt;The costs I’m talking about come in terms of UX tradeoffs, in terms of application-level security (requiring approvals, multi-factor authentication, etc) and costs associated with controlling access (authentication, access control, scopes and federation, etc).&lt;/p&gt;
+
+&lt;p&gt;It’s easy to find an attack vector (they always exist). The key is weighing the cost of exploit against the cost of mitigation against the cost of breach (the damage it will do).&lt;/p&gt;
+
+&lt;p&gt;Effective security doesn’t end with all boxes checked. Effective security comes from the &lt;em&gt;right&lt;/em&gt; boxes checked. This is always a continuing question and dynamic. One that changes over time.&lt;/p&gt;
+
+&lt;p&gt;After all, you’re going to trust a janitor in a supermarket a &lt;strong&gt;lot&lt;/strong&gt; more than you’re going to trust a janitor in a nuclear power plant. Both require trust, but must you tailor the limitations and mitigations to the problem at hand.&lt;/p&gt;</content><author><name></name></author><category term="PHP" /><category term="Security" /><category term="Thoughts" /><category term="Trust" /><summary type="html">Stop and take a moment to think about how much trust is required to live your everyday life. Every single aspect of your life is built up on layer after layer of trust, it’s nothing short of staggering. Different aspects of life will contain different levels of trust, with some being very guarded and some being very lax. We don’t often talk about this trust and we often make the blind assumption that trust is inherently a bad thing. That’s most definitely not the case. Let’s explore why.</summary></entry><entry><title type="html">What About Garbage?</title><link href="/what-about-garbage" rel="alternate" type="text/html" title="What About Garbage?" /><published>2014-12-03T00:00:00+00:00</published><updated>2014-12-03T00:00:00+00:00</updated><id>/test34</id><content type="html" xml:base="/what-about-garbage">&lt;p&gt;If you’ve been following the news, you’ll have noticed that yesterday &lt;a href=&quot;https://getcomposer.org/&quot;&gt;Composer&lt;/a&gt; got a &lt;a href=&quot;https://github.com/composer/composer/commit/ac676f47f7bbc619678a29deae097b6b0710b799&quot;&gt;bit of a speed boost&lt;/a&gt;. And by “bit of a speed boost”, we’re talking between 50% and 90% reduction in runtime depending on the complexity of the dependencies. But how did the fix work? And should you make the same sort of change to your projects? For those of you who want the TL/DR answer: the answer is &lt;em&gt;no&lt;/em&gt; you shouldn’t.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2 id=&quot;the-change&quot;&gt;The Change&lt;/h2&gt;
+
+&lt;p&gt;The change was adding single line of code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;    public function run()
+    {   
++       gc_disable();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That single line of code added caused literally a 90% reduction in runtime. Why?&lt;/p&gt;
+
+&lt;p&gt;Well, according to &lt;a href=&quot;http://php.net/gc_disable&quot;&gt;the docs on &lt;code&gt;gc_disable()&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Deactivates the circular reference collector, setting &lt;code&gt;zend.enable_gc&lt;/code&gt; to &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So there you have it. By disabling the collector, speed improved!!!&lt;/p&gt;
+
+&lt;p&gt;Yeah, like I was going to leave it at that.&lt;/p&gt;
+
+&lt;h2 id=&quot;garbage-and-php&quot;&gt;Garbage And PHP&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; This all assumes PHP 5.X. The concepts of this will still be valid in 7, but some of the details may be changed.&lt;/p&gt;
+
+&lt;p&gt;PHP uses reference counted variables. That means that copying a variable doesn’t actually copy it internally.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$a = &quot;this is a long string&quot;;
+$b = $a;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That results in two “pointers” to the same value. Let’s go into C to look at the representation of this.&lt;/p&gt;
+
+&lt;p&gt;It’s called internally a &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend.h#334&quot;&gt;&lt;code&gt;zval&lt;/code&gt;&lt;/a&gt; (&lt;strong&gt;Z&lt;/strong&gt;end &lt;strong&gt;Val&lt;/strong&gt;ue). And it looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;struct _zval_struct {
+    zvalue_value value;
+    zend_uint refcount__gc;
+    zend_uchar type;
+    zend_uchar is_ref__gc;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let’s imagine that this is a PHP class:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;class Zval {
+    public $value;
+    public $type;
+    public $refcount = 1;
+    public $is_ref = false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Value is just another data structure that can hold all of the possible values that can be stored. Type indicates which type the value is (defined by the &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend.h#581&quot;&gt;&lt;code&gt;IS_\*&lt;/code&gt; definitions&lt;/a&gt;. The two interesting values are &lt;code&gt;refcount&lt;/code&gt; and &lt;code&gt;is_ref&lt;/code&gt;. Let’s talk about them…&lt;/p&gt;
+
+&lt;p&gt;So because values aren’t copied internally when you copy a variable, there needs to be a mechanism to make sure that changes go to the correct variable. This mechanism is called &lt;a href=&quot;http://en.wikipedia.org/wiki/Copy-on-write&quot;&gt;Copy-On-Write&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Basically, if you edit a variable who’s value is referenced by more than one variable, it will copy the variable right before modifying it. This makes far more sense with an example, so let’s look at one:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$a = &quot;this is a long string&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Will result in a variable &lt;code&gt;a&lt;/code&gt; in a hash table, pointing to a &lt;code&gt;zval&lt;/code&gt; instance with a value of string. We can imagine this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$scope['a'] = new Zval();
+$scope['a']-&amp;gt;type = IS_STRING;
+$scope['a']-&amp;gt;value = &quot;this is a long string&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Right now, we don’t need any of those other variables. So far, everything is happy.&lt;/p&gt;
+
+&lt;p&gt;But what happens when we copy it?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$b = $a;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now what? Well, we “point” to the same value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function copy($scope, $from, $to) {
+    $scope[$to] = $scope[$from];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And thanks to object references, we aren’t duplicating anything! Awesome!&lt;/p&gt;
+
+&lt;p&gt;But what happens if we now change one of them? Well, we change both. And we have no way of detecting those changes. So we need to add one.&lt;/p&gt;
+
+&lt;p&gt;We need to add another line to that “assignment” (well, two, but we’ll get to the second one in a bit):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function copy($scope, $from, $to) {
+    $scope[$to] = $scope[$from];
+    $scope[$to]-&amp;gt;refcount++;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Great! Now we can detect how many references there are!&lt;/p&gt;
+
+&lt;p&gt;Now what?&lt;/p&gt;
+
+&lt;p&gt;Let’s now modify one of them. Let’s change &lt;code&gt;$a&lt;/code&gt; to another value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$a = &quot;something else&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Internally, we’d have a check like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function write($scope, $var, $value) {
+    if ($scope[$var]-&amp;gt;refcount &amp;gt; 1) {
+        // reduce the refcount of the original
+        $scope[$var]-&amp;gt;refcount--;
+        // actually copy the value
+        $scope[$var] = clone $scope[$var];
+        // reset the refcount to 1
+        $scope[$var]-&amp;gt;refcount = 1;
+    }
+    $scope[$var]-&amp;gt;value = $value;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So far so good.&lt;/p&gt;
+
+&lt;p&gt;There are two more things we need to talk about. The first is references:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$b = &amp;amp;$a;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What happens here, is that we &lt;em&gt;want&lt;/em&gt; them to share the same value. So instead of just increasing refcount, we also need to set &lt;code&gt;is_ref&lt;/code&gt; to true:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function makeRef($scope, $from, $to) {
+    if (
+        $scope[$from]-&amp;gt;refcount &amp;gt; 1
+        &amp;amp;&amp;amp; !$scope[$from]-&amp;gt;is_ref
+    ) {
+        // separate the old one
+        $scope[$from]-&amp;gt;refcount--;
+        $scope[$from] = clone $scope[$from];
+        $scope[$from]-&amp;gt;refcount = 1;
+    }
+    $scope[$from]-&amp;gt;is_ref = true;
+    $scope[$from]-&amp;gt;refcount++;
+    $scope[$to] = $scope[$from];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, we need to change our write function to not copy if the variable is a reference:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function write($scope, $var, $value) {
+    if (
+        $scope[$var]-&amp;gt;refcount &amp;gt; 1
+        &amp;amp;&amp;amp; !$scope[$var]-&amp;gt;is_ref
+    ) {
+        // reduce the refcount of the original
+        $scope[$var]-&amp;gt;refcount--;
+        // actually copy the value
+        $scope[$var] = clone $scope[$var];
+        // reset the refcount to 1
+        $scope[$var]-&amp;gt;refcount = 1;
+    }
+    $scope[$var]-&amp;gt;value = $value;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, any writes will be directed to the correct variable. But we still have a problem. We need to fix our &lt;code&gt;copy&lt;/code&gt; function, becuase we may accidentally copy a reference!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function copy($scope, $from, $to) {
+    if (
+        $scope[$from]-&amp;gt;refcount &amp;gt; 1
+        &amp;amp;&amp;amp; $scope[$var]-&amp;gt;is_ref
+    ) {
+        // Separate it if it is a reference
+        $scope[$to] = clone $scope[$from];
+        $scope[$to]-&amp;gt;is_ref = false;
+        $scope[$to]-&amp;gt;refcount = 1;
+    } else {
+        $scope[$to] = $scope[$from];
+        $scope[$to]-&amp;gt;refcount++;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you notice, there’s a fair bit of duplication in there.&lt;/p&gt;
+
+&lt;p&gt;Internally, PHP represents these operations as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend.h#779&quot;&gt;&lt;code&gt;SEPARATE_ZVAL(zval)&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Always copy the value. This is used when you want to explicitly disable copy-on-write.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend.h#791&quot;&gt;&lt;code&gt;SEPARATE_ZVAL_IF_NOT_REF(zval)&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Copy the value if it’s not a reference. This is what you would call when you’re writing a variable.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend.h#796&quot;&gt;&lt;code&gt;SEPARATE_ZVAL_TO_MAKE_IS_REF(zval)&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Copy the value if it’s not a reference. This is what you would call to make a variable a reference.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-point&quot;&gt;The Point&lt;/h2&gt;
+
+&lt;p&gt;So variables are disconnected from values. This means that deleting a variable (via &lt;code&gt;unset()&lt;/code&gt; or falling out of scope) doesn’t delete its value.&lt;/p&gt;
+
+&lt;p&gt;So instead, it decrements the refcount (since there is one less variable pointing to it).&lt;/p&gt;
+
+&lt;p&gt;Then, it checks to see if the current refcount is &lt;code&gt;0&lt;/code&gt;. If it is, it can safely delete the value, since there is nothing else pointing to it.&lt;/p&gt;
+
+&lt;p&gt;This happens internally in &lt;code&gt;zval_ptr_dtor()&lt;/code&gt;, which is implemented via &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_execute.h#74&quot;&gt;&lt;code&gt;i_zval_ptr_dtor&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;static zend_always_inline void i_zval_ptr_dtor(zval *zval_ptr ZEND_FILE_LINE_DC TSRMLS_DC)
+{
+    if (!Z_DELREF_P(zval_ptr)) {
+        ZEND_ASSERT(zval_ptr != &amp;amp;EG(uninitialized_zval));
+        GC_REMOVE_ZVAL_FROM_BUFFER(zval_ptr);
+        zval_dtor(zval_ptr);
+        efree_rel(zval_ptr);
+    } else {
+        if (Z_REFCOUNT_P(zval_ptr) == 1) {
+            Z_UNSET_ISREF_P(zval_ptr);
+        }
+
+        GC_ZVAL_CHECK_POSSIBLE_ROOT(zval_ptr);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that &lt;code&gt;Z_DELREF_P(zval_ptr)&lt;/code&gt; is really just a helper that does nothing more than &lt;code&gt;--(zval_ptr-&amp;gt;refcount)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;There are a few interesting things in here. The first branch happens when the refcount hits zero (meaning there are no variables pointing to it). Once it does, it removes the value from the garbage collector, runs a destructor function, and frees (deletes) it.&lt;/p&gt;
+
+&lt;p&gt;The other branch is where things get really interesting. First, it forces the &lt;code&gt;is_ref&lt;/code&gt; flag to &lt;code&gt;false&lt;/code&gt; if the refcount is &lt;code&gt;1&lt;/code&gt; (since it’s impossible to reference yourself). This is just an optimization.&lt;/p&gt;
+
+&lt;p&gt;But the next line is interesting. &lt;code&gt;GC_ZVAL_CHECK_POSSIBLE_ROOT&lt;/code&gt;. What does that do? Well, to understand that, let’s talk about garbage collection.&lt;/p&gt;
+
+&lt;h2 id=&quot;two-types-of-garbage-collection&quot;&gt;Two Types Of Garbage Collection&lt;/h2&gt;
+
+&lt;p&gt;What we’ve described up until this point is known as &lt;a href=&quot;http://en.wikipedia.org/wiki/Reference_counting&quot;&gt;Reference Counting&lt;/a&gt; and is a form of garbage collection. Any time the number of references to a value hits &lt;code&gt;0&lt;/code&gt;, we know we can safely delete it.&lt;/p&gt;
+
+&lt;p&gt;The vast majority of situations will be covered completely by this form of GC. This was all PHP had until 5.3.0.&lt;/p&gt;
+
+&lt;p&gt;There is a slight problem with it though. It doesn’t handle circular references at all.&lt;/p&gt;
+
+&lt;p&gt;Imagine the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function foo() {
+    $a = array();
+    $b = array();
+    $a['b'] = &amp;amp;$b;
+    $b['a'] = &amp;amp;$a;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Internally we have two values created (&lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt;). But each value has two pointers to it. One for the variable, and one for the array index.&lt;/p&gt;
+
+&lt;p&gt;If we were to &lt;code&gt;var_dump($a)&lt;/code&gt;, we’d see:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;array(1) {
+  [&quot;b&quot;]=&amp;gt;
+  &amp;amp;array(1) {
+    [&quot;a&quot;]=&amp;gt;
+    &amp;amp;array(1) {
+      [&quot;b&quot;]=&amp;gt;
+      *RECURSION*
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The reason is that we now have what’s known as a &lt;a href=&quot;http://en.wikipedia.org/wiki/Circular_reference&quot;&gt;Circular Reference&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The problem with it is that with Reference Counting alone, we can never collect that memory again (unless you manually unset one of the array keys).&lt;/p&gt;
+
+&lt;p&gt;The reason is that after we delete the two variables (&lt;code&gt;$a&lt;/code&gt; and &lt;code&gt;$b&lt;/code&gt;) when we leave the function scope, we still have variables pointing to each value (their array keys).&lt;/p&gt;
+
+&lt;p&gt;So we would need some way to detect that.&lt;/p&gt;
+
+&lt;h2 id=&quot;cyclic-garbage-collection&quot;&gt;Cyclic Garbage Collection&lt;/h2&gt;
+
+&lt;p&gt;Enter something called a cyclic garbage collector.&lt;/p&gt;
+
+&lt;p&gt;Basically, this is a function which will try to detect those circular references. We call it cyclic, because it’s generalized to not just handle circular references, but handle any kind of &lt;a href=&quot;http://en.wikipedia.org/wiki/Cycle_%28graph_theory%29&quot;&gt;Cycle&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So how does it work?&lt;/p&gt;
+
+&lt;h3 id=&quot;collecting-cycles&quot;&gt;Collecting Cycles&lt;/h3&gt;
+
+&lt;p&gt;I’m going to describe this backwards. I’m going to talk about how it identifies roots later. From here, let’s talk about how it processes those roots to collect free memory.&lt;/p&gt;
+
+&lt;p&gt;PHP has a list (a linked-list) of possible “roots”. These are values that have had their refcount decremented (and hence could be part of a cycle).&lt;/p&gt;
+
+&lt;p&gt;Internally, the collector uses a “color code” system to identify states for specific values.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Black&lt;/strong&gt; - A normal variable, nothing special&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Purple&lt;/strong&gt; - A normal variable, but has been marked as a “possible root”, meaning that it may be part of a cycle that’s no longer reachable&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Grey&lt;/strong&gt; - In process variable, nothing special&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;White&lt;/strong&gt; - In process variable, but can be freed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;They are nothing more than bit flags, but the color system is “easier” to understand.&lt;/p&gt;
+
+&lt;p&gt;So when we “collect cycles” (via a few mechanisms, but &lt;a href=&quot;http://php.net/manual/en/function.gc-collect-cycles.php&quot;&gt;&lt;code&gt;gc_collect_cycles()&lt;/code&gt;&lt;/a&gt; as well), we are going to iterate over these roots.&lt;/p&gt;
+
+&lt;p&gt;The internal &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#gc_collect_cycles&quot;&gt;&lt;code&gt;gc_collect_cycles()&lt;/code&gt;&lt;/a&gt; function does a bunch of things. But there are three lines of critical importance:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;gc_mark_roots(TSRMLS_C);
+gc_scan_roots(TSRMLS_C);
+gc_collect_roots(TSRMLS_C);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It’s a &lt;a href=&quot;http://www.brpreiss.com/books/opus5/html/page424.html&quot;&gt;“mark and sweep”&lt;/a&gt; algorithm.&lt;/p&gt;
+
+&lt;p&gt;So we start off with our table:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://2.bp.blogspot.com/-v14QXmkxfxw/VH5RfGgiOpI/AAAAAAAAPXo/RkM8W_hNoGs/s320/gc_inital.png&quot; alt=&quot;Roots and values&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, you see that we have 4 values being tracked. Two are on the root buffer (and are purple, both with refcount 1), and two are not (and are black, one with refcount 1 and one with 2). The second object referencing value 4 is not shown (because we can’t get to it, that’s the point).&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#gc_mark_roots&quot;&gt;Mark Roots&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;First, it iterates across all of the roots. For each root, it &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#zobj_mark_grey&quot;&gt;sets the color to grey&lt;/a&gt; (in process).&lt;/p&gt;
+
+    &lt;p&gt;But when it marks it as grey, it then goes deeper into that variable. It iterates through all of the children of that variable, and attempts to mark them as grey as well (if they are not already grey). But when it reaches that child, it reduces the refcount.&lt;/p&gt;
+
+    &lt;p&gt;So it does a depth-first search through all of the roots and their children, reducing the refcount as it goes (being sure to only reduce it once).&lt;/p&gt;
+
+    &lt;p&gt;This is basically the same concept as “if this root were to be removed, what would happen to the rest of the children”.&lt;/p&gt;
+
+    &lt;p&gt;It does this for the entire variable graph.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://4.bp.blogspot.com/-HD4BmFCmIl0/VH5RfLyhvAI/AAAAAAAAPXI/A-7I9B8FTmA/s320/gc_mark_roots.png&quot; alt=&quot;Mark Them Grey&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;As you can see, all of the refcounts are decremented by one.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#gc_scan_roots&quot;&gt;Scan Roots&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;At this point, it will do another depth-first search through all of the roots and their children. This time, it checks to see the refcount (assuming that the color is “grey” - in-progress).&lt;/p&gt;
+
+    &lt;p&gt;If the refcount is more than 0, it means that there must exist another reference to it. So it’s &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#zval_scan&quot;&gt;set to black&lt;/a&gt; (meaning that it’s a normal variable) and every child is also set to black.&lt;/p&gt;
+
+    &lt;p&gt;If the refcount is 0, then that means that there’s a cycle. The value is set to white meaning it can be marked for removal.&lt;/p&gt;
+
+    &lt;p&gt;After the scan, all of the colors should be either black or white. Meaning still have references, or don’t.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://3.bp.blogspot.com/-65QhaIUH-jw/VH5RfyeWg0I/AAAAAAAAPXY/gBHCBP0plbE/s320/gc_scan_roots.png&quot; alt=&quot;Scan The Roots&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;In this case, both values 1 and 2 are marked for collection.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#gc_collect_roots&quot;&gt;Collect Roots&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Yet another depth-first search through all of the roots and their children. Except this time, any white values are collected and freed.&lt;/p&gt;
+
+    &lt;p&gt;Non-white values are skipped (nothing happens to them).&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://2.bp.blogspot.com/-pdmWyHPYJXE/VH5RfA0Fm7I/AAAAAAAAPXM/gSuI1FMkAyM/s320/gc_collect_roots.png&quot; alt=&quot;Collect The Roots&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;As you can see, values 1 and 2 are gone.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Notice what happened there. We did a depth-first search through every value in the graph. But not only that, we did three.&lt;/p&gt;
+
+&lt;p&gt;You may spot something that could be fixed. You could say, why not combine the scan and collect phases into one pass?&lt;/p&gt;
+
+&lt;p&gt;Well, there’s a problem. If you had a complex relationship, where there are more than 2 elements in the graph, you wouldn’t be able to do that:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://1.bp.blogspot.com/-cgGDLUy9UiA/VH5Rfv6JewI/AAAAAAAAPXQ/-qEvNbiRubc/s320/gc_mid_scan.png&quot; alt=&quot;mid_scan&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is mid-scan. We’ve already marked value 1 and 2 as white, since their refcount is 0. But then we come to value 5. Its refcount is 1, meaning there’s still a reference to it.&lt;/p&gt;
+
+&lt;p&gt;So now, we’re at a dilema. If we freed as part of scan, we’d have deleted information we need. But in this case, we can just search right back and mark value 2 as black (since a parent is black). So the overall graph would wind up black in the end.&lt;/p&gt;
+
+&lt;p&gt;So this is not a cheap thing.&lt;/p&gt;
+
+&lt;p&gt;Collecting cycles takes &lt;strong&gt;a lot&lt;/strong&gt; of power to do. It is especially expensive on object graphs that are deep, since it needs to visit every object.&lt;/p&gt;
+
+&lt;p&gt;Suffice it to say it’s an expensive operation.&lt;/p&gt;
+
+&lt;p&gt;Thankfully it happens extremely infrequently in normal applications. And when it happens, it’s likely because you’re allocating a lot of objects, and hence can have a lot of cycles built up (and hence a chance to save a lot of memory).&lt;/p&gt;
+
+&lt;p&gt;So that’s how we collect roots. Let’s talk about how we find them.&lt;/p&gt;
+
+&lt;h3 id=&quot;finding-possible-roots&quot;&gt;Finding Possible Roots&lt;/h3&gt;
+
+&lt;p&gt;Well if you remember back to the &lt;code&gt;zval_ptr_dtor&lt;/code&gt; call, there was a call to &lt;code&gt;GC_ZVAL_CHECK_POSSIBLE_ROOT&lt;/code&gt; at the end. That macro proxies to &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.h#gc_zval_check_possible_root&quot;&gt;&lt;code&gt;gc_zval_check_possible_root()&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;static zend_always_inline void gc_zval_check_possible_root(zval *z TSRMLS_DC)
+{
+    if (z-&amp;gt;type == IS_ARRAY || z-&amp;gt;type == IS_OBJECT) {
+        gc_zval_possible_root(z TSRMLS_CC);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So basically, if the type is complex (can have child variables), then say that it’s a possible root (meaning that it may be the source of a cycle). So it runs a &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#130&quot;&gt;root algorithm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A lot is going on here, but basically it boils down to a few basic steps:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Check to see if it’s already a root&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;if (GC_ZVAL_GET_COLOR(zv) != GC_PURPLE) {
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;So this if statement basically says “if this value is already a root, skip it”.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If it’s not a root, make it one.&lt;/p&gt;
+
+    &lt;p&gt;To make it a root, first we set the color to Purple:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;GC_ZVAL_SET_PURPLE(zv);
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;This is just really house-keeping, and doesn’t really effect anything.&lt;/p&gt;
+
+    &lt;p&gt;Then, we need to check to see if we’ve already stored this in the list of possible roots:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;if (!GC_ZVAL_ADDRESS(zv)) {
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;This again is house-keeping. In practice, we can ignore this part since it should never get out of sync with the Purple flag. This is here as protection.&lt;/p&gt;
+
+    &lt;p&gt;The next bit is where interesting things start happening:&lt;/p&gt;
+
+    &lt;p&gt;So the GC uses a linked list for the buffer of possible roots. So to add a root, we need to get the next unused item (the head of the linked list).&lt;/p&gt;
+
+    &lt;p&gt;I’ll explain inline:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;gc_root_buffer *newRoot = GC_G(unused);
+    
+if (newRoot) {
+    GC_G(unused) = newRoot-&amp;gt;prev;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;If we get back a “unused memory block” from the buffer, that means that we’ve already added and removed an item from the GC buffer. So since we have a free slot, we can just add it straight away.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;} else if (GC_G(first_unused) != GC_G(last_unused)) {
+    newRoot = GC_G(first_unused);
+    GC_G(first_unused)++;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;We have free space in the buffer that we haven’t used, so add it there.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;} else {
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;This happens when our root buffer is full. By default, the root buffer is allocated to be &lt;a href=&quot;http://lxr.php.net/xref/PHP_5_6/Zend/zend_gc.c#GC_ROOT_BUFFER_MAX_ENTRIES&quot;&gt;10,000 values&lt;/a&gt;.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;    if (!GC_G(gc_enabled)) {
+        GC_ZVAL_SET_BLACK(zv);
+        return;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Well, if GC isn’t enabled, then why bother at all…&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;    }
+    zv-&amp;gt;refcount__gc++;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Remember we decremented the refcount earlier. We need to increment it here before the run, since the run will try to decrement it again.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;    gc_collect_cycles(TSRMLS_C);
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Collect the cycles to try to open up space.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;    zv-&amp;gt;refcount__gc--;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Restore the refcount to what it was.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;    newRoot = GC_G(unused);
+    if (!newRoot) {
+        return;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;So this means that our root buffer is full. Meaning that we’ve already got 10,000 values that we’re tracking as part of possible cycles. So since we have no more room, rather than re-allocating, we just return.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;    }
+    GC_ZVAL_SET_PURPLE(zv);
+    GC_G(unused) = newRoot-&amp;gt;prev;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;This means we’ve found a spot, so we’re going to add it.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do some house-keeping&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;newRoot-&amp;gt;next = GC_G(roots).next;
+newRoot-&amp;gt;prev = &amp;amp;GC_G(roots);
+GC_G(roots).next-&amp;gt;prev = newRoot;
+GC_G(roots).next = newRoot;
+    
+GC_ZVAL_SET_ADDRESS(zv, newRoot);
+    
+newRoot-&amp;gt;handle = 0;
+newRoot-&amp;gt;u.pz = zv;
+    
+GC_BENCH_INC(zval_buffered);
+GC_BENCH_INC(root_buf_length);
+GC_BENCH_PEAK(root_buf_peak, root_buf_length);
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;The rest of this is just some house-keeping. Nothing really important happens here for our concerns, this is just the actual mechanics for adding the value to the root buffer.
+Did you notice the problem?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If not, go back and look through the code carefully. See if you can spot it.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-happened-to-composer&quot;&gt;What Happened To Composer&lt;/h2&gt;
+
+&lt;p&gt;Composer includes a &lt;a href=&quot;http://en.wikipedia.org/wiki/Boolean_satisfiability_problem&quot;&gt;SAT Solver&lt;/a&gt;. Basically, it’s a graph of requirements, that it then solves by looking at combinations of dependencies that satisfy the requirements. It’s quite smart in how it does it, but it’s a lot of operations and is by no means a trivial problem.&lt;/p&gt;
+
+&lt;p&gt;But one of the ways it solves this problem is by creating objects. A lot of objects. Like an extreme amount. Potentially tens or hundreds of thousands of them. Or more. Some with circular references.&lt;/p&gt;
+
+&lt;p&gt;Now, remember how an object gets put on the root buffer. It just needs to have its refcount decremented.&lt;/p&gt;
+
+&lt;p&gt;It can happen if you unset a variable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$a = $obj;
+unset($a);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or if you call a function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function foo(StdClass $foo) {
+}
+
+foo($obj)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When the object is passed in, its refcount goes up. When it leaves the function, it goes down and hence gets added to the list of possible roots.&lt;/p&gt;
+
+&lt;p&gt;So objects are added to the root buffer &lt;strong&gt;all the time&lt;/strong&gt;. This is quite quick under normal situations and has little to no performance impact.&lt;/p&gt;
+
+&lt;p&gt;However, there was a hint above as to the problem:&lt;/p&gt;
+
+&lt;p&gt;When the root buffer is full, it will try to run the &lt;code&gt;gc_collect_cycles()&lt;/code&gt; function to free up space.&lt;/p&gt;
+
+&lt;p&gt;There is room for 10,000 entries in the root buffer.&lt;/p&gt;
+
+&lt;p&gt;That means that if you’ve got more than 10,000 objects &lt;em&gt;that have their refcounts decremented&lt;/em&gt;, it will try to collect cycles every single time a new one’s refcount is decremented.&lt;/p&gt;
+
+&lt;p&gt;It’s important to make this one point clear:&lt;/p&gt;
+
+&lt;p&gt;It’s not enough to make 10k objects. You’d need to decrement &lt;em&gt;without collecting&lt;/em&gt; all 10k objects. This is fairly rare.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$array = [];
+for ($i = 0; $i &amp;lt; 10000; $i++) {
+    $array[] = new StdClass;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Would not result in any objects on the root buffer. Because the individual objects aren’t decremented (only the array is).&lt;/p&gt;
+
+&lt;p&gt;You’d need to pass every object to a function individually:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;foreach ($array as $value) {
+    doSomething($value);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This happens. A lot. But with 10k objects in a single execution (at the same time), it’s not exceptionally common. And it’s not happening in most web requests.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-take-away&quot;&gt;The Take Away&lt;/h2&gt;
+
+&lt;p&gt;Don’t go adding &lt;code&gt;gc_disable()&lt;/code&gt; to all of your code. What happened here is a pretty rare event. They created a ton of objects that they needed, and kept using. This triggered an edge-case situation where it kept calling the garbage collector over-and-over.&lt;/p&gt;
+
+&lt;p&gt;For Composer, disabling garbage collection prevented them from running into this situation. This helped them. But more often than not, the GC is actually quite smart. More often than not, it’ll be better for you than not running it.&lt;/p&gt;
+
+&lt;p&gt;My argument is that if you’re running into performance issues, you can try disabling garbage collection. But don’t leave it off.&lt;/p&gt;
+
+&lt;p&gt;If it makes an improvement, fix your application. There are very few problems that require creating and keeping alive 10k objects. Especially in a web request You are far more likely to be better served by an algorithm change than by just blindly disabling a system that on the whole is quite good. So fix your code, don’t just band-aid it. (SAT solving, and graphs in general are one case where you really do need that many objects).&lt;/p&gt;
+
+&lt;p&gt;This also shows that some improvement to the garbage collector can be done. Rather than running the collection cycle on every attempt to add a new root past 10k, perhaps a better algorithm could be developed. A few options:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Exponential back-off&lt;/p&gt;
+
+    &lt;p&gt;In this case, you’d try running the collector. If it failed, you’d increment a counter.&lt;/p&gt;
+
+    &lt;p&gt;Before trying the next run, you check to see if the counter is an even power of 2. If it is, run the collector. Otherwise, skip the run.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt; if (0 == (GC_G(collect_counter) &amp;amp; (GC_G(collect_counter) - 1))) {
+     // only run on even-power-of-two calls, 0, 2, 4, 8, 16, etc
+     zv-&amp;gt;refcount__gc++;
+     gc_collect_cycles(TSRMLS_C);
+     zv-&amp;gt;refcount__gc--;
+ }
+    
+ newRoot = GC_G(unused);
+ if (!newRoot) {
+     // increase counter, as it's a failed run
+     GC_G(collect_counter)++;
+     return;
+ }
+ // reset counter to 0
+ GC_G(collect_counter) = 0;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;This works nicely, since it will still keep trying to collect, but it will do it less and less frequently if it’s shown to not be effective.&lt;/p&gt;
+
+    &lt;p&gt;And if a collection is ever successful, it’ll run again next time it gets full (maximizes usefulness).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Increase the buffer size on failed collect run&lt;/p&gt;
+
+    &lt;p&gt;Here, we’d re-allocate the buffer from 10k to 20k if the run failed.&lt;/p&gt;
+
+    &lt;p&gt;This can get EXTREMELY expensive for large numbers of objects, since it increases the runtime of the collector operation.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Run the collector on a probability basis&lt;/p&gt;
+
+    &lt;p&gt;Define a config option for how often to run the collector. Similar to session garbage collection. Then if the buffer fills, only run the collector with that probability.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Another idea?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But that’s what really happened.&lt;/p&gt;</content><author><name></name></author><category term="Object Oriented Programming" /><category term="Performance" /><category term="PHP" /><category term="PHP-Internals" /><summary type="html">If you’ve been following the news, you’ll have noticed that yesterday Composer got a bit of a speed boost. And by “bit of a speed boost”, we’re talking between 50% and 90% reduction in runtime depending on the complexity of the dependencies. But how did the fix work? And should you make the same sort of change to your projects? For those of you who want the TL/DR answer: the answer is no you shouldn’t.</summary></entry><entry><title type="html">You’re Doing Agile Wrong</title><link href="/youre-doing-agile-wrong" rel="alternate" type="text/html" title="You're Doing Agile Wrong" /><published>2014-10-27T00:00:00+00:00</published><updated>2014-10-27T00:00:00+00:00</updated><id>/youre-doing-agile-wrong</id><content type="html" xml:base="/youre-doing-agile-wrong">&lt;p&gt;To some of you, this may not be new. But to many of the people preaching “Agile Software Development”, Agile is not what you think it is. Let me say that again, because it’s important: You’re Doing Agile Wrong.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2 id=&quot;what-is-agile&quot;&gt;What Is Agile&lt;/h2&gt;
+
+&lt;p&gt;Some people think that Agile is a project management framework. They are wrong.&lt;/p&gt;
+
+&lt;p&gt;Some people think that Agile is a development methodology. They are wrong.&lt;/p&gt;
+
+&lt;p&gt;Some people say that Agile is a “tool”. They are wrong.&lt;/p&gt;
+
+&lt;p&gt;To say it simply, Agile is a philosophy.&lt;/p&gt;
+
+&lt;p&gt;Or more accurately, Agile is a &lt;strong&gt;business&lt;/strong&gt; philosophy.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-agile-manifesto&quot;&gt;The Agile Manifesto&lt;/h2&gt;
+
+&lt;p&gt;If you actually read at the &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Agile Manifesto&lt;/a&gt;, you’ll notice that actually none of the points made have anything to do with project management, or even software development (you can replace “software” with “product” and get the identical meaning). Really, it’s a way of thinking. Really, it’s a way of communicating.&lt;/p&gt;
+
+&lt;p&gt;And that’s what agile is really about.&lt;/p&gt;
+
+&lt;h2 id=&quot;communication-is-king&quot;&gt;Communication Is King&lt;/h2&gt;
+
+&lt;p&gt;Communication is the key. That’s what the Agile Manifesto is really trying to communicate (see what I did there :-P).&lt;/p&gt;
+
+&lt;p&gt;Well, what does that mean? Communication between who?&lt;/p&gt;
+
+&lt;p&gt;Well, to put it bluntly, everyone.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do your developers &lt;em&gt;understand&lt;/em&gt; the business impact of the feature they are working on?&lt;/p&gt;
+
+    &lt;p&gt;And &lt;strong&gt;far&lt;/strong&gt; more importantly, do they believe it?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do the executives &lt;em&gt;understand&lt;/em&gt; the costs and challenges of development?&lt;/p&gt;
+
+    &lt;p&gt;And &lt;strong&gt;far&lt;/strong&gt; more importantly, do they trust that information?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do the business owners &lt;em&gt;understand&lt;/em&gt; the technical architecture?&lt;/p&gt;
+
+    &lt;p&gt;And &lt;strong&gt;far&lt;/strong&gt; more importantly, do they understand its limitations?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-do-you-communicate&quot;&gt;How do you communicate?&lt;/h2&gt;
+
+&lt;p&gt;An iterative development model is fine. There’s nothing wrong with it. But if you’re only communicating (or allowing communication to happen) in the iterative cycles, you’re doing something &lt;strong&gt;incredibly&lt;/strong&gt; wrong.&lt;/p&gt;
+
+&lt;p&gt;Take this scenario: Imagine you’re working with a team that does two week iterations (sprints). The team is 4 days into the iteration. The business comes to you and says &lt;em&gt;“We have a last minute feature that we &lt;strong&gt;need&lt;/strong&gt; to get in this cycle”&lt;/em&gt;. What do you do?&lt;/p&gt;
+
+&lt;p&gt;Many teams would try to push back. They try to say “Well, we’re already mid-sprint, can we do it next iteration?”. Or “We’ve already committed to a big iteration”. I’ve seen agile coaches recommend doing this. I’ve seen people who are professionals suggesting this.&lt;/p&gt;
+
+&lt;p&gt;It’s an incredibly easy trap to fall into.&lt;/p&gt;
+
+&lt;p&gt;Instead, what &lt;em&gt;needs&lt;/em&gt; to happen is a discussion around &lt;em&gt;why&lt;/em&gt; needs to occur.&lt;/p&gt;
+
+&lt;p&gt;Remember, if you’re actually communicating, the business &lt;em&gt;knows&lt;/em&gt; what you’re doing. And they know the priority of it. So if they come in and say “we have a problem”, everybody better recognize that there’s a problem and stop what they are doing.&lt;/p&gt;
+
+&lt;p&gt;But that doesn’t happen. That’s not realistic. Instead, one person may stop and look up to see what’s going on. But we don’t stop teams when one person says something…&lt;/p&gt;
+
+&lt;p&gt;Not because that’s inefficient, but because we suck at communicating.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-an-ideal-business&quot;&gt;In An Ideal Business&lt;/h2&gt;
+
+&lt;p&gt;In an ideal business, everyone would know what’s going on everywhere.&lt;/p&gt;
+
+&lt;p&gt;That doesn’t mean people don’t need to make decisions. And it doesn’t mean that the CEO knows the internal workings of the smallest system in the company. There are still levels of abstraction, levels of accountability and decision making.&lt;/p&gt;
+
+&lt;p&gt;But if information can flow freely, everyone can question a decision. If the CEO makes a certain set of priorities, even engineers can question that. They can understand &lt;em&gt;why&lt;/em&gt;. And more importantly, they can align themselves with it.&lt;/p&gt;
+
+&lt;p&gt;Doing this requires trust in your fellow coworkers. But then again, who wants to work in a place where they can’t trust their coworkers?&lt;/p&gt;
+
+&lt;p&gt;And even if it is an “ideal” that we can never achieve, that’s no reason to not try…&lt;/p&gt;
+
+&lt;h2 id=&quot;but-scrum-is-amazing&quot;&gt;“But Scrum Is Amazing”&lt;/h2&gt;
+
+&lt;p&gt;eih…&lt;/p&gt;
+
+&lt;p&gt;Many companies practice Scrum as an “agile” methodology. It gives the business insight into the development model. Right?&lt;/p&gt;
+
+&lt;p&gt;Scrum is simply cleverly designed waterfall. But instead of lasting months, it lasts 2 weeks.&lt;/p&gt;
+
+&lt;p&gt;You do a backlog review meeting, where you decide what you can actually build in two weeks. Then you do a commitment meeting where you actually say what you’re going to build. And then you spend two weeks building. And then you have another meeting to show what you’ve built.&lt;/p&gt;
+
+&lt;p&gt;Really, it feels like “agile”, but really all it does is make the people who have process fetishes feel good inside.&lt;/p&gt;
+
+&lt;p&gt;That’s not to say it can’t work. You can be &lt;strong&gt;extremely&lt;/strong&gt; successful using Scrum. But not because of its process. Because you’re communicating effectively.&lt;/p&gt;
+
+&lt;h2 id=&quot;effective-communication&quot;&gt;Effective Communication&lt;/h2&gt;
+
+&lt;p&gt;Effective communication is a hard thing to quantify. When you have it, you know you have it. When you don’t, it can be hard to tell what to fix.&lt;/p&gt;
+
+&lt;p&gt;I don’t pretend to be an expert on communication. But here are a few things that I’ve seen that can help enable effective communication:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Speaking The Same Language&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;It’s really easy to think you’re communicating effectively, but have both sides of the conversation take away completely different points.&lt;/p&gt;
+
+    &lt;p&gt;Instead, realize that sometimes that definition that you think is implied isn’t, and you need to take an extra few seconds to explain what you really mean.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Trust&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;The single most important factor in effective communication is trust. If you don’t trust the person you’re communicating with, you’re not going to believe what they tell you.&lt;/p&gt;
+
+    &lt;p&gt;If you can’t trust your team, you can’t be effective. Bottom line.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;A Level Playing Field&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;Communication can only be effective if the people communicating are doing so on a level playing field. If an engineer is talking to a VP, the communication is going to be skewed unless they are talking on the same level. With equal weights as contributors to the conversation.&lt;/p&gt;
+
+    &lt;p&gt;That doesn’t mean that everyone needs to be involved in every decision made, it just means that when you are communicating, you need to communicate as equals, no matter the role.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;A Safe Environment&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;There needs to be an absolute lack of fear around punishment or reprisal for negative information.&lt;/p&gt;
+
+    &lt;p&gt;Someone who fears reprisal will withhold information. This is especially significant on under-performing or troubled teams.&lt;/p&gt;
+
+    &lt;p&gt;Look at teams that are behind schedule (and not by a small amount), and you’ll tend to find that people usually know what the problem is. Yet if they’re not able to communicate that, well, things go south quick.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Chemistry&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;The most effective teams that I’ve ever seen have a sort of chemistry between each other. They “get” each other. They know when someone has a concern just by looking at them. They can communicate without words.&lt;/p&gt;
+
+    &lt;p&gt;And that’s a multiplier.&lt;/p&gt;
+
+    &lt;p&gt;It takes time to build that sort of chemistry.&lt;/p&gt;
+
+    &lt;p&gt;That’s not to say you can’t be effective without chemistry, but that it can be a significant multiplier to it.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;naturally&quot;&gt;Naturally&lt;/h2&gt;
+
+&lt;p&gt;Naturally, it’s not constructive to have an entire team involved in every decision. it’s not constructive to have an entire company attend every meeting. There needs to be some line.&lt;/p&gt;
+
+&lt;p&gt;Of course I’m not suggesting that there’s no line. But instead, what I’m suggesting, is that the line needs to be flexible. That line needs to bend and shape to the situation at hand.&lt;/p&gt;
+
+&lt;p&gt;And that’s ultimately what agile is about. Realizing that as long as we communicate, we can overcome any obstacle. As long as we communicate, we can be effective.&lt;/p&gt;</content><author><name></name></author><category term="Agile" /><category term="Best Practice" /><category term="Education" /><category term="Language Agnostic" /><category term="PHP" /><category term="Programming" /><category term="Scrum" /><summary type="html">To some of you, this may not be new. But to many of the people preaching “Agile Software Development”, Agile is not what you think it is. Let me say that again, because it’s important: You’re Doing Agile Wrong.</summary></entry><entry><title type="html">What’s In A Type</title><link href="/whats-in-type" rel="alternate" type="text/html" title="What's In A Type" /><published>2014-10-24T00:00:00+00:00</published><updated>2014-10-24T00:00:00+00:00</updated><id>/whats-in-type</id><content type="html" xml:base="/whats-in-type">&lt;p&gt;There has been a lot of talk about typing in PHP lately. There are a couple of popular proposals for how to clean up PHP’s APIs to be simpler. Most of them involve changing PHP’s type system at a very fundamental level. So I thought it would be a good idea to talk about that. What goes into a type?&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2 id=&quot;type-systems-in-general&quot;&gt;Type Systems In General&lt;/h2&gt;
+
+&lt;p&gt;Type systems tend to have 4 main properties. Or really, two axises they can be judged by: Strength and Explicitness.&lt;/p&gt;
+
+&lt;p&gt;Explicitness describes whether the types are resolvable at compile time. So an explicit type system either requires you to specify every type (commonly called “strict” typing) or it uses type inference to deduce the type. While different, both are explicitly typed. Without explicit typing, you have dynamic typing. This is where a compiler cannot know all type information at compile time. Some of the type information must come at runtime.&lt;/p&gt;
+
+&lt;p&gt;Strength describes what happens when you try to mutate a type. Can you change a variables type easily? In Strong typed languages, once a variable is defined to be a particular type (via explicit or runtime typing), it can never change types. In a Weak typed language, variables can change their type in the course of the program.&lt;/p&gt;
+
+&lt;p&gt;Looking at some popular languages:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Language&lt;/th&gt;&lt;th&gt;Explicitness&lt;/th&gt;&lt;th&gt;Strength&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PHP&lt;/td&gt;&lt;td&gt;Static + Dynamic&lt;/td&gt;&lt;td&gt;Weak&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Python&lt;/td&gt;&lt;td&gt;Dynamic&lt;/td&gt;&lt;td&gt;Strong&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;C&lt;/td&gt;&lt;td&gt;Static&lt;/td&gt;&lt;td&gt;Strong&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Java&lt;/td&gt;&lt;td&gt;Static&lt;/td&gt;&lt;td&gt;Strong&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;JavaScript&lt;/td&gt;&lt;td&gt;Dynamic&lt;/td&gt;&lt;td&gt;Weak&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Ruby&lt;/td&gt;&lt;td&gt;Dynamic&lt;/td&gt;&lt;td&gt;Weak&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;By definition, all Static languages are going to be Strongly typed. But there are even gradations within that. For example, in C, if you pass an integer to a function expecting a float, it’ll happily cast it for you (as long as it’s not a pointer). But in Java, that same functionality will be a compiler error.&lt;/p&gt;
+
+&lt;p&gt;Notice that both JavaScript and PHP are both Dynamic and Weak. But also note that PHP is also Static. Static and Weak? I just said that was not possible by definition. This is curious.&lt;/p&gt;
+
+&lt;p&gt;As it turns out, we get a few of the nice parts of Static typing, with none of the benefits. It’s still quite hard to statically analyze PHP.&lt;/p&gt;
+
+&lt;p&gt;So, let’s talk about the tradeoffs involved with a type system.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-tradeoffs&quot;&gt;The Tradeoffs&lt;/h2&gt;
+
+&lt;p&gt;The tradeoffs are rather interesting. On one hand, if a language is both Statically typed and Strong typed, it’s far easier to analyze without running the program. We call this type of analysis “static” analysis. Because it only looks at the code, not runtime information.&lt;/p&gt;
+
+&lt;p&gt;So a Static+Strong language is easier to analyze. What does that buy us? Well, it lets us have compilers that check for a certain class of errors automatically. You can detect areas where you wanted a string, but were given an array. Or where you expected an integer, but were passed a string. Etc. It means that all type conversions will be specified explicitly.&lt;/p&gt;
+
+&lt;p&gt;This doesn’t mean that there are no bugs. It just means there are no &lt;em&gt;type&lt;/em&gt; bugs. That’s a very important distinction to make, for example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function foo(int length_in_feet) {...}
+int length_in_meters = 10;
+foo(length_in_meters);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From a type standpoint, that’s 100% valid code. And no static analyzer will ever tell you it’s wrong. But it’s quite obviously wrong.&lt;/p&gt;
+
+&lt;p&gt;When we move from Static to Dynamic typing (while retaining Strong), an interesting thing happens. Once we know the type (via explicit cast, or other operation), we can rely on it. That means that compilation is a fair bit easier. Sure, we can’t statically analyze as well, but it’s easier on the programmer. And since you know that once the variable is created its type won’t change, it’s a bit easier to work with than weak languages.&lt;/p&gt;
+
+&lt;p&gt;But do you lose anything with it? Well, yes. You lose flexibility. And you lose the property of forgiveness.&lt;/p&gt;
+
+&lt;p&gt;With a statically typed language, if the types don’t match, it’s up to you to fix it. For small systems, this is easy to do. For large systems where the developer has intimate knowledge of the system, it’s pretty easy to do. But for a junior developer, it can be difficult. For a new programmer, it can be down right confusing.&lt;/p&gt;
+
+&lt;p&gt;That’s not that big of a deal though when writing custom code yourself. The type safety can be hugely beneficial.&lt;/p&gt;
+
+&lt;p&gt;But imagine you’re running WordPress in a &lt;strong&gt;purely&lt;/strong&gt; statically typed language. You install a plugin, and all of a sudden you get a compiler error on a type mismatch. That could be a problem! But how to fix it? To someone just starting out programming? That’s unpossible…&lt;/p&gt;
+
+&lt;p&gt;Well, it depends on the types involved.&lt;/p&gt;
+
+&lt;p&gt;For some mismatches, it can be seen as an annoyance. “Expecting int, but found float”. Yay. Sure, it’s nice to be explicit, but that’s annoying. Why not just do the sane thing when it seems sane?&lt;/p&gt;
+
+&lt;p&gt;And ultimately, that’s the basis for PHP’s type system. Try to do the sane thing, and error if you can’t.&lt;/p&gt;
+
+&lt;h2 id=&quot;phps-type-system&quot;&gt;PHP’s Type System&lt;/h2&gt;
+
+&lt;p&gt;PHP really has two semi-independent type systems. It has one for Objects, and one for everything else (yes, you can type hint on arrays and callables, but they are complex on their own).&lt;/p&gt;
+
+&lt;p&gt;For objects, it follows a Strict+Weak model. Which is really weird, because the type checks only happen at function boundaries or with &lt;code&gt;instanceof&lt;/code&gt;. For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function foo(Bar $bar) {
+    $bar = 10;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We strictly hinted on &lt;code&gt;Bar&lt;/code&gt;, but then the variable changed types. That means when we analyze PHP, we need to keep in mind that the types can change on a line by line basis. So talking about the type of a variable is more talking about how the type propagates over time through a program.&lt;/p&gt;
+
+&lt;p&gt;For everything else except objects, we have a fully weak system. Excluding the weird &lt;code&gt;resource&lt;/code&gt; type, PHP will always &lt;em&gt;try&lt;/em&gt; to do a sane conversion for you. Meaning:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function foo($a) {
+    return $a + 1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When we call that function, we don’t know what the result will be. But we can say for sure that it will be a numeric type (float or integer). Now, the interesting thing is what happens when we pass in something that’s non-numeric. What if &lt;code&gt;$a&lt;/code&gt; was a string? What if it was an array? What about a boolean?&lt;/p&gt;
+
+&lt;p&gt;Well, PHP will use the context that you’re using the type in to determine what type it should be (re-read that line, this is important, and we’re going to come back to this again).&lt;/p&gt;
+
+&lt;p&gt;So when we pass in a string, it’ll say “Hey, this is a numeric operation, so let’s try to convert to a numeric”. Then it’ll look at the string, and say “does this look like a number?”. If it does, then it converts it silently to that number, and proceeds. If not, it’ll raise a notice, and return the nearest sensible value (&lt;code&gt;0&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;We call this type juggling. And PHP’s type system is rooted in it.&lt;/p&gt;
+
+&lt;p&gt;In a lot of cases, it’s incredibly valuable. It makes an application more flexible, but really it makes it more forgiving. “You expected a float, but tried to pass an integer, no problem, we’ll make it work”.&lt;/p&gt;
+
+&lt;p&gt;The devil is in the edge cases. And PHP is famous for them. But overall, as long as you stay in the sweet spot, it works really well.&lt;/p&gt;
+
+&lt;h2 id=&quot;context-is-everything&quot;&gt;Context Is Everything&lt;/h2&gt;
+
+&lt;p&gt;PHP’s entire scalar type system is built around context. When you pass a variable to &lt;code&gt;strlen()&lt;/code&gt;, it doesn’t matter what the type is, you’re saying you want a string length.&lt;/p&gt;
+
+&lt;p&gt;PHP’s entire type system is built around that fact. You need the context to determine what the type should be.&lt;/p&gt;
+
+&lt;h2 id=&quot;polymorphism&quot;&gt;Polymorphism&lt;/h2&gt;
+
+&lt;p&gt;Polymorphism is basically inverting the relationship of context. Rather than the calling code providing the context, it lets the type itself provide the context. So when you call &lt;code&gt;$foo-&amp;gt;bar()&lt;/code&gt;, you’re saying “I don’t care what &lt;code&gt;$foo&lt;/code&gt; is, just do the &lt;code&gt;bar&lt;/code&gt; concept on it”.&lt;/p&gt;
+
+&lt;p&gt;With polymorphism, the functionality can change simply by changing the type. So the same method can do two different things on two different objects (&lt;code&gt;$duck-&amp;gt;quack()&lt;/code&gt; can either echo &lt;code&gt;&quot;quack&quot;&lt;/code&gt; or do something far more nefarious, but to the calling code, it’s just a quack).&lt;/p&gt;
+
+&lt;p&gt;This is incredibly powerful, because it inverts the normal context relationship. Rather than the call providing the context, it lets the called thing determine the context.&lt;/p&gt;
+
+&lt;p&gt;So what happens when Polymorphism meets PHP’s weak type system?&lt;/p&gt;
+
+&lt;h2 id=&quot;chaos&quot;&gt;Chaos&lt;/h2&gt;
+
+&lt;p&gt;Imagine for a second that we had methods on scalar types. What would the following code do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$foo-&amp;gt;length()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Does that take the string length? Does it take the array length? Does it give you something else entirely?&lt;/p&gt;
+
+&lt;p&gt;On the surface, that seems like a moot point. That’s the point of polymorphism, after all.&lt;/p&gt;
+
+&lt;p&gt;But what happens if you intended to get the string length. Then what happens if it’s an object that implements &lt;code&gt;__toString&lt;/code&gt;? Do you expect the method call to fail? Or do you expect &lt;code&gt;__toString&lt;/code&gt; to be called first?&lt;/p&gt;
+
+&lt;p&gt;Ok, so that’s not a big deal. If you want a string length, you just make sure you have a string!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$str = (string) $foo;
+$str-&amp;gt;length();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or even better, if we had strict scalar type declarations:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;function my_strlen(string $str) {
+    return $str-&amp;gt;length();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Boom! We have predictability. We have sanity! We know our code works on strings, so we know the length method works! Awesome!&lt;/p&gt;
+
+&lt;p&gt;But how would you call that code? If you wanted safety, you’d almost &lt;em&gt;have&lt;/em&gt; to just use a cast:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;my_strlen((string) $foo)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But now we’re back to the beginning. We have lost all the benefits of strong typing. It’s the same type juggling all over again, but this time we’re pushing the juggling requirement onto the caller of our code. Weird.&lt;/p&gt;
+
+&lt;p&gt;The cast is the least safe alternative that we could do. At least the implicit context-based cast will raise errors (or notices really) if the cast doesn’t make sense (like passing &lt;code&gt;&quot;apple&quot;&lt;/code&gt; to a function expecting an integer). The explicit cast means that you can be hiding far worse bugs…&lt;/p&gt;
+
+&lt;h2 id=&quot;enter-safe-casts&quot;&gt;Enter Safe Casts&lt;/h2&gt;
+
+&lt;p&gt;There’s currently a &lt;a href=&quot;https://wiki.php.net/rfc/safe_cast&quot;&gt;proposal to add Safe Casts&lt;/a&gt; to PHP. This would basically be a series of functions which will convert if sane, or error. So it provides the same context that PHP needs under the hood, yet allows the programmer to determine that context at call time.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;my_strlen(to_string($foo));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That’s a lot better, since an unsafe value results in an error…&lt;/p&gt;
+
+&lt;p&gt;If strict scalar type declarations (hints) are going to happen, a safe-cast mechanism would make it much safer.&lt;/p&gt;
+
+&lt;h2 id=&quot;my-assertion&quot;&gt;My Assertion&lt;/h2&gt;
+
+&lt;p&gt;I don’t think you can reasonably do scalar methods without scalar type declarations (type hinting). The context point is lost without it.&lt;/p&gt;
+
+&lt;p&gt;I don’t think you can do scalar type declarations without a safe cast mechanism. Otherwise you’re just changing where the error is hidden.&lt;/p&gt;
+
+&lt;p&gt;And you definitely can’t remove the context-dependent APIs (the existing procedural APIs) without fundamentally changing the entire type system. At which point it’s not PHP anymore.&lt;/p&gt;
+
+&lt;p&gt;So the choice (for a scalar method API) boils down to: don’t do it, or provide two of every API (one procedural, one via methods).&lt;/p&gt;
+
+&lt;p&gt;And that sounds pretty scary to me…&lt;/p&gt;</content><author><name></name></author><category term="Change" /><category term="Inconsistencies" /><category term="Language Agnostic" /><category term="Object Oriented Programming" /><category term="PHP" /><category term="PHP-Internals" /><summary type="html">There has been a lot of talk about typing in PHP lately. There are a couple of popular proposals for how to clean up PHP’s APIs to be simpler. Most of them involve changing PHP’s type system at a very fundamental level. So I thought it would be a good idea to talk about that. What goes into a type?</summary></entry><entry><title type="html">When Rocks Falter</title><link href="/when-rocks-faulter" rel="alternate" type="text/html" title="When Rocks Falter" /><published>2014-10-22T00:00:00+00:00</published><updated>2014-10-22T00:00:00+00:00</updated><id>/when-rocks-faulter</id><content type="html" xml:base="/when-rocks-faulter">&lt;p&gt;I’ve never been a rock. I’m about as passionate as someone can be when I choose to do something. Unfortunately that means I tend to throw myself (my raw unadulterated self) at my interests. It’s just who I am and who I’ve always been. This has positives and negatives associated with it (especially from a personal perspective).&lt;/p&gt;
+
+&lt;p&gt;Throwing yourself at a passion has enormous benefits. You get a lot done, you can truly touch people’s lives. You can really change the world. But you also take on a &lt;strong&gt;lot&lt;/strong&gt; of risk. Putting yourself out there is the easiest way to get burned. When you’re passionate, it’s hard to not take things emotionally. It’s hard to not care. After all, caring is where you draw your power from.&lt;/p&gt;
+
+&lt;p&gt;I have always been held up by those that I knew were rocks. I always leaned on people who I know weren’t just abiding a flight-of-fancy, but who could wear the tide. But what happens when you start to see those who you thought were rocks, falter…?&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;In the past few weeks I’ve had a few conversations with people who I’ve always perceived as rocks that scared me.&lt;/p&gt;
+
+&lt;p&gt;I had a conversation with someone who I consider one of the greatest contributors to an open source community that I’ve ever had the honor to meet, which was downright painful.&lt;/p&gt;
+
+&lt;p&gt;What do you do when the pillars that an entire community leans on starts to waver?&lt;/p&gt;
+
+&lt;p&gt;What do you do when someone you know, respect and believe in tells you they don’t know…&lt;/p&gt;
+
+&lt;p&gt;I have no idea what to tell them.&lt;/p&gt;
+
+&lt;p&gt;I have no idea what an appropriate answer for them would be.&lt;/p&gt;
+
+&lt;p&gt;For me personally, there’s an easy answer. If I start to waver, I just leave. I take some time off. I have done this multiple times, with multiple projects. And while I’m not proud of it, I think it has always been for the best of both sides.&lt;/p&gt;
+
+&lt;p&gt;Over the past year and a half or so I have found a nice niche for myself. I’m not really affiliated with any particular project. I’m not technically a member of any working groups. I can and do contribute.&lt;/p&gt;
+
+&lt;p&gt;But the majority of the contributions that I’m doing tend to have a different vibe than they did in the past. Rather than directly participating in official discussions and producing code, I’ve been trying to help others do that.&lt;/p&gt;
+
+&lt;p&gt;I think I’ve been pretty successful at that. And there’s nothing more rewarding than seeing someone you’ve been trying to help succeed. It’s an amazing feeling. To know you made a difference in someone else’s life…&lt;/p&gt;
+
+&lt;p&gt;What worries me is that my normal pattern of passion-and-leave (which, let’s face it, &lt;em&gt;is&lt;/em&gt; destructive) won’t work anymore.&lt;/p&gt;
+
+&lt;p&gt;What worries me is that there’s no longer an identity that I can separate myself from. In the past, if I felt like I got too deep I could just leave. I was always seperable from the passion.&lt;/p&gt;
+
+&lt;p&gt;But this time, that’s not the case. This time, it’s just me. And it scares the crap out of me.&lt;/p&gt;
+
+&lt;p&gt;And then to watch people that I always thought were rocks falter… yeah…&lt;/p&gt;
+
+&lt;p&gt;That little poisonous thought creeps into the back of your head. That little thought of &lt;em&gt;“if it can happen to them, you don’t stand a chance”&lt;/em&gt;…&lt;/p&gt;
+
+&lt;p&gt;I know I can though.&lt;/p&gt;
+
+&lt;p&gt;I know that I have the power to do it. There’s one thing that quitting smoking (1.5 years ago) has tought me: &lt;em&gt;We’re incredibly good at lieing to ourselves&lt;/em&gt;. We can make ourselves believe anything we want to.&lt;/p&gt;
+
+&lt;p&gt;What’s the difference between a good lie and a bad lie? Nothing, they are both lies.&lt;/p&gt;
+
+&lt;p&gt;Instead, I’m trying to realize the truth. The truth that, deep down, we are capable of anything. We are capable of change. We are capable of surviving anything. We are capable of unlimited compassion.&lt;/p&gt;
+
+&lt;p&gt;I didn’t really realize it at the time, but when I wrote the keynote that I gave at PHPNW14, I was actually telling myself a message. I spoke from the heart, and it was trying to tell me something I was too clouded to hear. It was trying to tell me that I needed to be more constructive. To be more compassionate.&lt;/p&gt;
+
+&lt;p&gt;Since the talk, I’ve been honestly trying to be more compassionate. I’ve been trying to stop arguing and start being more positive. And start being more constructive.&lt;/p&gt;
+
+&lt;p&gt;And within 2 weeks, I already screwed it up.&lt;/p&gt;
+
+&lt;p&gt;My last two blog posts about PHP-FIG were something that I know contained both constructive elements and destructive elements. I knew that as I wrote them, and I edited it multiple times. I asked people for feedback, and took it. I tried to make it as constructive as I possibly could while not compromising the message.&lt;/p&gt;
+
+&lt;p&gt;And I failed. The people that (I believe) needed to hear the message most were tuned out due to the destructive nature of the post. Rather than seeing it as helpful criticism or guidance, they saw it as an attack, and defended themselves.&lt;/p&gt;
+
+&lt;p&gt;And to be completely fair, I can’t disagree.&lt;/p&gt;
+
+&lt;p&gt;But I am trying. Whenever I want to engage and argue, I’m trying to calm myself and stick only to the discussion. I can’t promise that I will always do so, but I am honestly trying.&lt;/p&gt;
+
+&lt;p&gt;When I started writing this post, I didn’t really know what I was going to write. I knew I was concerned. I knew that people I call friends were hurting. So I started writing what I was feeling.&lt;/p&gt;
+
+&lt;p&gt;Is this post useful? I don’t know. Does it make me come off as a self-obsessed ass? I don’t know. And frankly, I don’t care. I know I’m flawed… But I am trying to work around those flaws.&lt;/p&gt;
+
+&lt;p&gt;To the rocks that I call friends (and all others as well): I am sorry if I’ve contributed in any way to pain. From the bottom of my heart I hope that you can find the stability that you so richly deserve. And I will do my absolute best to help you in any way that I can.&lt;/p&gt;
+
+&lt;p&gt;Anthony&lt;/p&gt;</content><author><name></name></author><category term="Philosophy" /><category term="PHP" /><category term="Rant" /><summary type="html">I’ve never been a rock. I’m about as passionate as someone can be when I choose to do something. Unfortunately that means I tend to throw myself (my raw unadulterated self) at my interests. It’s just who I am and who I’ve always been. This has positives and negatives associated with it (especially from a personal perspective).</summary></entry><entry><title type="html">Why I Don’t Recommend Scrypt</title><link href="/why-i-dont-recommend-scrypt" rel="alternate" type="text/html" title="Why I Don't Recommend Scrypt" /><published>2014-03-12T00:00:00+00:00</published><updated>2014-03-12T00:00:00+00:00</updated><id>/why-i-dont-recommend-scrypt</id><content type="html" xml:base="/why-i-dont-recommend-scrypt">&lt;p&gt;As many of you likely know, I have a “thing” for password storage. I don’t know what it is about it, but it fascinates me. So I try to keep up as best as I can on the latest trends. In the past few years, we’ve seen the rise of a new algorithm called scrypt (it’s 5 years old actually). It’s gaining more and more adoption. But I don’t recommend its use in production systems &lt;strong&gt;for password storage&lt;/strong&gt;. Let me explain why:
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;scrypt-design-criteria&quot;&gt;Scrypt Design Criteria&lt;/h2&gt;
+
+&lt;p&gt;Scrypt was not designed for password storage. It was designed as a key derivation function for generating keys from weak material (namely passwords). The prime type of attack that scrypt is designed to defeat is &lt;a href=&quot;http://en.wikipedia.org/wiki/Application-specific_integrated_circuit&quot;&gt;ASIC&lt;/a&gt; based attackers. It is not designed to try to favor CPU over GPU (and thereby defeat GPU based attacks). It is this fact that we can leverage to gain an advantage when used as a password hashing mechanism.&lt;/p&gt;
+
+&lt;h2 id=&quot;scrypt-is-not-perfect&quot;&gt;Scrypt Is Not Perfect&lt;/h2&gt;
+
+&lt;p&gt;Before I go on to detail some algorithm decisions that were designed in scrypt, let me make one thing clear. &lt;strong&gt;NONE&lt;/strong&gt; of these limitations are fatal. Everything I’m going to describe &lt;strong&gt;does&lt;/strong&gt; have practical implications, and reduces the overall strength of scrypt with respect to password hashing. But it’s still practically secure compared to other algorithms (namely bcrypt and pbkdf2+sha256).&lt;/p&gt;
+
+&lt;p&gt;However, with that said, new issues could theoretically be found as researchers spend time using it. And considering the rise of scrypt-based crypto-currencies (namely Litecoin, Dogecoin and YACoin), there is real and significant money at stake. But enough meta talk, let’s actually talk about the algorithm and stop hand-waving.&lt;/p&gt;
+
+&lt;h2 id=&quot;scrypt-decomposed&quot;&gt;SCrypt, Decomposed&lt;/h2&gt;
+
+&lt;p&gt;There are 4 input variables to scrypt:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;int N&lt;/code&gt; - A factor to control the overall CPU/Memory cost&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;int r&lt;/code&gt; - A factor to control the blocksize for each mixing loop (memory usage)&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;int p&lt;/code&gt; - A factor to control the number of independent mixing loops (parallelism)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code&gt;int dkLen&lt;/code&gt; - The result hash.
+Scrypt is basically composed of a chain of 4 operations (with Java-style pseudo-code)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;PBKDF2+SHA256 expansion&lt;/p&gt;
+
+    &lt;p&gt;The input is expanded from the raw password and salt to a value that’s 128 * p * r bytes long.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;byte[] blocks = new byte[128 * r * p];
+// Expand the password and salt to the full buffer length using a single iteration
+blocks = pbkdf2_sha256.hash(password, salt, 1, 128 * r * p);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Block Mixing&lt;/p&gt;
+
+    &lt;p&gt;The block array is then mixed (in block sizes of &lt;code&gt;128 \* r bytes&lt;/code&gt;).&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;for (int i = 0; i &amp;lt; p; i++) {
+    blocks[128 * r * i : 128 * r] = roMix(r, blocks[128 * r * i : 128 * r], N);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Note that this can be parallelized, since each iteration works on a separate chunk of data (they can be done in separate threads for example).&lt;/p&gt;
+
+    &lt;p&gt;The mixing algorithm:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;byte[128 * r] roMix(int r, byte[128 * r] block, int n) {
+    byte[] X = block;
+    byte[] V = new byte[128 * r * N];
+    // Create array
+    for (int i = 0; i &amp;lt; N; i++) {
+        V[i] = X;
+        X = blockMix(X);
+    }
+    for (int i = 0; i &amp;lt; N; i++) {
+        int j = integerify(X) mod N;
+        X = blockMix(X XOR V[j]);
+    }
+    return X;
+}
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;The blockmix function is pretty simple, just an implementation of the Salsa20/8 algorithm in a loop (not worth typing out).&lt;/p&gt;
+
+    &lt;p&gt;The Integerify function simply interprets the argument as a little-endian integer (converts a byte array into an integer value)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;PBKDF2+SHA256 compression&lt;/p&gt;
+
+    &lt;p&gt;The block array is used as the salt in a single iteration of PBKDF2+SHA256 to compress the password again&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;byte[] derivedKey = new byte[dkLen];
+derivedKey = pbkdf2_sha256.hash(password, blocks, 1, dkLen);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-first-limitation-loop-unrolling&quot;&gt;The First Limitation, Loop Unrolling&lt;/h2&gt;
+
+&lt;p&gt;So, one of the benefits of scrypt is that it uses a lot of memory to compute a hash. This means that, when used with appropriate settings, it should be extremely hard to parallelize scrypt. The reason for this is that existing commodity hardware (CPU and GPUs) are typically more memory constrained than they are computation constrained. So while a GPU can compute a small amount of memory in extreme parallel (upwards of 7,000 concurrent calculations), the added memory constraints of scrypt basically make ASIC attacks impractical (and, by chance, GPU attacks). Or at least that’s the theory.&lt;/p&gt;
+
+&lt;p&gt;In practice, there’s a feature of the algorithm that let’s us defeat this. Basically, the main body of memory is in a single array. This array is computed in the “memory expansion” phase. Then, the block mixing phase uses that array to modify another, much smaller value. That smaller value is then used to compute the final result.&lt;/p&gt;
+
+&lt;p&gt;What that means for us, is that we can avoid pre-computing that original large array entirely. Since the array is deterministically created, we can simply “unroll” the operations that created a particular array element locally every time we need to access that memory segment.&lt;/p&gt;
+
+&lt;p&gt;So, we can modify the mixing function above to the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;byte[128 * r] roMix(int r, byte[128 * r] block, int n) {
+    byte[] X = block;
+    // Create array
+    for (int i = 0; i &amp;lt; N; i++) {
+        X = blockMix(X)
+    }
+    for (int i = 0; i &amp;lt; N; i++) {
+        int j = integerify(X) mod N;
+        byte[] V = block;
+        for (int k = 0; k &amp;lt; j; k++) {
+            V = blockMix(V);
+        }
+        X = blockMix(X XOR V);
+    }
+    return X;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let’s check out an example using numbers. Using the recommended interactive parameters of:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;int N = 16384; // 2^14
+int r = 8;
+int p = 1;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using those values, we can compute the total amount of memory required as &lt;code&gt;128 \* r \* N + 128 \* r \* p&lt;/code&gt;, which in this case be approximately 16mb.&lt;/p&gt;
+
+&lt;p&gt;Using the attack described above, we could reduce that total amount to a little bit over &lt;code&gt;128 \* r \* p&lt;/code&gt;, which would be in this case &lt;strong&gt;1kb&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;So we reduced the memory usage by 5 orders of magnitude…&lt;/p&gt;
+
+&lt;p&gt;But we also increased the amount of CPU work. Using those same settings, we increased the amount of work by a factor of &lt;strong&gt;8192&lt;/strong&gt; (on average, so &lt;code&gt;N/2&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;One of the prime advantages of scrypt is that it is memory-hard. This term is a little bit misleading, so let’s dig on that for a second. Memory-hard, as termed by scrypt, is basically the principle that the algorithm is difficult to a constant time-memory trade-off factor. So while we may be able to change the amount of memory that scrypt uses, if we reduce it we must do significantly more work to compensate.&lt;/p&gt;
+
+&lt;p&gt;And as it turns out, that is true. When we do the math on the above attack, it turns out that it would take several thousand times the work to create the hash. So practically, we’re no better off. Well, we are better off as we can now attack on both memory constrained and memory unconstrained systems.&lt;/p&gt;
+
+&lt;p&gt;I was the first person to identify and disclose this issue publicly &lt;a href=&quot;https://drupal.org/comment/4675994#comment-4675994&quot;&gt;on this thread&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;tune-able-reduced-memory-usages&quot;&gt;Tune-able Reduced Memory Usages&lt;/h2&gt;
+
+&lt;p&gt;The above loop traded off the entire large array for re-computation. We can actually take it a step futher tune the above attack to use the exact amount of memory we want. We can do this by storing only a portion of the values. If we want to half the memory usage, we’d store every other value, and then when requesting a value that’s not there, re-compute it. For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;byte[128 * r] roMixHalf(int r, byte[128 * r] block, int n) {
+    byte[] X = block;
+    byte[] V = new byte[128 * r * N / 2];
+    // Create array
+    for (int i = 0; i &amp;lt; N; i++) {
+        V[i] = X;
+        X = blockMix(X);
+        X = blockMix(X); // since we skip by 2
+    }
+    for (int i = 0; i &amp;lt; N; i++) {
+        int j = integerify(X) mod N;
+        byte[] T = V[Math.floor(j / 2)];
+        if (j % 2 == 1) {
+            T = blockMix(T);
+        }
+        X = blockMix(X XOR T);
+    }
+    return X;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using this method, you can reduce the memory by any integer factor you choose (powers of 2 are going to be easier). This allows you to tune to the system you’re building or working with (less memory, more CPU).&lt;/p&gt;
+
+&lt;h2 id=&quot;further-proof&quot;&gt;Further Proof&lt;/h2&gt;
+
+&lt;p&gt;YACoin is a &lt;a href=&quot;http://www.yacoin.org/&quot;&gt;scrypt-based crypto currency&lt;/a&gt;. Using it as a base for real-world testing of mining, we can see that at its current settings (N=2^15, r=1, p=1), &lt;a href=&quot;http://yacoinwiki.tk/index.php/Mining_Hardware_Comparison&quot;&gt;CPU is as fast as GPU&lt;/a&gt;. Note that those settings result in it using 4mb of RAM.&lt;/p&gt;
+
+&lt;p&gt;It’s worth noting that those mining numbers are approximately the same as with bcrypt. Which indicates that scrypt at those settings is approximately as difficult to attack as bcrypt. &lt;a href=&quot;http://www.openwall.com/lists/crypt-dev/2013/12/31/1&quot;&gt;Further Reading&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;putting-it-in-perspective&quot;&gt;Putting It In Perspective&lt;/h2&gt;
+
+&lt;p&gt;To put it in perspective, scrypt requires approximately 1000 times the memory of bcrypt to achieve a comparable level of defense against GPU based attacks (again, for password storage). On one hand, that’s still fine, as bcrypt uses 4kb, which means the equivalent effective scrypt protection occurs at 4mb. And considering the recommended settings are in the 16mb range, that should be clear that scrypt is definitively stronger than bcrypt.&lt;/p&gt;
+
+&lt;p&gt;This proves that scrypt is demonstrably weaker than bcrypt for password storage when using memory settings under 4mb. This is why the recommendations are 16mb or higher. If you’re using 16+mb of memory in scrypt (p=1, r=8 and N=2^14, or p=1, r=1 and N=17), you are fine.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-scrypt-is-still-secure&quot;&gt;So Scrypt Is Still Secure&lt;/h2&gt;
+
+&lt;p&gt;As I indicated before, scrypt is still very much secure. The point that I want to make clear is that it was not explicitly designed for password storage, and it wasn’t designed to mitigate the risks of GPU based attacks. Couple that with often-weak settings and you can wind up in a situation where you’re significantly weaker than today.&lt;/p&gt;
+
+&lt;p&gt;And that’s why I don’t recommend it &lt;strong&gt;for password storage&lt;/strong&gt;. Bcrypt is well understood, supported and tested.&lt;/p&gt;
+
+&lt;p&gt;I want to make one thing clear, as a &lt;a href=&quot;http://en.wikipedia.org/wiki/Key_derivation_function&quot;&gt;Key Derivation Function&lt;/a&gt;, it is still very much useful and secure. It’s only when used for password storage that I’m talking about.&lt;/p&gt;
+
+&lt;h2 id=&quot;but-bcrypt-isnt-perfect&quot;&gt;But Bcrypt Isn’t Perfect!&lt;/h2&gt;
+
+&lt;p&gt;Absolutely not! Bcrypt definitely has issues. One of the most glaring ones is the 72 character password limit. That’s definitely an issue (although not a fatal one). On the other hand, as far as I’ve seen there’s been no successful research into defeating bcrypt aside from pure computer horsepower (brute forcing).&lt;/p&gt;
+
+&lt;p&gt;The answer is, in my opinion, to stick with bcrypt &lt;strong&gt;for now&lt;/strong&gt;. Encrypt the output using a strong cipher (AES-128-CBC) with a key rotation policy if you have high value passwords.&lt;/p&gt;
+
+&lt;p&gt;Cryptographers are currently designing new algorithms specifically for password storage. They are still very early into the process, but there’s already been some promising research happening. It’ll take a number of years before it completes, but it’s progress. Check out the &lt;a href=&quot;https://password-hashing.net/&quot;&gt;Password Hashing Competition&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So that’s why I don’t recommend production systems switch to scrypt today.&lt;/p&gt;</content><author><name></name></author><category term="Cryptography" /><category term="Language Agnostic" /><category term="Password-Hashing" /><category term="PHP" /><category term="Programming" /><category term="Security" /><summary type="html">As many of you likely know, I have a “thing” for password storage. I don’t know what it is about it, but it fascinates me. So I try to keep up as best as I can on the latest trends. In the past few years, we’ve seen the rise of a new algorithm called scrypt (it’s 5 years old actually). It’s gaining more and more adoption. But I don’t recommend its use in production systems for password storage. Let me explain why:</summary></entry></feed>
