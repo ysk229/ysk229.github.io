@@ -9,7 +9,9 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem "jekyll", "~> 3.6"
 gem 'jekyll-seo-tag'
 gem 'jekyll-feed'
+gem 'jekyll-sitemap'
 # Added at 2017-10-31 19:06:39 +0100 by root:
 group :jekyll_plugins do
     gem "jekyll-paginate", "~> 1.1"
+    gem 'jekyll-postfiles'
 end

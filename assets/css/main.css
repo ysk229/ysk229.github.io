@@ -717,7 +717,6 @@ ul.h-list {
   font-size: 1rem;
   line-height: 50px;
   height: 50px;
-  overflow: hidden;
   background: #3367d6;
   padding: 0 20px; }
   .l_header .wrapper {
@@ -818,7 +817,8 @@ ul.h-list {
     background: rgba(255, 255, 255, 0.15);
     box-sizing: border-box;
     -webkit-appearance: none;
-    box-shadow: none; }
+    box-shadow: none;
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; }
     .m_search .input:hover {
       background: rgba(255, 255, 255, 0.35); }
     .m_search .input:focus {
@@ -1889,3 +1889,16 @@ ul.h-list {
 
 .waves-block {
   display: block; }
+
+#results-container {
+  position: absolute;
+  list-style: none;
+  line-height: 28px;
+  width: 100%;
+  top: 38px;
+  background-color: #517edc;
+  text-align: center; }
+  #results-container li {
+    padding: 10px;
+    background-color: #517edc;
+    border-bottom: 1px solid #ebecee; }

@@ -63,26 +63,19 @@
 			</div>
 			
 
-			
-
-			
+			 
 			<div class="m_search">
 				<form name="searchform" class="form u-search-form">
-					<input type="text" class="input u-search-input" placeholder="Search" />
+					<input type="text" id="search-input" class="input u-search-input" placeholder="Search" />
 					<span class="icon icon-search"></span>
 				</form>
+				<ul id="results-container"> 
+					</ul>
 			</div>
 			
-			<ul class='switcher h-list'>
-				
-				<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a>
-				</li>
-				
-				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
-			</ul>
 		</div>
 
-		<div class='nav-sub container container--flex'>
+		<div class='nav-sub container container--flex' style="display: none">
 			<a class="logo" class="flat-box" href='javascript:void(0)'>
 				Word of Forks
 			</a>
@@ -407,7 +400,7 @@
 
 <script src="/assets/js/p/canvasTime.js"></script>
 <script src="/assets/js/p/scrollreveal.min.js"></script>
-<script src="/assets/js/search.js"></script>
+<script src="/assets/js/p/simple-jekyll-search.min.js"></script>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

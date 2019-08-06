@@ -11,12 +11,12 @@ var customSearch;
 	};
 
 	function setHeader() {
+		$('.nav-sub').hide();
 		if (!window.subData) return;
 		var $wrapper = $('header .wrapper');
 		var $comment = $('.s-comment', $wrapper);
 		var $toc = $('.s-toc', $wrapper);
-		var $top = $('.s-top', $wrapper);
-
+		var $top = $('.s-top', $wrapper); 
 		$wrapper.find('.nav-sub .logo').text(window.subData.title);
 		var pos = document.body.scrollTop;
 		$(document, window).scroll(function () {
@@ -25,9 +25,11 @@ var customSearch;
 			if (del >= 20) {
 				pos = scrollTop;
 				$wrapper.addClass('sub');
+				$('.nav-sub').show();
 			} else if (del <= -20) {
 				pos = scrollTop;
 				$wrapper.removeClass('sub');
+				$('.nav-sub').hide();
 			}
 		});
 		// bind events to every btn
@@ -79,7 +81,7 @@ var customSearch;
 			$active_link = $('.nav-home', $headerMenu);
 		} else {
 			var name = location.pathname.match(/\/(.*?)\//);
-			if (name.length > 1) {
+			if (name && name.length > 1) {
 				$active_link = $('.nav-' + name[1], $headerMenu);
 			}
 		}
@@ -98,21 +100,18 @@ var customSearch;
 		});
 	}
 	function setHeaderSearch() {
-		var $switcher = $('.l_header .switcher .s-search');
-		var $header = $('.l_header');
-		var $search = $('.l_header .m_search');
-		if ($switcher.length === 0) return;
-		$switcher.click(function (e) {
-			e.stopPropagation();
-			$header.toggleClass('z_search-open');
-			$search.find('input').focus();
-		});
-		$(document).click(function (e) {
-			$header.removeClass('z_search-open');
-		});
-		$search.click(function (e) {
-			e.stopPropagation();
-		})
+	 
+
+		SimpleJekyllSearch({
+			searchInput: document.getElementById('search-input'),
+			resultsContainer: document.getElementById('results-container'),
+			json: '/search.json',
+			searchResultTemplate: "<li class='s-search' ><a  href=\"{url}\" title=\"{title}\">{title}</a></li>", // 文章列表模板
+			// searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>', // 文章列表模板
+			noResultsText: '没有搜索到文章', // 无搜索数据提示语
+			limit: 20, // 返回最大文章数
+			fuzzy: false // 是否模糊匹配
+		}) 
 	}
 	function setWaves() {
 		Waves.attach('.flat-btn', ['waves-button']);
@@ -130,44 +129,12 @@ var customSearch;
 		sr.reveal('.reveal');
 	}
 	function setTocToggle() {
+		$('table').wrap('<div class="table-wrap"></div');
 		var $toc = $('.toc-wrapper');
 		if ($toc.length === 0) return;
 		$toc.click(function (e) { e.stopPropagation(); $toc.addClass('active'); });
 		$(document).click(function () { $toc.removeClass('active'); });
-
-		// $toc.on('click', 'a', function(e) {
-		// 	e.preventDefault();
-		// 	e.stopPropagation();
-		// 	scrolltoElement(e.target.tagName.toLowerCase === 'a' ? e.target : e.target.parentElement);
-		// });
-
-		// var liElements = Array.from($toc.find('li a'));
-		// //function animate above will convert float to int.
-		// var getAnchor = function() { liElements.map(function (elem) { return Math.floor($(elem.getAttribute('href')).offset().top - scrollCorrection); }); }
-
-		// var anchor = getAnchor();
-		// var scrollListener = function() {
-		// 	var scrollTop = $('html').scrollTop() || $('body').scrollTop();
-		// 	if (!anchor) return;
-		// 	//binary search.
-		// 	var l = 0, r = anchor.length - 1, mid;
-		// 	while (l < r) {
-		// 		mid = (l + r + 1) >> 1;
-		// 		if (anchor[mid] === scrollTop) l = r = mid;
-		// 		else if (anchor[mid] < scrollTop) l = mid;
-		// 		else r = mid - 1;
-		// 	}
-		// 	$(liElements).removeClass('active').eq(l).addClass('active');
-		// }
-		// $(window)
-		// 	.resize(function() {
-		// 		anchor = getAnchor();
-		// 		scrollListener();
-		// 	})
-		// 	.scroll(function() {
-		// 		scrollListener()
-		// 	});
-		// scrollListener();
+ 
 	}
 
 	$(function () {
@@ -178,7 +145,6 @@ var customSearch;
 		// setWaves();
 		// setScrollReveal();
 		setTocToggle();
-		$('table').wrap('<div class="table-wrap"></div');
 
 
 	});
