@@ -25,28 +25,19 @@
 			</div>
 			{% endif %}
 
-			{% if site.algolia_search.enable or site.local_search.enable %}
-			{% assign hasSearch = true %}
-			{% endif %}
-
-			{% if hasSearch %}
+			 
 			<div class="m_search">
 				<form name="searchform" class="form u-search-form">
-					<input type="text" class="input u-search-input" placeholder="Search" />
+					<input type="text" id="search-input" class="input u-search-input" placeholder="Search" />
 					<span class="icon icon-search"></span>
 				</form>
+				<ul id="results-container"> 
+					</ul>
 			</div>
-			{% endif %}
-			<ul class='switcher h-list'>
-				{% if hasSearch %}
-				<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a>
-				</li>
-				{% endif %}
-				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
-			</ul>
+			
 		</div>
 
-		<div class='nav-sub container container--flex'>
+		<div class='nav-sub container container--flex' style="display: none">
 			<a class="logo" class="flat-box" href='javascript:void(0)'>
 				Word of Forks
 			</a>

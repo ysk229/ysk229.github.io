@@ -18,4 +18,18 @@
 @import "_footer";
 @import "_waves";
 
-// 分页
+// 搜索
+#results-container{ 
+    position: absolute;
+    list-style: none;
+    line-height: 28px;
+    width: 100%;
+    top: 38px;
+    background-color: #517edc;
+    text-align: center;
+    li{
+        padding: 10px;
+        background-color: #517edc;
+        border-bottom: 1px solid #ebecee;
+    }
+}
