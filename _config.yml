@@ -76,21 +76,19 @@ gitalk:
   distractionFreeMode: true #是否启用类似FB的阴影遮罩
 
 
+##开启打开赏功能
+reward:
+  enable: true
+  desc: 无以生计，卖文苟延
+
+##开启分享功能
+share:
+  enable: true
 
 
 # Table Of Contents in the Sidebar
 toc:
   enable: true
-
-  # Automatically add list number to toc.
-  number: true
-
-  # If true, all words will placed on next lines if header width longer then sidebar width.
-  wrap: false
-# ---------------------------------------------------------------
-# Menu Settings
-# ---------------------------------------------------------------
-exclude: [vendor]
 
 
 # When running the site in a subdirectory (e.g. domain.tld/blog), remove the leading slash (/archives -> archives)

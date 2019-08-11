@@ -1,90 +1,64 @@
 {%- assign post = include.post -%}
-<article id="{{ post.layout }}-<{{ post.slug }}"
-  class="post white-box article-type-{{ post.layout }}"
-  itemscope itemprop="blogPost">
+<article id="{{ post.layout }}-{{ post.slug }}" class="post white-box article-type-{{ post.layout }}" itemscope
+ itemprop="blogPost">
 	<section class='meta'>
-	<h2 class="title">   
-		{%- include _snippets/prepend-baseurl.html path=post.url -%}
-		{%- assign _article_url = __return -%}
-		<a href="{{ _article_url }}">
-    	{{ post.title }}
-    </a>
-  </h2>
-	<time>
-		<span class="icon-calendar"></span> 	{{ post.date | date:'%Y-%m-%d'}}
-	</time>
- 
-	</section>  
-		<section class="toc-wrapper">
-      <div class="nav">
-        <span>Table Of Contents</span>
-	  </div>
-	   <div class="js-toc"  ></div>
-	  {% include toc2.html html=post.content %}
-	</section> 
-	
-	<section class="article typo">
-  	<div class="article-entry" itemprop="articleBody">
-    	{{ post.content }}
-  	</div>
-	  {%- if post.tags and post.tags.length -%}
-	  <div class="article-tags tags"> 
-		{%- for tag in post.tags -%}
-        <a href="{{ item.path }}"> {{ item.name }}</a>
-		{%- endfor -%}
-	  </div>
-	  {%- endif -%}
-		
-		
-	  <div class="page-reward">
-		<a href="javascript:;" class="page-reward-btn tooltip-top">
-		  <div class="tooltip tooltip-east">
-		  <span class="tooltip-item">
-			赏
-		  </span>
-		  <span class="tooltip-content">
-			<span class="tooltip-text">
-			  <span class="tooltip-inner">
-				<p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
-				<div class="reward-box">
-				  
-				  <div class="reward-box-item">
-					<img class="reward-img" src="{{site.baseurl}}/assets/img/zhifubao.png" title="支付宝扫一扫" >
-					<span class="reward-type">支付宝</span>
-				  </div>
-				  
-				  
-				  <div class="reward-box-item">
-					<img class="reward-img" src="{{site.baseurl}}/assets/img/weixin.png" title="微信扫一扫" >
-					<span class="reward-type">微信</span>
-				  </div>
-				  
-				</div>
-			  </span>
-			</span>
-		  </span>
-		</div>
-		</a>
-	  </div>
+		<h2 class="title">
+			{%- include _snippets/prepend-baseurl.html path=post.url -%}
+			{%- assign _article_url = __return -%}
+			<a href="{{ _article_url }}">
+				{{ post.title }}
+			</a>
+		</h2>
+		<time>
+			<span class="icon  icon-calendar-times-o"></span> {{ post.date | date:'%Y-%m-%d'}}
+		</time>
+		{%- include archive-categories.html post=post -%}
 
-	{%- if   page.previous.url or  page.next.url -%}
-		<div class="art-item-footer">
-				{%- if  page.previous.url -%}
-					<span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="{{  page.previous.url | prepend: site.baseurl | replace: '//', '/' }}"
-						 rel="prev" title="{{page.previous.title}}" >
-						 {{page.previous.title}}
-					</a></span>
-					{%- endif -%}
-					{% if page.next.url %}
-					<span class="art-item-right">next：<a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" rel="next"  title="{{page.next.title}}">
-						{{ page.next.title }}
-					</a><i class="icon icon-chevron-thin-right"></i></span>
-					{% endif %}
+
+	</section>
+
+	{%- if post.tags && post.tags.length -%}
+	<section class="article typo">
+		<div class="full-width auto-padding tags">
+			{% for tag in post.tags %}
+			<a href="/search/tags/{{  tag | slugify: 'ascii'}}"> {{ tag }}</a>
+			{% endfor %}
+		</div>
+	</section>
+	{%- endif -%}
+
+	{% if post.toc != false && site.toc.enable %}
+	<section class="toc-wrapper">
+		<div class="nav">
+			<span>Table Of Contents </span>
+		</div>
+		<div class="js-toc"></div>
+	</section>
+	{%- endif -%}
+
+	<section class="article typo">
+		<div class="article-entry" itemprop="articleBody">
+			{{ post.content }}
+		</div>
+		{%- if post.tags and post.tags.length -%}
+		<div class="article-tags tags">
+			{%- for tag in post.tags -%}
+			<a href="{{ item.path }}"> {{ item.name }}</a>
+			{%- endfor -%}
 		</div>
 		{%- endif -%}
+		{% include _common/reward.html %}
+		<div class="art-item-footer">
+			{% include share-fab.html post=post sUrl=_article_url %}
+			{% include _common/page.html %}
+		</div>
 	</section>
-	{% include gitalk.html  %}
+	{% include gitalk.html %}
 </article>
+{% if site.share.enable %}
+{% assign scope = "global" %} 
+{% include _common/share.html scope=scope sUrl=_article_url %}
+{%- endif -%}
 <script>
 	window.subData = {
 		title: '{{ post.title }}',

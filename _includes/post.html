@@ -2,16 +2,16 @@
 <article class="post reveal">
   <section class="meta">
     {%- if post.title -%}
-    <h2 class="title">
+    <h2 class="title post-title">
       {%- include _snippets/prepend-baseurl.html path=post.url -%}
       {%- assign _article_url = __return -%}
-      <a href="{{ _article_url }}">
+      <a  class="post-title-link" href="{{ _article_url }}">
         {{ post.title }}
       </a>
     </h2>
     {%- endif -%}
     <time>
-      <span class="icon-calendar"></span>  {{ post.date | date:'%Y-%m-%d' }}
+      <span class="icon  icon-calendar-times-o"></span>  {{ post.date | date:'%Y-%m-%d' }}
     </time>
     {%- include archive-categories.html post=post -%}
   </section>
@@ -20,7 +20,7 @@
 
     {%- if post.excerpt  -%}
     <div class="readmore">
-      <a href="{{ _article_url }}">阅读全文</a>
+      <a href="{{ _article_url }}" class="icon icon-folder-open  waves-effect waves-block"> 阅读全文</a>
     </div>
     {%- endif -%}
     

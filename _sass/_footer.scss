@@ -1,6 +1,7 @@
 #footer {
-  position: relative;
-  padding: 20px;
+	position: relative;
+	padding: 20px; 
+	bottom: 0px; 
   width: 100%;
 	color: $white;
   margin: 0px auto;
@@ -8,6 +9,8 @@
   overflow: hidden;
   text-align: center;
 	background: $black;
+
+	margin-top: 180px;
 	.codename {
 		color: $secondary-color;
 	}

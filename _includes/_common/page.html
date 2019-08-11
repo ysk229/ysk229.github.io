@@ -1,0 +1,15 @@
+{%- if page.previous.url or page.next.url -%}
+
+    {%- if page.previous.url -%}
+    <span class="art-item-left"><i class="icon icon-angle-left icon-lg icon-pr"></i>prev：<a href="{{  page.previous.url | prepend: site.baseurl | replace: '//', '/' }}"
+            rel="prev" title="{{page.previous.title}}">
+            {{page.previous.title}}
+        </a></span>
+    {%- endif -%}
+    {% if page.next.url %}
+    <span class="art-item-right">next：<a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" rel="next"
+            title="{{page.next.title}}">
+            {{ page.next.title }}
+        </a><i class="icon icon-angle-right icon-lg icon-pl"></i></span>
+    {% endif %}
+{%- endif -%}

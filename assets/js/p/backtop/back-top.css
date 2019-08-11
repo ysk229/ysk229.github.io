@@ -28,7 +28,7 @@
 	width:48px;
 	color:#fff;
 	cursor:pointer; 
-	font-family: 'icomoon' !important;
+	font-family: 'FontAwesome';
 } 
 .per:before{content:attr(data-percent)}
-.per:hover:before{content:"\e907";font-size: 22px;line-height: 0;} 
+.per:hover:before{content:"\f077";font-size: 22px;line-height: 0;} 

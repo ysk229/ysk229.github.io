@@ -3,12 +3,13 @@
 ---
 
 @import "_defines";
-@import "_fonts";
 @import "_normalize";
 @import "_base";
 @import "_header";
 @import "_main";
 @import "_side";
+@import "_share";
+@import "_fontawesome";
 @import "_toc";
 @import "_widget";
 @import "_archive";
@@ -37,7 +38,12 @@
 
 .page-reward {
 	margin:60px 0;
-	text-align:center
+	text-align:center;
+	
+}
+.article .page-reward  a:hover { 
+	background: #4caf50c4;
+	color: #fff;
 }
 .page-reward .page-reward-btn {
 	position:relative;
@@ -70,7 +76,8 @@
 .page-reward .reward-p {
 	color:#fff;
 	font-weight:700;
-	text-shadow:1px 1px 1px #45b9e0
+	text-shadow:1px 1px 1px #45b9e0;
+	text-align: center;
 }
 .page-reward .reward-p .icon {
 	margin:0 10px;
@@ -79,7 +86,7 @@
 .page-reward .reward-type {
 	font-size:16px;
 	display:block;
-	color:#4d4d4d;
+	color:#e6d26c;
 	margin:20px 0 0
 }
 .page-reward .reward-img {
@@ -243,4 +250,9 @@
 	border-top-color:#4d4d4d;
 	border-width:10px;
 	margin-left:-10px
+}
+
+.art-item-footer { 
+	border-top: 1px dashed #ebecee;
+	position: relative;
 }

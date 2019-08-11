@@ -17,8 +17,8 @@ tags:
 
 ```shell
 ##下载最新版的docker-compose文件
-curl -L https://github.com/docker/compose/releases/download/1.16.1/d
-ocker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \
+ -o /usr/local/bin/docker-compose
 
 ##添加可执行权限
 chmod +x /usr/local/bin/docker-compose

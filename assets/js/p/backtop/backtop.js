@@ -56,21 +56,23 @@ var bigfa_scroll = {
 
     },
 
-    backToTop: function($this) {
-
+    backToTop: function($this) { 
         $this.click(function() {
 
-            jQuery("body,html").animate({
+            jQuery(".l_body").animate({
 
                 scrollTop: 0
 
             },
 
             800);
-
+            var $wrapper = $('header .wrapper');
+            $wrapper.removeClass('sub');
+            $('.nav-sub').hide();
             return false;
 
         });
+        
 
     },
 
@@ -80,7 +82,8 @@ var bigfa_scroll = {
 
         $this.scroll(function() {
 
-            var docHeight = (jQuery(document).height() - jQuery(window).height()),
+            // var docHeight = (jQuery(document).height() - jQuery(window).height()), 
+            var docHeight = jQuery(".l_main").height()- jQuery(window).height()+280, 
 
             $windowObj = $this,
 
@@ -88,8 +91,8 @@ var bigfa_scroll = {
 
             percentage = 0;
 
-            defaultScroll = $windowObj.scrollTop();
 
+            defaultScroll = $windowObj.scrollTop(); 
             percentage = parseInt((defaultScroll / docHeight) * 100);
 
             var backToTop = jQuery("#backtoTop");
@@ -130,6 +133,6 @@ jQuery(document).ready(function() {
 
     T.backToTop(jQuery("#backtoTop"));
 
-    T.scrollHook(jQuery(window), "#ebecee");
+    T.scrollHook(jQuery(".l_body"), "#ebecee");
 
 });
