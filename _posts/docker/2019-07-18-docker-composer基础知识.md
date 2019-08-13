@@ -42,10 +42,9 @@ docker-compose  --help 参数 可以查看调用的参数的格式
 ```shell
 ##容器相关操作的命令
 
-docker-compose --help
-```
+docker-compose --help 
 
-```shell
+
 Define and run multi-container applications with Docker.
 
 Usage:
