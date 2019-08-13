@@ -200,16 +200,31 @@ var customSearch;
 			document.addEventListener(even, function (e) {
 				!fab.contains(e.target) && pageShare.classList.remove('in')
 			}, false)
-		} 
+		}
 		var wxModal = new modal('#wxShare');
-		wxModal.onHide = function(){};
+		wxModal.onHide = function () { };
 
 		forEach.call($$('.wxFab'), function (el) {
 			el.addEventListener(even, wxModal.toggle)
 		})
 	}
-
+	function resetToDefaults() {
+		topbar.config({
+			autoRun: true,
+			barThickness: 3,
+			barColors: {
+				'0': 'rgba(26,  188, 156, .9)',
+				'.25': 'rgba(52,  152, 219, .9)',
+				'.50': 'rgba(241, 196, 15,  .9)',
+				'.75': 'rgba(230, 126, 34,  .9)',
+				'1.0': 'rgba(211, 84,  0,   .9)'
+			},
+			shadowBlur: 10,
+			shadowColor: 'rgba(0,   0,   0,   .6)'
+		})
+	}
 	$(function () {
+		
 		setHeader();
 		setHeaderMenu();
 		setHeaderMenuPhone();
@@ -218,6 +233,10 @@ var customSearch;
 		// setScrollReveal();
 		setTocToggle();
 		setShare();
+		// Page load
+		resetToDefaults()
+
+
 
 
 	});
@@ -256,10 +275,7 @@ var customSearch;
 		}
 	});
 
-	$(".article-entry pre").niceScroll({
-		cursorcolor: "#ffffff", cursorwidth: "6px",
-		cursorborder: "0px solid #000",
-	});
+	
 
 	$('.js-toc').length != 0 && tocbot.init({
 		// Where to render the table of contents.
@@ -274,5 +290,14 @@ var customSearch;
 		//平滑滚动持续时间。
 		scrollSmoothDuration: 420,
 	});
+	topbar.show()
+	setTimeout(function () {
+		// $('.l_body').fadeIn('slow')
+		topbar.hide();
+		$("pre").niceScroll({
+			cursorcolor: "#ffffff", cursorwidth: "6px",
+			cursorborder: "2px solid #000",
+		});
+	}, 1500)
 
 })(jQuery);

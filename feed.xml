@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-11T15:27:03+00:00</updated><id>/feed.xml</id><title type="html">图解我的私房菜</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">玩转docker-composer基础篇</title><link href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker-composer基础篇" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker-composer安装&quot;&gt;0.docker-composer安装&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-13T15:23:01+00:00</updated><id>/feed.xml</id><title type="html">图解我的私房菜</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">玩转docker-composer基础篇</title><link href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker-composer基础篇" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker-composer安装&quot;&gt;0.docker-composer安装&lt;/h2&gt;
 
 &lt;p&gt;从github上下载docker-compose二进制文件安装&lt;/p&gt;
 
@@ -29,10 +29,10 @@ docker-compose --version
 
 &lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##容器相关操作的命令
 
-docker-compose --help
-&lt;/code&gt;&lt;/pre&gt;
+docker-compose --help 
 
-&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;Define and run multi-container applications with Docker.
+
+Define and run multi-container applications with Docker.
 
 Usage:
   docker-compose [-f &amp;lt;arg&amp;gt;...] [options] [COMMAND] [ARGS...]
@@ -568,9 +568,7 @@ name: '你好YAML'   #定义一个字符串
 
 docker container --help
 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;Commands:
+Commands:
   attach      Attach local standard input, output, and error streams to a running container
   commit      Create a new image from a container's changes
   cp          Copy files/folders between a container and the local filesystem
