@@ -3,8 +3,7 @@ layout: post
 title: 玩转docker-composer基础篇
 description: 初入docker-composer
 category:
-    - docker
-    - docker-compose
+    - 云计算
 photos: http://ww1.sinaimg.cn/mw690/81b78497jw1emfgwkasznj21hc0u0qb7.jpg
 tags:
     - docker
@@ -43,9 +42,7 @@ docker-compose  --help 参数 可以查看调用的参数的格式
 ##容器相关操作的命令
 
 docker-compose --help
-```
 
-```shell
 Define and run multi-container applications with Docker.
 
 Usage:
