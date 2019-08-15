@@ -93,13 +93,18 @@ var customSearch;
 		var $active_link = null;
 		if (location.pathname === '/' || location.pathname.startsWith('/page/')) {
 			$active_link = $('.nav-home', $headerMenu);
+		 
+			setUnderline($active_link, false);
 		} else {
 			var name = location.pathname.match(/\/(.*?)\//);
 			if (name && name.length > 1) {
-				$active_link = $('.nav-' + name[1], $headerMenu);
+				$.each($headerMenu,function(i,item){
+					if( name[1] == $(item).text()){
+						setUnderline($$(item), false);
+					}
+				}) 
 			}
 		}
-		setUnderline($active_link, false);
 	}
 	function setHeaderMenuPhone() {
 		var $switcher = $('.l_header .switcher .s-menu');
@@ -232,11 +237,12 @@ var customSearch;
 		// setWaves();
 		// setScrollReveal();
 		setTocToggle();
-		setShare();
+		$('#pageShare')[0] && setShare();
 		// Page load
 		resetToDefaults()
 
-
+		//开启行号
+		$('pre').addClass("line-numbers").css("white-space", "pre-wrap");
 
 
 	});
@@ -294,10 +300,10 @@ var customSearch;
 	setTimeout(function () {
 		// $('.l_body').fadeIn('slow')
 		topbar.hide();
-		$("pre").niceScroll({
-			cursorcolor: "#ffffff", cursorwidth: "6px",
-			cursorborder: "2px solid #000",
-		});
+		// $("pre").niceScroll({
+		// 	cursorcolor: "#ffffff", cursorwidth: "6px",
+		// 	cursorborder: "2px solid #000",
+		// });
 	}, 1500)
 
 })(jQuery);

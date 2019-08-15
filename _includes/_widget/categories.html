@@ -3,7 +3,7 @@
 <div class='content'> 
     <ul class="entry"> 
         {% for category in site.categories  | sort:"name" %}
-        <li><a class="flat-box" href="/search/categories/{{ category | first   | slugify: 'ascii'}}"><div class='name'> {{ category | first }}</div><div class='badget'>{{ category | last | size }}</div></a></li>
+        <li><a class="flat-box" href="/search/categories/{{ category | first   | slugify: 'unicode'| replace:' ','-'}}"><div class='name'> {{ category | first }}</div><div class='badget'>{{ category | last | size }}</div></a></li>
         {% endfor %}
     </ul> 
 </div>

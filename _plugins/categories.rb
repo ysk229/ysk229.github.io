@@ -18,8 +18,10 @@ module Jekyll
           self.data['title'] = "#{category_title_prefix}#{category}"
           self.data['category'] = category
 
-          category_path = site.config['paginate_category_basepath'] || '/categories/:name/'
-          category_path = category_path.sub(':name', Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+          category_path = site.config['paginate_category_basepath'] || '/categories/:name/'  
+          ch_name = category.downcase.strip.gsub(' ', '-')
+          en_name = Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii')
+          category_path = category_path.sub(':name',ch_name)
           self.data['pathinfo'] = category_path.sub(/(\/)+$/,'')
           
         end
@@ -63,7 +65,12 @@ module Jekyll
           
           all_posts = site.site_payload['site']['categories'][category]
           category_path = site.config['paginate_category_basepath'] || '/categories/:name/'
-          category_path = category_path.sub(':name', Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+          
+          ch_name = category.downcase.strip.gsub(' ', '-')
+          en_name = Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii')
+          category_path = category_path.sub(':name',ch_name)
+
+          # category_path = category_path.sub(':name', Utils.slugify(category.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
           
           # Count pages
           nb_pages = Pager.calculate_pages(all_posts, site.config['paginate'].to_i)

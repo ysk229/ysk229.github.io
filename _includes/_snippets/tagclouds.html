@@ -51,7 +51,7 @@
       {% assign style = style | append: 'color: ' | append: mid_color %}
     {% endif %}
     {% assign tag_url_encode = tag[0] | url_encode | replace: '+', '%20' %}
-    <a href="/search/tags/{{ tag | first  | slugify: 'ascii'}}" style="{{ style }}" >{{ tag | first }}<span>{{ tag | last | size }}</span></a>
+    <a href="/search/tags/{{ tag | first  | slugify: 'unicode'| replace:' ','-'}}" style="{{ style }}" >{{ tag | first }} <!--<span>{{ tag | last | size }}</span>--></a>
   {% endfor %}
 
 {% endcapture %}

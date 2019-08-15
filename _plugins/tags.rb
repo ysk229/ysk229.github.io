@@ -19,8 +19,10 @@ module Jekyll
  
         
             tag_path = site.config['paginate_tag_basepath'] || '/tags/:name/'
-            tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
- 
+            # tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+            ch_name = tag.downcase.strip.gsub(' ', '-')
+            en_name = Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii')
+            tag_path = tag_path.sub(':name',ch_name)
             self.data['pathinfo'] = tag_path.sub(/(\/)+$/,'')
           end
         end
@@ -89,9 +91,14 @@ module Jekyll
           # Returns nothing.
           def paginate_tag(site, tag, all_posts)
             # Tag base path
+            # tag_path = site.config['paginate_tag_basepath'] || '/tags/:name/'
+            # tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
             tag_path = site.config['paginate_tag_basepath'] || '/tags/:name/'
-            tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
-            
+            # tag_path = tag_path.sub(':name', Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii'))
+            ch_name = tag.downcase.strip.gsub(' ', '-')
+            en_name = Utils.slugify(tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), :mode => 'ascii')
+            tag_path = tag_path.sub(':name',ch_name)
+
             # Count pages
             nb_pages = Pager.calculate_pages(all_posts, site.config['paginate'].to_i)
   

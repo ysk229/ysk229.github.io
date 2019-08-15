@@ -93,7 +93,7 @@ var bigfa_scroll = {
 
 
             defaultScroll = $windowObj.scrollTop(); 
-            percentage = parseInt((defaultScroll / docHeight) * 100);
+            percentage = Math.min(parseInt((defaultScroll / docHeight) * 100),100);
 
             var backToTop = jQuery("#backtoTop");
 

@@ -3,8 +3,7 @@ layout: post
 title: 玩转docker-composer基础篇
 description: 初入docker-composer
 category:
-    - docker
-    - docker-compose
+    - 云计算
 photos: http://ww1.sinaimg.cn/mw690/81b78497jw1emfgwkasznj21hc0u0qb7.jpg
 tags:
     - docker

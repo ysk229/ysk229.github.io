@@ -181,3 +181,67 @@
 		}
   	}
 }
+
+$primaryTextColor: #212121;
+$textPrimaryColor: #fff;
+$primaryColor: #3f51b5;
+$lightPrimaryColor: #c5cae9;
+$accentColor: #ff4081;
+.content-header {
+    min-height: 210px;
+    margin-left: -240px;
+    padding: 104px 16px 48px 256px;
+    color: $textPrimaryColor;
+    background: $primaryColor;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+
+    .subtitle {
+        padding-top: 6px;
+        font-weight: 300;
+        color: $lightPrimaryColor;
+    }
+
+    .title {
+        font-weight: 500;
+    }
+
+    .article-category-list-link {
+        color: lighten($accentColor, 10%);
+    }
+
+}
+
+.post-header {
+
+    .title, .subtitle {
+        display: none;
+    }
+}
+
+@media screen and (max-width:760px) {
+    .content-header {
+        margin: 0;
+        min-height: auto;
+        padding: 72px 16px 20px;
+
+        .title {
+            font-size: 24px;
+            line-height: 30px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            line-height: 20px
+        }
+
+    }
+
+    .post-header {
+        .title {
+            display: block;
+            font-size: 24px;
+            line-height: 1.5;
+        }
+    }
+
+}
