@@ -1,10 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-13T15:23:01+00:00</updated><id>/feed.xml</id><title type="html">图解我的私房菜</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">玩转docker-composer基础篇</title><link href="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker-composer基础篇" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker-composer安装&quot;&gt;0.docker-composer安装&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-15T11:50:10+00:00</updated><id>/feed.xml</id><title type="html">图解我的私房菜</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Golang按行解析日志神器之ldetool</title><link href="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" rel="alternate" type="text/html" title="Golang按行解析日志神器之ldetool" /><published>2019-08-15T00:00:00+00:00</published><updated>2019-08-15T00:00:00+00:00</updated><id>/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool</id><content type="html" xml:base="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html">&lt;p&gt;为什么称为神器，&lt;a href=&quot;https://blog.csdn.net/orangleliu/article/details/85038304&quot;&gt;请看&lt;/a&gt;
+此文章解析日志的性能和使用方便测试&lt;/p&gt;
+
+&lt;h2 id=&quot;0安装&quot;&gt;0.安装&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;go get -u github.com/sirkon/ldetool
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;1使用命令行如下&quot;&gt;1.使用命令行如下&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;ldetool generate --package 包名 规则文件.lde
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成Golang规则类的文件，在Golang中调它的方法如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-go&quot;&gt;//规则定义的类名
+l := &amp;amp;Line{}
+str :=&quot;hello world&quot;
+if ok, err := l.Extract(str);ok &amp;amp;&amp;amp; err ==nil{
+    //Time是规则定的属性
+    fmt.Sprintf(&quot;%s&quot;,l.Time)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;2实际例子&quot;&gt;2.实际例子&lt;/h2&gt;
+
+&lt;h3 id=&quot;21日志内容&quot;&gt;2.1日志内容&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;27.154.70.117 - - [20/Nov/2018:20:23:56 +0800] 2 &quot;GET http://7img1.tianlaikge.com/tv/homeimage/201709/shengridangao.zip HTTP/1.1&quot; 200 842186 841382 &quot;-&quot; &quot;-&quot; &quot;Dalvik/2.1.0 (Linux; U; Android 7.1.2; vivo Y79A Build/N2G47H)&quot; &quot;-&quot; 219082621 &quot;HIT&quot; 27.159.73.35
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;22-ldetool规则文件&quot;&gt;2.2 ldetool规则文件&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;vim nginx.lde
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;Nginx =
+    IP(string) &quot; &quot;
+    ^&quot;- - [&quot; Time(string) ']'
+    ^&quot; &quot;Cost(uint32)&quot; &quot;
+    ^'&quot;'Request(string)'&quot;'
+    ^&quot; &quot;Status(int64)&quot; &quot;
+    ByteSend(int64)&quot; &quot;
+    BodyByteSend(int64)&quot; &quot;
+    ^'&quot;'Referer(string)'&quot;'
+    ^&quot; &quot;
+    ^'&quot;'Cookie(string)'&quot;'
+    ^' '
+    ^'&quot;'UserAgent(string)'&quot;'
+    ^' '
+    ^'&quot;'Xfor(string)'&quot;'
+    ^' 'ConnID(string)' '
+    ^'&quot;'Hit(string)'&quot;'
+    ^&quot; &quot;
+    ServerIp(string)
+;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;格式是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;类名=
+##IP则它义定的属性，因为golang的原因，首字母要大写，如果是id则要ID都得大写
+IP(string) &quot; &quot;
+;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;3规则详解&quot;&gt;3.规则详解&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;img/规则.png&quot; alt=&quot;规则&quot; title=&quot;ldetool 规则&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4参考文章&quot;&gt;4.参考文章&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/sirkon/ldetool&quot;&gt;官方&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;大数据&quot;]" /><category term="golang" /><category term="工具" /><category term="日志" /><summary type="html">为什么称为神器，请看 此文章解析日志的性能和使用方便测试</summary></entry><entry><title type="html">玩转docker-composer基础篇</title><link href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker-composer基础篇" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker-composer安装&quot;&gt;0.docker-composer安装&lt;/h2&gt;
 
 &lt;p&gt;从github上下载docker-compose二进制文件安装&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##下载最新版的docker-compose文件
-curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \
- -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.16.1/d
+ocker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 
 ##添加可执行权限
 chmod +x /usr/local/bin/docker-compose
@@ -29,8 +101,7 @@ docker-compose --version
 
 &lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;##容器相关操作的命令
 
-docker-compose --help 
-
+docker-compose --help
 
 Define and run multi-container applications with Docker.
 
@@ -479,7 +550,7 @@ name: '你好YAML'   #定义一个字符串
 
 &lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker-composer官方&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/compose-file/&quot;&gt;docker-composer文件配置参数&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;docker&quot;, &quot;docker-compose&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker-composer安装</summary></entry><entry><title type="html">玩转docker基础篇</title><link href="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker基础篇" /><published>2019-07-15T00:00:00+00:00</published><updated>2019-07-15T00:00:00+00:00</updated><id>/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker&quot;&gt;0.docker&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/compose-file/&quot;&gt;docker-composer文件配置参数&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;云计算&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker-composer安装</summary></entry><entry><title type="html">玩转docker基础篇</title><link href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" rel="alternate" type="text/html" title="玩转docker基础篇" /><published>2019-07-15T00:00:00+00:00</published><updated>2019-07-15T00:00:00+00:00</updated><id>/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86</id><content type="html" xml:base="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">&lt;h2 id=&quot;0docker&quot;&gt;0.docker&lt;/h2&gt;
 
 &lt;p&gt;Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。&lt;/p&gt;
 
@@ -873,4 +944,4 @@ A:一般有两个方面去判断：&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://yeasy.gitbooks.io/docker_practice/introduction/why.html&quot;&gt;Docker技术入门与实战&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/gaoyingju/article/details/49616295&quot;&gt;为什么容器技术将主宰世界&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;docker&quot;, &quot;docker-compose&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker</summary></entry></feed>
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/gaoyingju/article/details/49616295&quot;&gt;为什么容器技术将主宰世界&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="[&quot;云计算&quot;]" /><category term="docker" /><category term="docker-compose" /><summary type="html">0.docker</summary></entry></feed>

@@ -138,7 +138,7 @@
 
 var canvas = document.getElementById('canvas');
 
-if(canvas && canvas.getContext){
+if(canvas.getContext){
     var cxt = canvas.getContext('2d');
     //声明canvas的宽高
     var H = 100,W = 700;

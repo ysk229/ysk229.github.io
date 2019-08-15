@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>/docker/docker-compose/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</loc>
+<loc>/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</loc>
 <lastmod>2019-07-15T00:00:00+00:00</lastmod>
 </url>
 <url>
-<loc>/docker/docker-compose/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</loc>
+<loc>/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</loc>
 <lastmod>2019-07-18T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html</loc>
+<lastmod>2019-08-15T00:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>/about/</loc>
@@ -33,9 +37,18 @@
 <loc>/search/tags/docker-compose/</loc>
 </url>
 <url>
-<loc>/search/categories/docker/</loc>
+<loc>/search/tags/golang/</loc>
 </url>
 <url>
-<loc>/search/categories/docker-compose/</loc>
+<loc>/search/tags/</loc>
+</url>
+<url>
+<loc>/search/tags/</loc>
+</url>
+<url>
+<loc>/search/categories/</loc>
+</url>
+<url>
+<loc>/search/categories/</loc>
 </url>
 </urlset>
