@@ -33,6 +33,8 @@ pre[class*="language-"] {
 
 pre[class*="language-"] {
     position: relative;
+    margin: 1.6em -31px; 
+    padding: 30px;
 }
 pre[class*="language-"] code {
     white-space: pre;
