@@ -28,13 +28,12 @@
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
   <link rel="stylesheet" href="/assets/css/prism.css">
-  <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+  <!-- <link rel="stylesheet" href="/assets/css/prism-line-numbers.css"> -->
   
   
   
 </head>
-<body class="blog">
-<header class="l_header">
+<body class="blog"><header class="l_header">
 	<div class='wrapper'>
 		<div class="nav-main container container--flex">
 			<a class="logo flat-box" href="/">
@@ -63,33 +62,44 @@
 			</div>
 			
 
-			 
+
 			<div class="m_search">
 				<form name="searchform" class="form u-search-form">
 					<input type="text" id="search-input" class="input u-search-input" placeholder="Search" />
 					<span class="icon icon-search"></span>
 				</form>
-				<ul id="results-container"> 
-					</ul>
+				<ul id="results-container">
+				</ul>
 			</div>
-			
+
 		</div>
 
 		<div class='nav-sub container container--flex' style="display: none">
 			<a class="logo" class="flat-box" href='javascript:void(0)'>
-				Word of Forks
+				图解我的私房菜
 			</a>
-			<ul class='switcher h-list'>
-				<li class='s-comment'><a href='javascript:void(0)'><span
-							class="icon icon-chat_bubble_outline flat-box"></span></a></li>
-				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
+			<ul class='switcher h-list '>
+				<li class='s-home'><a href="/"><span class="icon icon-home flat-box waves-effect waves-block"></span></a></li>
+				<li class='s-top' title="定位顶部"><a href='javascript:void(0)'><span class="icon icon-arrow-up flat-box waves-effect waves-block"></span></a>
 				</li>
-				<li class='s-toc'><a href='javascript:void(0)'><span
-							class="icon icon-format_list_numbered flat-box"></span></a></li>
+				
+				<li class='s-toc' title="内容大纲"><a href='javascript:void(0)'><span class="icon icon-list-ul flat-box waves-effect waves-block"></span></a></li>
+				
 			</ul>
 		</div>
 	</div>
 </header>
+
+<!-- <header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title"> Golang按行解析日志神器之ldetool</h1>
+        <h5 class="subtitle"> 
+        </h5>
+    </div> 
+
+</header> -->
+
 <aside class="menu-phone">
 	<nav>
 		
@@ -112,31 +122,39 @@
 	</nav>
 </aside><div class="l_body">
         <div class='container clearfix'>
-            <div class='l_main'>
-                <article id="post-<Golang按行解析日志神器之ldetool"
-  class="post white-box article-type-post"
-  itemscope itemprop="blogPost">
+            <div class='l_main' style="padding-right:0px">
+                <article id="post-Golang按行解析日志神器之ldetool" class="post white-box article-type-post" itemscope
+ itemprop="blogPost">
 	<section class='meta'>
-	<h2 class="title"><a href="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html">
-    	Golang按行解析日志神器之ldetool
-    </a>
-  </h2>
-	<time>
-		<span class="icon-calendar"></span> 	2019-08-15
-	</time>
- 
-	</section>  
-		<section class="toc-wrapper">
-      <div class="nav">
-        <span>Table Of Contents</span>
-	  </div>
-	   <div class="js-toc"  ></div>
-	   
-	</section> 
-	
-	<section class="article typo">
-  	<div class="article-entry" itemprop="articleBody">
-    	<p>为什么称为神器，<a href="https://blog.csdn.net/orangleliu/article/details/85038304">请看</a>
+		<h2 class="title"><a href="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html">
+				Golang按行解析日志神器之ldetool
+			</a>
+		</h2>
+		<time>
+			<span class="icon  icon-calendar-times-o"></span> 2019-08-15
+		</time>
+<div class='cats'>
+    <a href="/search/categories/大数据">大数据</a>
+</div>
+</section><section class="article typo">
+		<div class="full-width auto-padding tags">
+			
+			<a href="/search/tags/golang"> golang</a>
+			
+			<a href="/search/tags/"> 工具</a>
+			
+			<a href="/search/tags/"> 日志</a>
+			
+		</div>
+	</section>
+	<section class="toc-wrapper">
+		<div class="nav">
+			<span>Table Of Contents </span>
+		</div>
+		<div class="js-toc"></div>
+	</section><section class="article typo">
+		<div class="article-entry" itemprop="articleBody">
+			<p>为什么称为神器，<a href="https://blog.csdn.net/orangleliu/article/details/85038304">请看</a>
 此文章解析日志的性能和使用方便测试</p>
 
 <h2 id="0安装">0.安装</h2>
@@ -210,112 +228,193 @@ IP(string) " "
 
 <p><a href="https://github.com/sirkon/ldetool">官方</a></p>
 
-  	</div><div class="page-reward">
-		<a href="javascript:;" class="page-reward-btn tooltip-top">
-		  <div class="tooltip tooltip-east">
-		  <span class="tooltip-item">
-			赏
-		  </span>
-		  <span class="tooltip-content">
-			<span class="tooltip-text">
-			  <span class="tooltip-inner">
-				<p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
-				<div class="reward-box">
-				  
-				  <div class="reward-box-item">
-					<img class="reward-img" src="/assets/img/zhifubao.png" title="支付宝扫一扫" >
-					<span class="reward-type">支付宝</span>
-				  </div>
-				  
-				  
-				  <div class="reward-box-item">
-					<img class="reward-img" src="/assets/img/weixin.png" title="微信扫一扫" >
-					<span class="reward-type">微信</span>
-				  </div>
-				  
-				</div>
-			  </span>
-			</span>
-		  </span>
 		</div>
-		</a>
-	  </div><div class="art-item-footer"><span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html"
-						 rel="prev" title="玩转docker-composer基础篇" >
-						 玩转docker-composer基础篇
-					</a></span>
-		</div></section>
+<div class="page-reward">
+    <a href="javascript:;" class="page-reward-btn tooltip-top">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+                赏
+            </span>
+            <span class="tooltip-content">
+                <span class="tooltip-text">
+                    <span class="tooltip-inner">
+                        <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+                        <div class="reward-box">
+
+                            <div class="reward-box-item">
+                                <img class="reward-img" src="/assets/img/zhifubao.png" title="支付宝扫一扫">
+                                <span class="reward-type">支付宝</span>
+                            </div>
+
+
+                            <div class="reward-box-item">
+                                <img class="reward-img" src="/assets/img/weixin.png" title="微信扫一扫">
+                                <span class="reward-type">微信</span>
+                            </div>
+
+                        </div>
+                    </span>
+                </span>
+            </span>
+        </div>
+    </a>
+</div>
+
+		<div class="art-item-footer">
+			
+
+<div class="page-share-wrap">
+     
+     
+     
+     
+    <div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
+此文章解析日志的性能和使用方便测试
+
+0.安装
+
+go get -u github.com/sirkon/ldetool
+
+
+1.使用命令行如下
+
+ldetool generate --package 包名 规则文件.lde
+
+
+生成Golang规则类的文件，在Golang中调它的方法如下
+
+//规则定义的类名
+l := &amp;Line{}
+str :="hello world"
+if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
+    //Time是规则定的属性
+   " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=&via=" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+ <div class="mask" id="mask"></div>
+ 
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+			<span class="art-item-left"><i class="icon icon-angle-left icon-lg icon-pr"></i>prev：<a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html"
+            rel="prev" title="玩转docker-composer基础篇">
+            玩转docker-composer基础篇
+        </a></span>
+		</div>
+	</section>
 	 <!--Gitalk评论start  -->
  
  <!-- Gitalk end -->
 
  
 </article>
-<script>
+
+ 
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
+此文章解析日志的性能和使用方便测试
+
+0.安装
+
+go get -u github.com/sirkon/ldetool
+
+
+1.使用命令行如下
+
+ldetool generate --package 包名 规则文件.lde
+
+
+生成Golang规则类的文件，在Golang中调它的方法如下
+
+//规则定义的类名
+l := &amp;Line{}
+str :="hello world"
+if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
+    //Time是规则定的属性
+   " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=&via=" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+ <div class="mask" id="mask"></div>
+ 
+  <div class="page-modal wx-share" id="wxShare">
+      <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+      <p>扫一扫，分享到微信</p>
+      <img src="//api.qrserver.com/v1/create-qr-code/?data=" alt="微信分享二维码">
+  </div>
+  <script>
 	window.subData = {
 		title: 'Golang按行解析日志神器之ldetool',
 		tools: true
 	}
 </script>
-
             </div>
-            <aside class='l_side'>
-
-
-<section class='m_widget time'>
-    <div class='header'>当前时间</div>
-    <div class='content'>
-        <canvas id="canvas" style="width:100%;padding: 20px;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
-    </div>
-</section>
-
-
-<section class='m_widget categories'>
-<div class='header'>Categories</div>
-<div class='content'> 
-    <ul class="entry"> 
-        
-        <li><a class="flat-box" href="/search/categories/"><div class='name'> 云计算</div><div class='badget'>2</div></a></li>
-        
-        <li><a class="flat-box" href="/search/categories/"><div class='name'> 大数据</div><div class='badget'>1</div></a></li>
-        
-    </ul> 
-</div>
-</section>
-
-
-<div class="m_widget tagcloud">
-    <div class="header">Tags</div>
-    <div class='content'>
-        <div class="tags">
-                
-                
-                
-                
-                
-                
-                
-
-
-
-                <a href="/search/tags/docker" style="font-size: 24.0px;color: rgb(0,0,0)" >docker<span>2</span></a> <a href="/search/tags/docker-compose" style="font-size: 24.0px;color: rgb(0,0,0)" >docker-compose<span>2</span></a> <a href="/search/tags/golang" style="font-size: 12.0px;color: rgb(0,0,0)" >golang<span>1</span></a> <a href="/search/tags/" style="font-size: 12.0px;color: rgb(0,0,0)" >工具<span>1</span></a> <a href="/search/tags/" style="font-size: 12.0px;color: rgb(0,0,0)" >日志<span>1</span></a>
-
-            
-            <a href="/search/tags/docker">docker<span>2</span></a>
-            
-            <a href="/search/tags/docker-compose">docker-compose<span>2</span></a>
-            
-            <a href="/search/tags/golang">golang<span>1</span></a>
-            
-            <a href="/search/tags/">工具<span>1</span></a>
-            
-            <a href="/search/tags/">日志<span>1</span></a>
-            
-        </div>
-    </div>
-</div>
- </aside>
-        </div>
-    </div><footer id="footer" class="clearfix">
+        </div><footer id="footer" class="clearfix">
 
 	<div class="social-wrapper">
   
@@ -323,41 +422,7 @@ IP(string) " "
   
   <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.2019-08-15 00:00:00 +0000</div>
 
-</footer>
-
-<script src="/assets/js/jquery-1.12.4.min.js"></script> 
-<script src="/assets/js/prism.js"></script>
-<script src="/assets/js/topbar.js"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script>
-    $(function() {
-        function resetToDefaults() {
-          topbar.config({
-            autoRun      : true,
-            barThickness : 3,
-            barColors    : {
-              '0'      : 'rgba(26,  188, 156, .9)',
-              '.25'    : 'rgba(52,  152, 219, .9)',
-              '.50'    : 'rgba(241, 196, 15,  .9)',
-              '.75'    : 'rgba(230, 126, 34,  .9)',
-              '1.0'    : 'rgba(211, 84,  0,   .9)'
-            },
-            shadowBlur   : 10,
-            shadowColor  : 'rgba(0,   0,   0,   .6)'
-          })
-        }
-        // Page load
-        resetToDefaults()
-        topbar.show()
-        setTimeout(function() {
-          // $('.l_body').fadeIn('slow')
-          topbar.hide()
-        }, 1500) 
-
- 
-    })
-  </script>
-  <script src="/assets/js/jquery-1.12.4.min.js"></script>
+</footer></div><script src="/assets/js/jquery-1.12.4.min.js"></script>
 <script src="/assets/js/p/jquery.nicescroll.min.js"></script>
 
 <script src="/assets/js/p/tocbot/tocbot.min.js"></script> 
@@ -366,9 +431,16 @@ IP(string) " "
 <script src="/assets/js/p/backtop/backtop.js"></script> 
 <link rel="stylesheet" href="/assets/js/p/backtop/back-top.css">
 
+<script src="/assets/js/p/waves.min.js"></script>
 <script src="/assets/js/p/canvasTime.js"></script>
 <script src="/assets/js/p/scrollreveal.min.js"></script>
 <script src="/assets/js/p/simple-jekyll-search.min.js"></script>
+
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/topbar.js"></script>
+
+
 <script src="/assets/js/app.js"></script>
 </body>
+
 </html>

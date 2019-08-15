@@ -26,7 +26,7 @@
   <link rel="alternate" type="application/rss+xml" title="图解我的私房菜"
     href="/feed.xml">
   <link rel="stylesheet" href="/assets/css/prism.css">
-  <link rel="stylesheet" href="/assets/css/prism-line-numbers.css">
+  <!-- <link rel="stylesheet" href="/assets/css/prism-line-numbers.css"> -->
   
   
   
@@ -35,8 +35,7 @@
   
   
 </head>
-<body class="blog">
-<header class="l_header">
+<body class="blog"><header class="l_header">
 	<div class='wrapper'>
 		<div class="nav-main container container--flex">
 			<a class="logo flat-box" href="/">
@@ -65,33 +64,44 @@
 			</div>
 			
 
-			 
+
 			<div class="m_search">
 				<form name="searchform" class="form u-search-form">
 					<input type="text" id="search-input" class="input u-search-input" placeholder="Search" />
 					<span class="icon icon-search"></span>
 				</form>
-				<ul id="results-container"> 
-					</ul>
+				<ul id="results-container">
+				</ul>
 			</div>
-			
+
 		</div>
 
 		<div class='nav-sub container container--flex' style="display: none">
 			<a class="logo" class="flat-box" href='javascript:void(0)'>
-				Word of Forks
+				图解我的私房菜
 			</a>
-			<ul class='switcher h-list'>
-				<li class='s-comment'><a href='javascript:void(0)'><span
-							class="icon icon-chat_bubble_outline flat-box"></span></a></li>
-				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a>
+			<ul class='switcher h-list '>
+				<li class='s-home'><a href="/"><span class="icon icon-home flat-box waves-effect waves-block"></span></a></li>
+				<li class='s-top' title="定位顶部"><a href='javascript:void(0)'><span class="icon icon-arrow-up flat-box waves-effect waves-block"></span></a>
 				</li>
-				<li class='s-toc'><a href='javascript:void(0)'><span
-							class="icon icon-format_list_numbered flat-box"></span></a></li>
+				
+				<li class='s-toc' title="内容大纲"><a href='javascript:void(0)'><span class="icon icon-list-ul flat-box waves-effect waves-block"></span></a></li>
+				
 			</ul>
 		</div>
 	</div>
 </header>
+
+<!-- <header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title"> Categories</h1>
+        <h5 class="subtitle"> 
+        </h5>
+    </div> 
+
+</header> -->
+
 <aside class="menu-phone">
 	<nav>
 		
@@ -114,7 +124,7 @@
 	</nav>
 </aside><div class="l_body">
         <div class='container clearfix'>
-            <div class='l_main'>
+            <div class='l_main' style="padding-right:0px">
                 <div class="col s12 cat-div">
     <div class="cat-list">
       
@@ -168,8 +178,7 @@
     </div>
   </div>
             </div>
-        </div>
-    </div><footer id="footer" class="clearfix">
+        </div><footer id="footer" class="clearfix">
 
 	<div class="social-wrapper">
   
@@ -177,41 +186,7 @@
   
   <div>Copyright ©2011-2019 图解我的私房菜, all rights reserved.</div>
 
-</footer>
-
-<script src="/assets/js/jquery-1.12.4.min.js"></script> 
-<script src="/assets/js/prism.js"></script>
-<script src="/assets/js/topbar.js"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script>
-    $(function() {
-        function resetToDefaults() {
-          topbar.config({
-            autoRun      : true,
-            barThickness : 3,
-            barColors    : {
-              '0'      : 'rgba(26,  188, 156, .9)',
-              '.25'    : 'rgba(52,  152, 219, .9)',
-              '.50'    : 'rgba(241, 196, 15,  .9)',
-              '.75'    : 'rgba(230, 126, 34,  .9)',
-              '1.0'    : 'rgba(211, 84,  0,   .9)'
-            },
-            shadowBlur   : 10,
-            shadowColor  : 'rgba(0,   0,   0,   .6)'
-          })
-        }
-        // Page load
-        resetToDefaults()
-        topbar.show()
-        setTimeout(function() {
-          // $('.l_body').fadeIn('slow')
-          topbar.hide()
-        }, 1500) 
-
- 
-    })
-  </script>
-  <script src="/assets/js/jquery-1.12.4.min.js"></script>
+</footer></div><script src="/assets/js/jquery-1.12.4.min.js"></script>
 <script src="/assets/js/p/jquery.nicescroll.min.js"></script>
 
 <script src="/assets/js/p/tocbot/tocbot.min.js"></script> 
@@ -220,9 +195,15 @@
 <script src="/assets/js/p/backtop/backtop.js"></script> 
 <link rel="stylesheet" href="/assets/js/p/backtop/back-top.css">
 
+<script src="/assets/js/p/waves.min.js"></script>
 <script src="/assets/js/p/canvasTime.js"></script>
 <script src="/assets/js/p/scrollreveal.min.js"></script>
 <script src="/assets/js/p/simple-jekyll-search.min.js"></script>
+
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/topbar.js"></script>
+
+
 <script src="/assets/js/app.js"></script>
 </body>
 
