@@ -90,16 +90,6 @@
 	</div>
 </header>
 
-<!-- <header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title"> 玩转docker-composer基础篇</h1>
-        <h5 class="subtitle"> 
-        </h5>
-    </div> 
-
-</header> -->
-
 <aside class="menu-phone">
 	<nav>
 		
@@ -121,12 +111,23 @@
 			
 	</nav>
 </aside><div class="l_body">
+        
+        <header class="content-header bg post-header">
+
+            <div class="wrap-title fade-scale">
+                <h1 class="title"> 玩转docker-composer基础篇</h1>
+                <h5 class="subtitle">
+                </h5>
+            </div>
+
+        </header>
+        
         <div class='container clearfix'>
             <div class='l_main' style="padding-right:0px">
-                <article id="post-docker-composer基础知识" class="post white-box article-type-post" itemscope
+                <article id="post-docker-composer基础知识" class="post info white-box article-type-post" itemscope
  itemprop="blogPost">
 	<section class='meta'>
-		<h2 class="title"><a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+		<h2 class="title" style="display:none"><a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
 				玩转docker-composer基础篇
 			</a>
 		</h2>
@@ -145,7 +146,7 @@
 			
 		</div>
 	</section>
-	<section class="toc-wrapper">
+	<section class="toc-wrapper" style="display:none">
 		<div class="nav">
 			<span>Table Of Contents </span>
 		</div>
@@ -666,11 +667,11 @@ name: '你好YAML'   #定义一个字符串
         </div>
     </a>
 </div>
-
-		<div class="art-item-footer">
+<div class="art-item-footer">   
 			
-
+  
 <div class="page-share-wrap">
+     
      
      
      
@@ -678,7 +679,7 @@ name: '你好YAML'   #定义一个字符串
     <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=玩转docker-composer基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker-composer基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -688,34 +689,22 @@ name: '你好YAML'   #定义一个字符串
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=玩转docker-composer基础篇&source=0.docker-composer安装
-
-从github上下载docker-compose二进制文件安装
-
-##下载最新版的docker-compose文件
-curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \
- -o /usr/local/bin/docker-compose
-
-##添加可执行权限
-chmod +x /usr/local/bin/docker-compose
-
-##测试安装结果
-d" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker-composer基础篇&source=0.docker-composer安装 从github上下载docker-compose二进制文件安装 ##下载最新版的docker-compose文件 curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \ -o /usr/local/bin/docker-compose ##添加可执行权限 chmod +x /usr/local/bin/docker-compose ##测试安装结果 docker-compose --version 1.基本概念 使用Docker Compose不再需要使用shell脚本来启动容器 Compose 通过一个配置文件来管理多个Docker容器，在配置文件中，所有的容器通过services来定义，然后使用docker-compose脚本来启动，停止和重启应用，和应用中的服务以及所有依赖服务的容器 Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理 服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。 项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。 2.基本命令的使用技巧 docker-compose –help 参数 可以查看调用的参数的格式 ##容器相关操作的命令 docker-compose --help Define and run multi-container applications with Docker. Usage: docker-compose [-f &lt;arg&gt;...] [options] [COMMAND] [ARGS...] docker-compose -h|--help Options: -f, --file FILE Specify an alternate compose file (default: docker-compose.yml) -p, --project-name NAME Specify an alternate project name (default: directory name) --verbose Show more output --log-level LEVEL Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) --no-ansi Do not print ANSI control characters -v, --version Print version and exit -H, --host HOST Daemon socket to connect to --tls Use TLS; implied by --tlsverify --tlscacert CA_PATH Trust certs signed only by this CA --tlscert CLIENT_CERT_PATH Path to TLS certificate file --tlskey TLS_KEY_PATH Path to TLS key file --tlsverify Use TLS and verify the remote --skip-hostname-check Don't check the daemon's hostname against the name specified in the client certificate --project-directory PATH Specify an alternate working directory (default: the path of the Compose file) --compatibility If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent Commands: build Build or rebuild services bundle Generate a Docker bundle from the Compose file config Validate and view the Compose file create Create services down Stop and remove containers, networks, images, and volumes events Receive real time events from containers exec Execute a command in a running container help Get help on a command images List images kill Kill containers logs View output from containers pause Pause services port Print the public port for a port binding ps List containers pull..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker-composer基础篇&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker-composer基础篇&url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -752,7 +741,7 @@ d" data-title=" QQ">
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=玩转docker-composer基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker-composer基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -762,34 +751,22 @@ d" data-title=" QQ">
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=玩转docker-composer基础篇&source=0.docker-composer安装
-
-从github上下载docker-compose二进制文件安装
-
-##下载最新版的docker-compose文件
-curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \
- -o /usr/local/bin/docker-compose
-
-##添加可执行权限
-chmod +x /usr/local/bin/docker-compose
-
-##测试安装结果
-d" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker-composer基础篇&source=0.docker-composer安装 从github上下载docker-compose二进制文件安装 ##下载最新版的docker-compose文件 curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` \ -o /usr/local/bin/docker-compose ##添加可执行权限 chmod +x /usr/local/bin/docker-compose ##测试安装结果 docker-compose --version 1.基本概念 使用Docker Compose不再需要使用shell脚本来启动容器 Compose 通过一个配置文件来管理多个Docker容器，在配置文件中，所有的容器通过services来定义，然后使用docker-compose脚本来启动，停止和重启应用，和应用中的服务以及所有依赖服务的容器 Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理 服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。 项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。 2.基本命令的使用技巧 docker-compose –help 参数 可以查看调用的参数的格式 ##容器相关操作的命令 docker-compose --help Define and run multi-container applications with Docker. Usage: docker-compose [-f &lt;arg&gt;...] [options] [COMMAND] [ARGS...] docker-compose -h|--help Options: -f, --file FILE Specify an alternate compose file (default: docker-compose.yml) -p, --project-name NAME Specify an alternate project name (default: directory name) --verbose Show more output --log-level LEVEL Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) --no-ansi Do not print ANSI control characters -v, --version Print version and exit -H, --host HOST Daemon socket to connect to --tls Use TLS; implied by --tlsverify --tlscacert CA_PATH Trust certs signed only by this CA --tlscert CLIENT_CERT_PATH Path to TLS certificate file --tlskey TLS_KEY_PATH Path to TLS key file --tlsverify Use TLS and verify the remote --skip-hostname-check Don't check the daemon's hostname against the name specified in the client certificate --project-directory PATH Specify an alternate working directory (default: the path of the Compose file) --compatibility If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent Commands: build Build or rebuild services bundle Generate a Docker bundle from the Compose file config Validate and view the Compose file create Create services down Stop and remove containers, networks, images, and volumes events Receive real time events from containers exec Execute a command in a running container help Get help on a command images List images kill Kill containers logs View output from containers pause Pause services port Print the public port for a port binding ps List containers pull..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker-composer基础篇&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker-composer基础篇&url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -801,7 +778,7 @@ d" data-title=" QQ">
   <div class="page-modal wx-share" id="wxShare">
       <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
       <p>扫一扫，分享到微信</p>
-      <img src="//api.qrserver.com/v1/create-qr-code/?data=" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?data=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/18/docker-composer%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" alt="微信分享二维码">
   </div>
   <script>
 	window.subData = {

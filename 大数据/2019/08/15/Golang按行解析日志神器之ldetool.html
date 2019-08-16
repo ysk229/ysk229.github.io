@@ -90,16 +90,6 @@
 	</div>
 </header>
 
-<!-- <header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title"> Golang按行解析日志神器之ldetool</h1>
-        <h5 class="subtitle"> 
-        </h5>
-    </div> 
-
-</header> -->
-
 <aside class="menu-phone">
 	<nav>
 		
@@ -121,12 +111,23 @@
 			
 	</nav>
 </aside><div class="l_body">
+        
+        <header class="content-header bg post-header">
+
+            <div class="wrap-title fade-scale">
+                <h1 class="title"> Golang按行解析日志神器之ldetool</h1>
+                <h5 class="subtitle">
+                </h5>
+            </div>
+
+        </header>
+        
         <div class='container clearfix'>
             <div class='l_main' style="padding-right:0px">
-                <article id="post-Golang按行解析日志神器之ldetool" class="post white-box article-type-post" itemscope
+                <article id="post-Golang按行解析日志神器之ldetool" class="post info white-box article-type-post" itemscope
  itemprop="blogPost">
 	<section class='meta'>
-		<h2 class="title"><a href="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html">
+		<h2 class="title" style="display:none"><a href="/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html">
 				Golang按行解析日志神器之ldetool
 			</a>
 		</h2>
@@ -141,13 +142,13 @@
 			
 			<a href="/search/tags/golang"> golang</a>
 			
-			<a href="/search/tags/"> 工具</a>
+			<a href="/search/tags/工具"> 工具</a>
 			
-			<a href="/search/tags/"> 日志</a>
+			<a href="/search/tags/日志"> 日志</a>
 			
 		</div>
 	</section>
-	<section class="toc-wrapper">
+	<section class="toc-wrapper" style="display:none">
 		<div class="nav">
 			<span>Table Of Contents </span>
 		</div>
@@ -280,11 +281,11 @@ IP(string) " "
         </div>
     </a>
 </div>
-
-		<div class="art-item-footer">
+<div class="art-item-footer">   
 			
-
+  
 <div class="page-share-wrap">
+     
      
      
      
@@ -292,7 +293,7 @@ IP(string) " "
     <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -302,7 +303,7 @@ IP(string) " "
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
 此文章解析日志的性能和使用方便测试
 
 0.安装
@@ -322,22 +323,96 @@ l := &amp;Line{}
 str :="hello world"
 if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
     //Time是规则定的属性
-   " data-title=" QQ">
+    fmt.Sprintf("%s",l.Time)
+}
+
+
+2.实际例子
+
+2.1日志内容
+
+27.154.70.117 - - [20/Nov/2018:20:23:56 +0800] 2 "GET http://7img1.tianlaikge.com/tv/homeimage/201709/shengridangao.zip HTTP/1.1" 200 842186 841382 "-" "-" "Dalvik/2.1.0 (Linux; U; Android 7.1.2; vivo Y79A Build/N2G47H)" "-" 219082621 "HIT" 27.159.73.35
+
+
+2.2 ldetool规则文件
+
+vim nginx.lde
+
+
+Nginx =
+    IP(string) " "
+    ^"- - [" Time(string) ']'
+    ^" "Cost(uint32)" "
+    ^'"'Request(string)'"'
+    ^" "Status(int64)" "
+    ByteSend(int64)" "
+    BodyByteSend(int64)" "
+    ^'"'Referer(string)'"'
+    ^" "
+    ^'"'Cookie(string)'"'
+    ^' '
+    ^'"'UserAgent(string)'"'
+    ^' '
+    ^'"'Xfor(string)'"'
+    ^' 'ConnID(string)' '
+    ^'"'Hit(string)'"'
+    ^" "
+    ServerIp(string)
+;
+
+
+格式是
+
+类名=
+##IP则它义定的属性，因为golang的原因，首字母要大写，如果是id则要ID都得大写
+IP(string) " "
+;
+
+
+3.规则详解
+
+3.1 规则列表
+
+
+
+3.2 原理
+
+排号系统，意思是说叫到号的人走出休息区。休息区是等待叫号的人，休息区则是要匹配的字符串.
+比如：匹配字符串则休息区是【休息区是等待叫号的人】，排号系统叫到【等待】，那匹配规则是【_等待】,
+匹配系统则会将等待之前的字符走到休息区，则休息区此时变为【叫号的人】.
+
+3.3 规则解释
+
+
+  _[N:]是匹配可以不重复N个字符,比如_“test”[:3] Filed(float64) “ “,那休息区开头必须是【[前面三个任意字符]test 878787】
+  * 是匹配重复N个字符，也是_[N:]一种特例
+  ^ 是匹配前缀的字符
+  ^ 或 _ 都是有序的，就是顺序是固定的，如果顺序是随机的话则在前面加上 ?
+  @ 或 .. 则包括匹配词，@ 是字符串，.. 则是字符
+  _[N:M] ,? ..|@ 可以组成使用
+
+
+4.参考文章
+
+ldetool官方源代码
+
+ldetool性能分析
+" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -369,7 +444,7 @@ if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&title=Golang按行解析日志神器之ldetool&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -379,7 +454,7 @@ if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&title=Golang按行解析日志神器之ldetool&source=为什么称为神器，请看
 此文章解析日志的性能和使用方便测试
 
 0.安装
@@ -399,22 +474,96 @@ l := &amp;Line{}
 str :="hello world"
 if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
     //Time是规则定的属性
-   " data-title=" QQ">
+    fmt.Sprintf("%s",l.Time)
+}
+
+
+2.实际例子
+
+2.1日志内容
+
+27.154.70.117 - - [20/Nov/2018:20:23:56 +0800] 2 "GET http://7img1.tianlaikge.com/tv/homeimage/201709/shengridangao.zip HTTP/1.1" 200 842186 841382 "-" "-" "Dalvik/2.1.0 (Linux; U; Android 7.1.2; vivo Y79A Build/N2G47H)" "-" 219082621 "HIT" 27.159.73.35
+
+
+2.2 ldetool规则文件
+
+vim nginx.lde
+
+
+Nginx =
+    IP(string) " "
+    ^"- - [" Time(string) ']'
+    ^" "Cost(uint32)" "
+    ^'"'Request(string)'"'
+    ^" "Status(int64)" "
+    ByteSend(int64)" "
+    BodyByteSend(int64)" "
+    ^'"'Referer(string)'"'
+    ^" "
+    ^'"'Cookie(string)'"'
+    ^' '
+    ^'"'UserAgent(string)'"'
+    ^' '
+    ^'"'Xfor(string)'"'
+    ^' 'ConnID(string)' '
+    ^'"'Hit(string)'"'
+    ^" "
+    ServerIp(string)
+;
+
+
+格式是
+
+类名=
+##IP则它义定的属性，因为golang的原因，首字母要大写，如果是id则要ID都得大写
+IP(string) " "
+;
+
+
+3.规则详解
+
+3.1 规则列表
+
+
+
+3.2 原理
+
+排号系统，意思是说叫到号的人走出休息区。休息区是等待叫号的人，休息区则是要匹配的字符串.
+比如：匹配字符串则休息区是【休息区是等待叫号的人】，排号系统叫到【等待】，那匹配规则是【_等待】,
+匹配系统则会将等待之前的字符走到休息区，则休息区此时变为【叫号的人】.
+
+3.3 规则解释
+
+
+  _[N:]是匹配可以不重复N个字符,比如_“test”[:3] Filed(float64) “ “,那休息区开头必须是【[前面三个任意字符]test 878787】
+  * 是匹配重复N个字符，也是_[N:]一种特例
+  ^ 是匹配前缀的字符
+  ^ 或 _ 都是有序的，就是顺序是固定的，如果顺序是随机的话则在前面加上 ?
+  @ 或 .. 则包括匹配词，@ 是字符串，.. 则是字符
+  _[N:M] ,? ..|@ 可以组成使用
+
+
+4.参考文章
+
+ldetool官方源代码
+
+ldetool性能分析
+" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Golang按行解析日志神器之ldetool&url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -426,7 +575,7 @@ if ok, err := l.Extract(str);ok &amp;&amp; err ==nil{
   <div class="page-modal wx-share" id="wxShare">
       <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
       <p>扫一扫，分享到微信</p>
-      <img src="//api.qrserver.com/v1/create-qr-code/?data=" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?data=/%E5%A4%A7%E6%95%B0%E6%8D%AE/2019/08/15/Golang%E6%8C%89%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%97%A5%E5%BF%97%E7%A5%9E%E5%99%A8%E4%B9%8Bldetool.html" alt="微信分享二维码">
   </div>
   <script>
 	window.subData = {

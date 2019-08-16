@@ -90,16 +90,6 @@
 	</div>
 </header>
 
-<!-- <header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title"> 玩转docker基础篇</h1>
-        <h5 class="subtitle"> 
-        </h5>
-    </div> 
-
-</header> -->
-
 <aside class="menu-phone">
 	<nav>
 		
@@ -121,12 +111,23 @@
 			
 	</nav>
 </aside><div class="l_body">
+        
+        <header class="content-header bg post-header">
+
+            <div class="wrap-title fade-scale">
+                <h1 class="title"> 玩转docker基础篇</h1>
+                <h5 class="subtitle">
+                </h5>
+            </div>
+
+        </header>
+        
         <div class='container clearfix'>
             <div class='l_main' style="padding-right:0px">
-                <article id="post-docker基础知识" class="post white-box article-type-post" itemscope
+                <article id="post-docker基础知识" class="post info white-box article-type-post" itemscope
  itemprop="blogPost">
 	<section class='meta'>
-		<h2 class="title"><a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
+		<h2 class="title" style="display:none"><a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html">
 				玩转docker基础篇
 			</a>
 		</h2>
@@ -573,11 +574,11 @@ A:一般有两个方面去判断：</p>
         </div>
     </a>
 </div>
-
-		<div class="art-item-footer">
+<div class="art-item-footer">   
 			
-
+  
 <div class="page-share-wrap">
+     
      
      
      
@@ -585,7 +586,7 @@ A:一般有两个方面去判断：</p>
     <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=玩转docker基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -595,47 +596,22 @@ A:一般有两个方面去判断：</p>
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=玩转docker基础篇&source=0.docker
-
-Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。
-
-Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。
-
-
-  
-    安装
-
-    官方网站上有各种环境下的 安装指南
-  
-  
-    与传统虚拟机的区别
-
-    
-
-    
-
-    
-  
-
-
-1.基本概念
-
-1.0 集装箱对容器技术(Docker)的" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker基础篇&source=0.docker Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。 Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。 安装 官方网站上有各种环境下的 安装指南 与传统虚拟机的区别 1.基本概念 1.0 集装箱对容器技术(Docker)的启发 1.1 镜像 对于 Linux 而言，内核启动后，会挂载 root 文件系统为其提供用户空间支持。而 Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:18.04 就包含了完整的一套 Ubuntu 18.04 最小系统的 root 文件系统。 镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。 1.2容器 镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，容器是镜像运行时的实体 容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间 每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为 容器存储层。 容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高 数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。 1.3仓库 一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。 通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 : 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。 以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 ubuntu:18.04 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 ubuntu:latest。 仓库名经常以 两段式路径 形式出现，比如 jwilder/nginx-proxy，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。 Docker Registry 公开服务 私有 Docker Registry 2.docker 核心模块 核心功能简答介绍: Docker是C/S模式 images：docker镜像，是Docker run的原材料 container: Docker运行的内容，是独立存在的 data volumes: 通过数据挂载的方式，实现数据共享 network：用户容器与外部、容器之间的通信，常用的方法有端口映射、link等 3.docker 使用流程 4.基本命令的使用技巧 docker 参数 –help 可以查看调用的参数的格式 ##容器相关操作的命令 docker container --help Commands: attach Attach local standard input, output, and error streams to a running container commit Create a new image from a container's changes cp Copy files/folders between a container and the local filesystem create Create a new container diff Inspect changes to files or directories on a container's filesystem exec Run a command in a running container export Export a container's filesystem as a tar archive inspect Display detailed information on one or more containers kill Kill one or more running containers logs Fetch the logs of a container ls List containers pause Pause all processes within one or more containers port List port mappings or a specific mapping for the container prune Remove all stopped containers rename Rename a container restart Restart one or more containers rm Remove one or more containers run Run a command in a new container start Start one or more stopped containers stats Display a live stream..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker基础篇&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker基础篇&url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -669,7 +645,7 @@ Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发�
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=&title=玩转docker基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker基础篇&pic=https://imys.net/img/face.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -679,47 +655,22 @@ Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发�
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=&title=玩转docker基础篇&source=0.docker
-
-Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。
-
-Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。
-
-
-  
-    安装
-
-    官方网站上有各种环境下的 安装指南
-  
-  
-    与传统虚拟机的区别
-
-    
-
-    
-
-    
-  
-
-
-1.基本概念
-
-1.0 集装箱对容器技术(Docker)的" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&title=玩转docker基础篇&source=0.docker Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。 Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发布一个 stable 版本 (18.09, 19.03, 19.09…)。 安装 官方网站上有各种环境下的 安装指南 与传统虚拟机的区别 1.基本概念 1.0 集装箱对容器技术(Docker)的启发 1.1 镜像 对于 Linux 而言，内核启动后，会挂载 root 文件系统为其提供用户空间支持。而 Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:18.04 就包含了完整的一套 Ubuntu 18.04 最小系统的 root 文件系统。 镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。 1.2容器 镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，容器是镜像运行时的实体 容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间 每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为 容器存储层。 容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高 数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。 1.3仓库 一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。 通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 : 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。 以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 ubuntu:18.04 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 ubuntu:latest。 仓库名经常以 两段式路径 形式出现，比如 jwilder/nginx-proxy，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。 Docker Registry 公开服务 私有 Docker Registry 2.docker 核心模块 核心功能简答介绍: Docker是C/S模式 images：docker镜像，是Docker run的原材料 container: Docker运行的内容，是独立存在的 data volumes: 通过数据挂载的方式，实现数据共享 network：用户容器与外部、容器之间的通信，常用的方法有端口映射、link等 3.docker 使用流程 4.基本命令的使用技巧 docker 参数 –help 可以查看调用的参数的格式 ##容器相关操作的命令 docker container --help Commands: attach Attach local standard input, output, and error streams to a running container commit Create a new image from a container's changes cp Copy files/folders between a container and the local filesystem create Create a new container diff Inspect changes to files or directories on a container's filesystem exec Run a command in a running container export Export a container's filesystem as a tar archive inspect Display detailed information on one or more containers kill Kill one or more running containers logs Fetch the logs of a container ls List containers pause Pause all processes within one or more containers port List port mappings or a specific mapping for the container prune Remove all stopped containers rename Rename a container restart Restart one or more containers rm Remove one or more containers run Run a command in a new container start Start one or more stopped containers stats Display a live stream..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker基础篇&url=&via=" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=玩转docker基础篇&url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html&via=" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -731,7 +682,7 @@ Docker CE 分为 stable, test, 和 nightly 三个更新频道。每六个月发�
   <div class="page-modal wx-share" id="wxShare">
       <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
       <p>扫一扫，分享到微信</p>
-      <img src="//api.qrserver.com/v1/create-qr-code/?data=" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?data=/%E4%BA%91%E8%AE%A1%E7%AE%97/2019/07/15/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html" alt="微信分享二维码">
   </div>
   <script>
 	window.subData = {

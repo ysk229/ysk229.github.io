@@ -267,8 +267,8 @@ var customSearch;
 		touchbehavior: false,
 		zindex: 999
 	});
-
-	$(".l_body").getNiceScroll(0).scrollend(function (e) {
+	$('.toc-wrapper').hide();
+	$(".l_body").getNiceScroll(0).scrollstart(function (e) {
 		// TODO  
 		var $wrapper = $('header .wrapper');
 		var del = e.current.y;
@@ -278,6 +278,11 @@ var customSearch;
 		} else if (del <= 0) {
 			$wrapper.removeClass('sub');
 			$('.nav-sub').hide();
+		} 
+		if(del<380){
+			$('.toc-wrapper').hide();
+		}else{
+			$('.toc-wrapper').show();
 		}
 	});
 
