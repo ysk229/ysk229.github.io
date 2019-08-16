@@ -75,6 +75,10 @@
         background: white;
         border-radius: $border_radius;
         @extend .z-depth-1;
+        &.info{
+
+            margin-top: -170px;
+        }
         .meta {
             margin-bottom: 2*$gap;
             .title {

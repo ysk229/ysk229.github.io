@@ -1,13 +1,14 @@
 {% if site.share.enable %}
-{% if post.title %}
+{% if post.title %}  
 <div class="page-share-wrap">
+    {% assign sUrl = sUrl   %} 
     {% assign scope = "page" %} 
     {% assign sTitle = post.title %} 
-    {% assign sDesc = post.content | strip_html |  slice: 0, 280  %} 
+    {% assign sDesc = post.content | strip_html  | truncatewords: 280  %} 
     {% assign sPic = "https://imys.net/img/face.jpg"  %} 
     {% include _common/share.html scope=scope sUrl=sUrl sTitle=sTitle sPic=sPic sDesc=sDesc  %}
     <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
+        <i class="icon icon-share-alt icon-lg"></i>{{ sUrls }}
     </a>
 </div>
 {% endif %}

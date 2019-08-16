@@ -3,6 +3,17 @@
 <body class="blog">
     {%- include _common/header.html -%}
     <div class="l_body">
+        {% if page.title %}
+        <header class="content-header bg post-header">
+
+            <div class="wrap-title fade-scale">
+                <h1 class="title"> {{ page.title}}</h1>
+                <h5 class="subtitle">
+                </h5>
+            </div>
+
+        </header>
+        {% endif %}
         <div class='container clearfix'>
             <div class='l_main' style="padding-right:0px">
                 {{ content }}

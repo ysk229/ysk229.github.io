@@ -187,13 +187,43 @@ $textPrimaryColor: #fff;
 $primaryColor: #3f51b5;
 $lightPrimaryColor: #c5cae9;
 $accentColor: #ff4081;
+
 .content-header {
-    min-height: 210px;
-    margin-left: -240px;
-    padding: 104px 16px 48px 256px;
-    color: $textPrimaryColor;
-    background: $primaryColor;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	&.bg{
+		// background: url(https://img.flyhigher.top/wp-content/uploads/2017/11/8.jpg);
+		background: url(./../img/bg.jpg) no-repeat #ffffff;
+		z-index: 2;
+		background-position: center center;
+		background-size: cover;
+		-webkit-filter: brightness(.8);
+		filter: brightness(.8);
+	}
+	&.bg2{
+		// background: url(https://img.flyhigher.top/wp-content/uploads/2017/11/8.jpg);
+		background: url(./../img/bg2.jpg) no-repeat #ffffff;
+		z-index: 2;
+		background-position: center center;
+		background-size: cover;
+		-webkit-filter: brightness(.8);
+		filter: brightness(.8);
+	}
+	&.bg3{
+		// background: url(https://img.flyhigher.top/wp-content/uploads/2017/11/8.jpg);
+		background: url(./../img/bg3.jpg) no-repeat #ffffff;
+		z-index: 2;
+		background-position: center center;
+		background-size: cover;
+		-webkit-filter: brightness(.8);
+		filter: brightness(.8);
+	}
+	min-height: 460px;
+	// padding: 104px 16px 48px 256px;
+	
+    color: #fff;
+    background: #3367d6;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    margin-top: -40px;
+    text-align: center;
 
     .subtitle {
         padding-top: 6px;
@@ -214,8 +244,15 @@ $accentColor: #ff4081;
 .post-header {
 
     .title, .subtitle {
-        display: none;
-    }
+        display: block;
+	}
+	.wrap-title{
+		
+		line-height: 275px;
+		font-size: 28px;
+		font-weight: 400;
+		font-family: Microsoft YaHei,Helvetica Neue,Helvetica,STXihei,sans-serif;
+	}
 }
 
 @media screen and (max-width:760px) {
