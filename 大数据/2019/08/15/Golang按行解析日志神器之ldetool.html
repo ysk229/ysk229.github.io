@@ -222,11 +222,32 @@ IP(string) " "
 
 <h2 id="3规则详解">3.规则详解</h2>
 
+<h3 id="31-规则列表">3.1 规则列表</h3>
+
 <p><img src="img/规则.png" alt="规则" title="ldetool 规则" /></p>
+
+<h3 id="32-原理">3.2 原理</h3>
+
+<p>排号系统，意思是说叫到号的人走出休息区。休息区是等待叫号的人，休息区则是要匹配的字符串.
+比如：匹配字符串则休息区是【休息区是等待叫号的人】，排号系统叫到【等待】，那匹配规则是【_等待】,
+匹配系统则会将等待之前的字符走到休息区，则休息区此时变为【叫号的人】.</p>
+
+<h3 id="33-规则解释">3.3 规则解释</h3>
+
+<ul>
+  <li><code>_[N:]</code>是匹配可以不重复N个字符,比如_“test”[:3] Filed(float64) “ “,那休息区开头必须是【[前面三个任意字符]test 878787】</li>
+  <li><code>*</code> 是匹配重复N个字符，也是<code>_[N:]</code>一种特例</li>
+  <li><code>^</code> 是匹配前缀的字符</li>
+  <li><code>^</code> 或 <code>_</code> 都是有序的，就是顺序是固定的，如果顺序是随机的话则在前面加上 <code>?</code></li>
+  <li><code>@</code> 或 <code>..</code> 则包括匹配词，<code>@</code> 是字符串，<code>..</code> 则是字符</li>
+  <li><code>_[N:M]</code> ,<code>?</code> <code>..|@</code> 可以组成使用</li>
+</ul>
 
 <h2 id="4参考文章">4.参考文章</h2>
 
-<p><a href="https://github.com/sirkon/ldetool">官方</a></p>
+<p><a href="https://github.com/sirkon/ldetool">ldetool官方源代码</a></p>
+
+<p><a href="https://blog.csdn.net/orangleliu/article/details/85038304">ldetool性能分析</a></p>
 
 		</div>
 <div class="page-reward">
