@@ -790,7 +790,7 @@ ul.h-list {
     -webkit-filter: brightness(0.8);
     filter: brightness(0.8); }
   .content-header.bg4 {
-    background: url(./../img/bg4.png) no-repeat #ffffff;
+    background: url(./../img/bg4.jpg) no-repeat #ffffff;
     z-index: 2;
     background-position: center center;
     background-size: cover;
