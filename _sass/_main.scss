@@ -1,3 +1,8 @@
+.post-header{
+    @media(max-width: $on-phone) {
+        display: none !important;
+    }
+}
 .l_main {
     width: 100%;
     padding-right: $side-width + $gap;
@@ -78,6 +83,19 @@
         &.info{
 
             margin-top: -170px;
+            @media(max-width: $on-phone) {
+                margin-top: 0px;
+            }
+        }
+        .toc-wrapper{
+            @media(max-width: $on-phone) {
+                display: none !important;
+            }
+        }
+        pre[class*="language-"]{
+            @media(max-width: $on-phone) {
+                margin: 0 !important;
+            }
         }
         .meta {
             margin-bottom: 2*$gap;
@@ -151,5 +169,10 @@
     @media(max-width:$on-phone) {
         padding-right: 0;
         @include mobile-post();
+    }
+}
+#footer{
+    @media(max-width:$on-phone) {
+        margin-top:20px !important;
     }
 }
